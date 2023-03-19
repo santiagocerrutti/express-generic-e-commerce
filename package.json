@@ -1,0 +1,29 @@
+{
+  "name": "ch-back-end-final-proyect",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "application for managing products and orders of ecommerce",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest"
+  },
+  "engines": {
+    "node": "v18.4.0",
+    "npm": "v8.12.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santiagocerrutti/ch-back-end-final-proyect.git"
+  },
+  "keywords": [
+    "codehouse",
+    "ecommerce"
+  ],
+  "author": "Santiago Cerrutti <cerrutti.js@gmail.comn>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/santiagocerrutti/ch-back-end-final-proyect/issues"
+  },
+  "homepage": "https://github.com/santiagocerrutti/ch-back-end-final-proyect#readme"
+}
