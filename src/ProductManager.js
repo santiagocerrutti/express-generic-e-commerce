@@ -18,13 +18,13 @@ export class ProductManager {
   addProduct(product) {
     if (
       this.isProductValid(product) &&
-      !this.products.includes((p) => p.code === product.code)
+      !this.products.some((p) => p.code === product.code)
     ) {
       this.products.push({
         ...product,
         id: this.lastProductId,
       });
-      this.lastProductId = +1;
+      this.lastProductId += 1;
     }
   }
 
