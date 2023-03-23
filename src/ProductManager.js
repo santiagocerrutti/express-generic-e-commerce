@@ -1,7 +1,19 @@
+import fs from "node:fs";
+
 export class ProductManager {
-  constructor() {
-    this.products = [];
+  constructor(path) {
+    this.path = path;
     this.lastProductId = 1;
+  }
+
+  async retreiveProducts() {
+    const content = await fs.promises.readFile(this.path);
+    return JSON.parse(content);
+  }
+
+  async saveProducts(products) {
+    const content = JSON.stringify(products);
+    fs.promises.writeFile(this.path, content);
   }
 
   isProductValid(product) {
@@ -15,7 +27,8 @@ export class ProductManager {
     );
   }
 
-  addProduct(product) {
+  async addProduct(product) {
+    this.products = await this.retreiveProducts();
     if (
       this.isProductValid(product) &&
       !this.products.some((p) => p.code === product.code)
@@ -24,15 +37,18 @@ export class ProductManager {
         ...product,
         id: this.lastProductId,
       });
+      this.saveProducts(this.products);
       this.lastProductId += 1;
     }
   }
 
-  getProducts() {
+  async getProducts() {
+    this.products = await this.retreiveProducts();
     return this.products;
   }
 
-  getProductById(productId) {
+  async getProductById(productId) {
+    this.products = await this.retreiveProducts();
     const product = this.products.find((p) => p.id === productId);
     if (product) {
       return product;
