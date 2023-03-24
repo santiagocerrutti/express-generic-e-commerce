@@ -35,16 +35,20 @@ export class ProductManager {
       this.isProductValid(product) &&
       !this.products.some((p) => p.code === product.code)
     ) {
-      this.products.push({
+      const newProduct = {
         ...product,
         id: this.lastProductId,
-      });
-      this.saveProducts(this.products);
+      };
+      this.products.push(newProduct);
+      await this.saveProducts(this.products);
       this.lastProductId += 1;
+      return newProduct;
     } else if (this.products.some((p) => p.code === product.code)) {
       console.error(`Code ${product.code} duplicated`);
+      return null;
     } else {
       console.error(`Invalid product: ${product}.`);
+      return null;
     }
   }
 
@@ -60,6 +64,47 @@ export class ProductManager {
       return product;
     }
     console.error("Product " + productId + " not found.");
+    return null;
+  }
+
+  isUpdateValid(product) {
+    // TODO: agregar una validación de tipos
+    const productKeys = [
+      "title",
+      "description",
+      "price",
+      "thumbnail",
+      "code",
+      "stock",
+    ];
+    for (const key of Object.keys(product)) {
+      if (!productKeys.includes(key)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  async updateProduct(productId, fieldsToUpdate) {
+    const productToUpdate = await this.getProductById(productId);
+    if (this.isUpdateValid(fieldsToUpdate) && productToUpdate) {
+      const products = this.products.filter((p) => p.id !== productId);
+      products.push({ ...productToUpdate, ...fieldsToUpdate });
+      await this.saveProducts(products);
+      return { ...productToUpdate, ...fieldsToUpdate };
+    } else if (!this.isUpdateValid(fieldsToUpdate)) {
+      console.error(`Fields to update not valid: ${fieldsToUpdate}`);
+    }
+    return null;
+  }
+
+  async deleteProduct(productId) {
+    const productToDelete = await this.getProductById(productId);
+    if (productToDelete) {
+      const products = this.products.filter((p) => p.id !== productId);
+      await this.saveProducts(products);
+      return productToDelete;
+    }
     return null;
   }
 }
