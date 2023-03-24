@@ -8,7 +8,9 @@ export class ProductManager {
 
   async retreiveProducts() {
     const content = await fs.promises.readFile(this.path);
-    return JSON.parse(content);
+    const products = JSON.parse(content);
+    this.lastProductId = products.length ? products.length + 1 : 1;
+    return products;
   }
 
   async saveProducts(products) {
@@ -39,6 +41,10 @@ export class ProductManager {
       });
       this.saveProducts(this.products);
       this.lastProductId += 1;
+    } else if (this.products.some((p) => p.code === product.code)) {
+      console.error(`Code ${product.code} duplicated`);
+    } else {
+      console.error(`Invalid product: ${product}.`);
     }
   }
 
