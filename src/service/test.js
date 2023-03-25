@@ -1,6 +1,6 @@
 import { ProductManager } from "./ProductManager.js";
 
-async function main() {
+async function test() {
   const product1 = {
     title: "producto prueba",
     description: "Este es un producto prueba",
@@ -46,4 +46,4 @@ async function main() {
   console.log(await productManager.deleteProduct(2));
 }
 
-main();
+test();

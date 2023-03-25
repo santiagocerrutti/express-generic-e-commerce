@@ -59,7 +59,7 @@ export class ProductManager {
 
   async getProductById(productId) {
     this.products = await this.retreiveProducts();
-    const product = this.products.find((p) => p.id === productId);
+    const product = this.products.find((p) => p.id == productId);
     if (product) {
       return product;
     }

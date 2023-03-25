@@ -5,12 +5,13 @@
   "description": "application for managing products and orders of ecommerce",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "test": "jest"
   },
   "engines": {
     "node": "v18.4.0",
-    "npm": "v8.12.1"
+    "npm": "v9.6.2"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/santiagocerrutti/ch-back-end-final-proyect/issues"
   },
-  "homepage": "https://github.com/santiagocerrutti/ch-back-end-final-proyect#readme"
+  "homepage": "https://github.com/santiagocerrutti/ch-back-end-final-proyect#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
