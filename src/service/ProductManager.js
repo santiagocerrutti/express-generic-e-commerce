@@ -10,6 +10,7 @@ export class ProductManager {
   async retreiveProducts() {
     const content = await fs.promises.readFile(this.path);
     const products = JSON.parse(content);
+
     return products;
   }
 
@@ -44,6 +45,7 @@ export class ProductManager {
     };
     const ajv = new Ajv();
     const validate = ajv.compile(schema);
+
     return {
       valid: validate(product),
       errors: validate.errors,
@@ -54,6 +56,7 @@ export class ProductManager {
     console.log(product);
     this.products = await this.retreiveProducts();
     const validateResult = this.validateAddProduct(product);
+
     if (
       validateResult.valid &&
       !this.products.some((p) => p.code === product.code)
@@ -64,32 +67,43 @@ export class ProductManager {
       };
       this.products.push(newProduct);
       await this.saveProducts(this.products);
+
       return newProduct;
     } else if (!validateResult.valid) {
       const error = new Error(`Invalid product: ${JSON.stringify(product)}.`);
       error.code = "INVALID_BODY";
       error.errors = validateResult.errors;
+
       throw error;
     } else {
       const error = new Error(`Code ${product.code} duplicated`);
       error.code = "DUPLICATED_KEY";
+
       throw error;
     }
   }
 
-  async getProducts() {
+  async getProducts(limit = 0) {
     this.products = await this.retreiveProducts();
+
+    if (limit) {
+      return this.products.slice(0, limit);
+    }
+
     return this.products;
   }
 
   async getProductById(productId) {
     this.products = await this.retreiveProducts();
     const product = this.products.find((p) => p.id == productId);
+
     if (product) {
       return product;
     }
+
     const error = new Error(`Product ${productId} not found.`);
     error.code = "NOT_FOUND";
+
     throw error;
   }
 
@@ -110,6 +124,7 @@ export class ProductManager {
     };
     const ajv = new Ajv();
     const validate = ajv.compile(schema);
+
     return {
       valid: validate(product),
       errors: validate.errors,
@@ -119,27 +134,46 @@ export class ProductManager {
   async updateProduct(productId, fieldsToUpdate) {
     const productToUpdate = await this.getProductById(productId);
     const validateResult = this.validateUpdateProduct(fieldsToUpdate);
+
     if (validateResult.valid && productToUpdate) {
-      const products = this.products.filter((p) => p.id !== productId);
-      products.push({ ...productToUpdate, ...fieldsToUpdate });
-      await this.saveProducts(products);
-      return { ...productToUpdate, ...fieldsToUpdate };
-    } else if (!this.isUpdateValid(fieldsToUpdate)) {
-      const error = new Error(`Fields to update not valid: ${fieldsToUpdate}.`);
+      if (
+        !fieldsToUpdate.code ||
+        !this.products.some((p) => p.code === fieldsToUpdate.code)
+      ) {
+        const index = this.products.findIndex((p) => p.id !== productId);
+        this.products[index] = { ...productToUpdate, ...fieldsToUpdate };
+        await this.saveProducts(this.products);
+
+        return { ...productToUpdate, ...fieldsToUpdate };
+      } else {
+        const error = new Error(`Code ${fieldsToUpdate.code} duplicated`);
+        error.code = "DUPLICATED_KEY";
+
+        throw error;
+      }
+    } else if (!validateResult.valid) {
+      const error = new Error(
+        `Fields to update not valid: ${JSON.stringify(fieldsToUpdate)}.`
+      );
       error.code = "INVALID_BODY";
       error.errors = validateResult.errors;
+
       throw error;
     }
+
     return null;
   }
 
   async deleteProduct(productId) {
     const productToDelete = await this.getProductById(productId);
+
     if (productToDelete) {
       const products = this.products.filter((p) => p.id !== productId);
       await this.saveProducts(products);
+
       return productToDelete;
     }
+
     return null;
   }
 }

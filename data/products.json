@@ -3,20 +3,30 @@
     "title": "producto prueba",
     "description": "Este es un producto prueba",
     "code": "abc123",
-    "price": 200,
+    "price": 500,
+    "stock": 50,
     "status": true,
-    "stock": 25,
-    "category": "CATEGORY",
+    "category": "56",
     "id": "12dbac51-c1fe-4847-8899-947c493ffd68"
   },
   {
-    "title": "producto prueba",
+    "title": "producto prueba 2",
     "description": "Este es un producto prueba",
-    "code": "abc456",
+    "code": "abc126",
     "price": 200,
-    "status": true,
     "stock": 25,
+    "status": true,
     "category": "CATEGORY",
-    "id": "9c0f31ac-6b41-458c-9342-62c72b07dd14"
+    "id": "24921daf-82ac-48b0-b51b-5a58d7397d6a"
+  },
+  {
+    "title": "producto prueba 3",
+    "description": "Este es un producto prueba",
+    "code": "abc127",
+    "price": 600,
+    "stock": 60,
+    "status": true,
+    "category": "CATEGORY",
+    "id": "33968219-defd-4021-aea3-0f902b1752f8"
   }
 ]

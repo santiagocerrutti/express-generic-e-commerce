@@ -31,5 +31,9 @@
     "ajv": "^8.12.0",
     "express": "^4.18.2",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.38.0",
+    "prettier": "2.8.7"
   }
 }
