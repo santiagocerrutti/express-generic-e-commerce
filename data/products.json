@@ -1,32 +1,402 @@
 [
   {
-    "title": "producto prueba",
-    "description": "Este es un producto prueba",
-    "code": "abc123",
-    "price": 500,
-    "stock": 50,
+    "title": "Pumpkin Eater, The",
+    "description": "id pretium iaculis diam erat fermentum justo nec condimentum neque sapien placerat ante nulla justo aliquam quis turpis",
+    "code": "880676657-0",
+    "price": 39.89,
     "status": true,
-    "category": "56",
+    "stock": 74,
+    "category": "Drama",
     "id": "12dbac51-c1fe-4847-8899-947c493ffd68"
   },
   {
-    "title": "producto prueba 2",
-    "description": "Este es un producto prueba",
-    "code": "abc126",
-    "price": 200,
-    "stock": 25,
+    "title": "Giant Gila Monster, The",
+    "description": "venenatis tristique fusce congue diam id ornare imperdiet sapien urna pretium nisl ut volutpat sapien arcu sed augue aliquam",
+    "code": "593683494-8",
+    "price": 85.94,
     "status": true,
-    "category": "CATEGORY",
+    "stock": 66,
+    "category": "Horror|Sci-Fi",
     "id": "24921daf-82ac-48b0-b51b-5a58d7397d6a"
   },
   {
-    "title": "producto prueba 3",
-    "description": "Este es un producto prueba",
-    "code": "abc127",
-    "price": 600,
-    "stock": 60,
+    "title": "Outpost: Black Sun",
+    "description": "suscipit a feugiat et eros vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet",
+    "code": "031461442-7",
+    "price": 44.47,
     "status": true,
-    "category": "CATEGORY",
+    "stock": 100,
+    "category": "Action|Horror",
     "id": "33968219-defd-4021-aea3-0f902b1752f8"
+  },
+  {
+    "title": "Guilty of Romance (Koi no tsumi) ",
+    "description": "orci mauris lacinia sapien quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer",
+    "code": "794983827-2",
+    "price": 58.04,
+    "status": false,
+    "stock": 95,
+    "category": "Crime|Drama|Horror",
+    "id": "c0bee26d-cab0-40a8-a8ea-fdd4ce1a2831"
+  },
+  {
+    "title": "Damn the Defiant! (H.M.S. Defiant)",
+    "description": "elit sodales scelerisque mauris sit amet eros suspendisse accumsan tortor quis turpis",
+    "code": "765509591-4",
+    "price": 4.15,
+    "status": false,
+    "stock": 64,
+    "category": "Adventure|Drama",
+    "id": "1aca7396-886a-4ea1-8a21-57f419f90b26"
+  },
+  {
+    "title": "Two Weeks in Another Town",
+    "description": "lectus in quam fringilla rhoncus mauris enim leo rhoncus sed vestibulum sit amet",
+    "code": "337404553-7",
+    "price": 43.88,
+    "status": true,
+    "stock": 96,
+    "category": "Drama",
+    "id": "4918d46f-32bb-4314-bde7-362e90a6cf60"
+  },
+  {
+    "title": "Adventures of Baron Munchausen, The",
+    "description": "bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris",
+    "code": "740402725-X",
+    "price": 29.96,
+    "status": true,
+    "stock": 98,
+    "category": "Adventure|Comedy|Fantasy",
+    "id": "78bdc3e1-c860-44c0-a46f-605c9e6abd27"
+  },
+  {
+    "title": "My Side of the Mountain",
+    "description": "aliquam erat volutpat in congue etiam justo etiam pretium iaculis justo",
+    "code": "336726725-2",
+    "price": 22.7,
+    "status": true,
+    "stock": 93,
+    "category": "Adventure|Children",
+    "id": "16ca195b-b090-45d9-847a-254aef4c0005"
+  },
+  {
+    "title": "Only Son, The (Hitori musuko)",
+    "description": "curae duis faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat",
+    "code": "525236854-6",
+    "price": 32.19,
+    "status": false,
+    "stock": 73,
+    "category": "Drama",
+    "id": "990150b6-5bbc-437f-96cd-c6aa5a1b2948"
+  },
+  {
+    "title": "Secret Ballot (Raye makhfi)",
+    "description": "eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros",
+    "code": "696717473-8",
+    "price": 84.1,
+    "status": false,
+    "stock": 95,
+    "category": "Comedy",
+    "id": "779acbbe-4e4c-42fb-8abb-ae14bae1dd59"
+  },
+  {
+    "title": "Picnic on the Grass (Le déjeuner sur l'herbe)",
+    "description": "amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce posuere",
+    "code": "525050821-9",
+    "price": 19.05,
+    "status": false,
+    "stock": 99,
+    "category": "Comedy|Romance",
+    "id": "965da1ab-a9db-4f77-8982-3551ea2d95e1"
+  },
+  {
+    "title": "Did You Hear About the Morgans?",
+    "description": "non ligula pellentesque ultrices phasellus id sapien in sapien iaculis congue",
+    "code": "155569569-8",
+    "price": 5.35,
+    "status": true,
+    "stock": 96,
+    "category": "Comedy|Crime|Drama|Romance",
+    "id": "75dc92eb-2d85-4fe4-b9d4-c712dd831130"
+  },
+  {
+    "title": "Live Free or Die Hard",
+    "description": "vel nulla eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros viverra",
+    "code": "466209605-7",
+    "price": 33.75,
+    "status": true,
+    "stock": 90,
+    "category": "Action|Adventure|Crime|Thriller",
+    "id": "99d6eb5b-1361-43ee-b56b-61d96ae9b0bc"
+  },
+  {
+    "title": "Park Is Mine, The",
+    "description": "est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl",
+    "code": "129905510-9",
+    "price": 72.09,
+    "status": true,
+    "stock": 52,
+    "category": "Action|Drama|Thriller",
+    "id": "640ef7ca-01c6-4931-b3c0-900fc2e657b1"
+  },
+  {
+    "title": "Dupes, The (Al-makhdu'un)",
+    "description": "laoreet ut rhoncus aliquet pulvinar sed nisl nunc rhoncus dui vel sem sed sagittis nam congue risus semper porta",
+    "code": "698375539-1",
+    "price": 58.01,
+    "status": true,
+    "stock": 75,
+    "category": "Drama",
+    "id": "6e324eea-1a29-490b-9e18-69c2e8da7816"
+  },
+  {
+    "title": "Spanglish",
+    "description": "sapien cursus vestibulum proin eu mi nulla ac enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae",
+    "code": "206097384-8",
+    "price": 83.58,
+    "status": true,
+    "stock": 72,
+    "category": "Comedy|Drama|Romance",
+    "id": "354d9abc-34cc-4cb7-9748-b6614a1189d3"
+  },
+  {
+    "title": "Maze",
+    "description": "quis orci eget orci vehicula condimentum curabitur in libero ut massa volutpat convallis morbi odio",
+    "code": "645070101-3",
+    "price": 21.12,
+    "status": true,
+    "stock": 72,
+    "category": "Romance",
+    "id": "ac0aa0cd-ff7b-45ba-9a34-8c7737c26715"
+  },
+  {
+    "title": "Village People",
+    "description": "vivamus metus arcu adipiscing molestie hendrerit at vulputate vitae nisl aenean lectus",
+    "code": "782576146-4",
+    "price": 33.24,
+    "status": true,
+    "stock": 83,
+    "category": "Comedy",
+    "id": "6cee0eba-ab02-40a4-8587-a21b37e2e383"
+  },
+  {
+    "title": "Cartoonist: Jeff Smith, BONE and the Changing Face of Comics, The",
+    "description": "faucibus orci luctus et ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet",
+    "code": "158269121-5",
+    "price": 18.19,
+    "status": true,
+    "stock": 65,
+    "category": "Documentary",
+    "id": "0731c4c7-31fd-4c18-bdf5-746cbdf5d7b0"
+  },
+  {
+    "title": "Dances With the Dragons ( Yu long gong wu)",
+    "description": "mauris laoreet ut rhoncus aliquet pulvinar sed nisl nunc rhoncus dui vel sem sed sagittis nam congue",
+    "code": "390131471-7",
+    "price": 87.82,
+    "status": true,
+    "stock": 75,
+    "category": "Comedy|Drama|Romance",
+    "id": "579ca481-5cab-406c-8d7a-dff826d455d2"
+  },
+  {
+    "title": "Green for Danger",
+    "description": "magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu",
+    "code": "738749924-1",
+    "price": 56.17,
+    "status": true,
+    "stock": 92,
+    "category": "Crime|Mystery",
+    "id": "f6145ab3-901d-4490-bd9f-7002daf06482"
+  },
+  {
+    "title": "Dadetown",
+    "description": "sagittis nam congue risus semper porta volutpat quam pede lobortis ligula sit amet eleifend",
+    "code": "208350244-2",
+    "price": 79.82,
+    "status": true,
+    "stock": 55,
+    "category": "Drama",
+    "id": "7cff6091-ad11-4571-bb01-008c83136139"
+  },
+  {
+    "title": "Battling Butler",
+    "description": "lectus pellentesque eget nunc donec quis orci eget orci vehicula condimentum curabitur in libero ut massa volutpat",
+    "code": "726935028-0",
+    "price": 99.52,
+    "status": true,
+    "stock": 62,
+    "category": "Comedy",
+    "id": "51260bfd-d81f-4331-8dd2-d437a195dc4d"
+  },
+  {
+    "title": "Little Night Music, A",
+    "description": "sapien cursus vestibulum proin eu mi nulla ac enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae",
+    "code": "630201759-9",
+    "price": 33.79,
+    "status": false,
+    "stock": 68,
+    "category": "Comedy|Musical|Romance",
+    "id": "22713fbf-e97b-4d41-bbd5-f809531d5a72"
+  },
+  {
+    "title": "A Magnificent Haunting",
+    "description": "ridiculus mus vivamus vestibulum sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus",
+    "code": "505921289-0",
+    "price": 95.48,
+    "status": false,
+    "stock": 98,
+    "category": "Drama",
+    "id": "07e365b4-e558-4a92-a1ef-ca55f6aafe6e"
+  },
+  {
+    "title": "Powers of Ten",
+    "description": "ut mauris eget massa tempor convallis nulla neque libero convallis eget eleifend luctus ultricies eu nibh quisque",
+    "code": "875408603-5",
+    "price": 31.53,
+    "status": false,
+    "stock": 60,
+    "category": "Documentary",
+    "id": "8beef926-7a73-4705-af11-a02f484745b3"
+  },
+  {
+    "title": "Escape from Suburbia: Beyond the American Dream",
+    "description": "eget orci vehicula condimentum curabitur in libero ut massa volutpat",
+    "code": "682577336-4",
+    "price": 37.08,
+    "status": false,
+    "stock": 100,
+    "category": "Documentary",
+    "id": "b85526c3-0d24-499b-9134-815eb3a11af2"
+  },
+  {
+    "title": "First a Girl",
+    "description": "rutrum rutrum neque aenean auctor gravida sem praesent id massa id nisl venenatis lacinia aenean sit",
+    "code": "952508822-7",
+    "price": 61.5,
+    "status": false,
+    "stock": 93,
+    "category": "Comedy|Musical",
+    "id": "91380d0a-3cad-4e64-9a19-95411e94e2b3"
+  },
+  {
+    "title": "Kiss Me Again",
+    "description": "eleifend luctus ultricies eu nibh quisque id justo sit amet",
+    "code": "848090131-4",
+    "price": 21.29,
+    "status": true,
+    "stock": 90,
+    "category": "Drama|Romance",
+    "id": "e7d3eea0-089b-4551-b96f-d458ada6845f"
+  },
+  {
+    "title": "Dead & Buried",
+    "description": "in libero ut massa volutpat convallis morbi odio odio elementum eu interdum eu tincidunt in leo maecenas",
+    "code": "291028870-6",
+    "price": 46.16,
+    "status": true,
+    "stock": 68,
+    "category": "Horror",
+    "id": "02205383-4f04-4f19-b96d-d33e5d3fe627"
+  },
+  {
+    "title": "Pornographers, The (Erogotoshi-tachi yori: Jinruigaku nyûmon)",
+    "description": "aenean fermentum donec ut mauris eget massa tempor convallis nulla neque libero convallis",
+    "code": "732582896-9",
+    "price": 3.27,
+    "status": true,
+    "stock": 61,
+    "category": "Comedy|Drama",
+    "id": "9ea1ac62-d95e-407e-bcb6-55aa860959db"
+  },
+  {
+    "title": "Any Number Can Win (Mélodie en sous-sol )",
+    "description": "auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc nisl duis bibendum felis sed interdum",
+    "code": "908222595-6",
+    "price": 24.84,
+    "status": false,
+    "stock": 88,
+    "category": "Crime",
+    "id": "fcd8f5b2-1d4a-4acd-a36c-22eb88934eb9"
+  },
+  {
+    "title": "How to Succeed in Business Without Really Trying",
+    "description": "ac lobortis vel dapibus at diam nam tristique tortor eu pede",
+    "code": "304376249-5",
+    "price": 83.94,
+    "status": true,
+    "stock": 76,
+    "category": "Comedy|Musical",
+    "id": "e7210232-1501-457e-93f6-a05a3338cb43"
+  },
+  {
+    "title": "The Love Letter",
+    "description": "semper interdum mauris ullamcorper purus sit amet nulla quisque arcu libero rutrum ac lobortis vel dapibus at diam nam",
+    "code": "346212231-2",
+    "price": 90.92,
+    "status": true,
+    "stock": 70,
+    "category": "Fantasy|Romance",
+    "id": "7d7d5b3f-a73e-4cd8-a561-f7c27e7f1ad8"
+  },
+  {
+    "title": "Cat and the Canary, The",
+    "description": "praesent blandit lacinia erat vestibulum sed magna at nunc commodo placerat praesent blandit nam",
+    "code": "886652924-9",
+    "price": 96.59,
+    "status": true,
+    "stock": 98,
+    "category": "Comedy|Horror|Mystery",
+    "id": "f7045e59-24fc-42b7-96a7-57426a2a32f5"
+  },
+  {
+    "title": "Edge of Seventeen",
+    "description": "sem sed sagittis nam congue risus semper porta volutpat quam",
+    "code": "224695793-1",
+    "price": 23.4,
+    "status": false,
+    "stock": 64,
+    "category": "Comedy|Drama|Romance",
+    "id": "c801cb39-460c-4e73-b77b-ba6cd4a1c3b9"
+  },
+  {
+    "title": "Knight Moves",
+    "description": "sagittis nam congue risus semper porta volutpat quam pede lobortis ligula",
+    "code": "080034745-5",
+    "price": 6.41,
+    "status": false,
+    "stock": 69,
+    "category": "Mystery|Thriller",
+    "id": "6868f9a7-d68e-453c-88f4-61aaf624c881"
+  },
+  {
+    "title": "Lost Weekend, The",
+    "description": "non quam nec dui luctus rutrum nulla tellus in sagittis dui vel nisl duis ac",
+    "code": "942366704-X",
+    "price": 71.31,
+    "status": true,
+    "stock": 83,
+    "category": "Drama",
+    "id": "dbe4388d-2091-4776-926b-c41538248c9b"
+  },
+  {
+    "title": "I Am a Fugitive from a Chain Gang",
+    "description": "dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque",
+    "code": "013744331-5",
+    "price": 8.71,
+    "status": true,
+    "stock": 84,
+    "category": "Crime|Drama|Film-Noir",
+    "id": "8d126271-4337-4ff0-8ff2-3ee70e56ebff"
+  },
+  {
+    "title": "Hot Rock, The",
+    "description": "aliquam lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie sed justo",
+    "code": "749128944-4",
+    "price": 85.06,
+    "status": false,
+    "stock": 65,
+    "category": "Comedy|Crime",
+    "id": "afecd674-0097-442f-92cd-389f52b5bafe"
   }
 ]

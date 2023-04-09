@@ -1,10 +1,8 @@
 import { ProductManager } from "../service/ProductManager.js";
 
-const filePath = "./data/products.json";
-
 export async function getProductsHandler(req, res) {
   const { limit } = req.query;
-  const manager = new ProductManager(filePath);
+  const manager = new ProductManager();
   const products = await manager.getProducts(limit);
   res.send({
     status: "SUCCESS",
@@ -17,7 +15,7 @@ export async function getProductByIdHandler(req, res) {
 
   try {
     if (pid) {
-      const manager = new ProductManager(filePath);
+      const manager = new ProductManager();
       const foundProduct = await manager.getProductById(pid);
 
       res.send({ status: "SUCCESS", data: foundProduct });
@@ -35,7 +33,7 @@ export async function getProductByIdHandler(req, res) {
 
 export async function postProductHandler(req, res) {
   try {
-    const manager = new ProductManager(filePath);
+    const manager = new ProductManager();
     const result = await manager.addProduct(req.body);
 
     res.status(201).send({ status: "SUCCESS", data: result });
@@ -58,7 +56,7 @@ export async function postProductHandler(req, res) {
 
 export async function putProductHandler(req, res) {
   try {
-    const manager = new ProductManager(filePath);
+    const manager = new ProductManager();
     const result = await manager.updateProduct(req.params.pid, req.body);
 
     res.status(200).send({ status: "SUCCESS", data: result });
@@ -85,7 +83,7 @@ export async function putProductHandler(req, res) {
 
 export async function deleteProductHandler(req, res) {
   try {
-    const manager = new ProductManager(filePath);
+    const manager = new ProductManager();
     const result = await manager.deleteProduct(req.params.pid);
 
     res.status(200).send({ status: "SUCCESS", data: result });

@@ -1,14 +1,16 @@
 import { ProductManager } from "./ProductManager.js";
 
+/** @see https://www.mockaroo.com/ */
 async function test() {
   const product1 = {
-    title: "producto prueba",
-    description: "Este es un producto prueba",
-    code: "abc123",
-    price: 200,
+    title: "Pumpkin Eater, The",
+    description:
+      "id pretium iaculis diam erat fermentum justo nec condimentum neque sapien placerat ante nulla justo aliquam quis turpis",
+    code: "880676657-0",
+    price: 39.89,
     status: true,
-    stock: 25,
-    category: "CATEGORY",
+    stock: 74,
+    category: "Drama",
   };
 
   const productManager = new ProductManager("data/products.json");

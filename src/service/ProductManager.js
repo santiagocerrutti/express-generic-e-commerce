@@ -2,9 +2,11 @@ import fs from "node:fs";
 import Ajv from "ajv";
 import { v4 as uuidv4 } from "uuid";
 
+const PATH = "./data/products.json";
 export class ProductManager {
-  constructor(path) {
-    this.path = path;
+  constructor() {
+    this.path = PATH;
+    this.products = [];
   }
 
   async retreiveProducts() {
@@ -53,7 +55,6 @@ export class ProductManager {
   }
 
   async addProduct(product) {
-    console.log(product);
     this.products = await this.retreiveProducts();
     const validateResult = this.validateAddProduct(product);
 
