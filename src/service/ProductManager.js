@@ -1,15 +1,15 @@
 import fs from "node:fs";
+import Ajv from "ajv";
+import { v4 as uuidv4 } from "uuid";
 
 export class ProductManager {
   constructor(path) {
     this.path = path;
-    this.lastProductId = 1;
   }
 
   async retreiveProducts() {
     const content = await fs.promises.readFile(this.path);
     const products = JSON.parse(content);
-    this.lastProductId = products.length ? products.length + 1 : 1;
     return products;
   }
 
@@ -18,37 +18,62 @@ export class ProductManager {
     fs.promises.writeFile(this.path, content);
   }
 
-  isProductValid(product) {
-    return (
-      product.title &&
-      product.description &&
-      product.price &&
-      product.thumbnail &&
-      product.code &&
-      product.stock
-    );
+  validateAddProduct(product) {
+    const schema = {
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        description: { type: "string" },
+        code: { type: "string" },
+        price: { type: "number" },
+        status: { type: "boolean" },
+        stock: { type: "integer" },
+        category: { type: "string" },
+        thumbnails: { type: "array", items: { type: "string" } },
+      },
+      required: [
+        "title",
+        "description",
+        "code",
+        "price",
+        "status",
+        "stock",
+        "category",
+      ],
+      additionalProperties: false,
+    };
+    const ajv = new Ajv();
+    const validate = ajv.compile(schema);
+    return {
+      valid: validate(product),
+      errors: validate.errors,
+    };
   }
 
   async addProduct(product) {
+    console.log(product);
     this.products = await this.retreiveProducts();
+    const validateResult = this.validateAddProduct(product);
     if (
-      this.isProductValid(product) &&
+      validateResult.valid &&
       !this.products.some((p) => p.code === product.code)
     ) {
       const newProduct = {
         ...product,
-        id: this.lastProductId,
+        id: uuidv4(),
       };
       this.products.push(newProduct);
       await this.saveProducts(this.products);
-      this.lastProductId += 1;
       return newProduct;
-    } else if (this.products.some((p) => p.code === product.code)) {
-      console.error(`Code ${product.code} duplicated`);
-      return null;
+    } else if (!validateResult.valid) {
+      const error = new Error(`Invalid product: ${JSON.stringify(product)}.`);
+      error.code = "INVALID_BODY";
+      error.errors = validateResult.errors;
+      throw error;
     } else {
-      console.error(`Invalid product: ${product}.`);
-      return null;
+      const error = new Error(`Code ${product.code} duplicated`);
+      error.code = "DUPLICATED_KEY";
+      throw error;
     }
   }
 
@@ -63,37 +88,47 @@ export class ProductManager {
     if (product) {
       return product;
     }
-    console.error("Product " + productId + " not found.");
-    return null;
+    const error = new Error(`Product ${productId} not found.`);
+    error.code = "NOT_FOUND";
+    throw error;
   }
 
-  isUpdateValid(product) {
-    // TODO: agregar una validación de tipos
-    const productKeys = [
-      "title",
-      "description",
-      "price",
-      "thumbnail",
-      "code",
-      "stock",
-    ];
-    for (const key of Object.keys(product)) {
-      if (!productKeys.includes(key)) {
-        return false;
-      }
-    }
-    return true;
+  validateUpdateProduct(product) {
+    const schema = {
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        description: { type: "string" },
+        code: { type: "string" },
+        price: { type: "number" },
+        status: { type: "boolean" },
+        stock: { type: "integer" },
+        category: { type: "string" },
+        thumbnails: { type: "array", items: { type: "string" } },
+      },
+      additionalProperties: false,
+    };
+    const ajv = new Ajv();
+    const validate = ajv.compile(schema);
+    return {
+      valid: validate(product),
+      errors: validate.errors,
+    };
   }
 
   async updateProduct(productId, fieldsToUpdate) {
     const productToUpdate = await this.getProductById(productId);
-    if (this.isUpdateValid(fieldsToUpdate) && productToUpdate) {
+    const validateResult = this.validateUpdateProduct(fieldsToUpdate);
+    if (validateResult.valid && productToUpdate) {
       const products = this.products.filter((p) => p.id !== productId);
       products.push({ ...productToUpdate, ...fieldsToUpdate });
       await this.saveProducts(products);
       return { ...productToUpdate, ...fieldsToUpdate };
     } else if (!this.isUpdateValid(fieldsToUpdate)) {
-      console.error(`Fields to update not valid: ${fieldsToUpdate}`);
+      const error = new Error(`Fields to update not valid: ${fieldsToUpdate}.`);
+      error.code = "INVALID_BODY";
+      error.errors = validateResult.errors;
+      throw error;
     }
     return null;
   }
