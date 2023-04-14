@@ -1,0 +1,13 @@
+<div>
+  <h1>Hola {{name}}</h1>
+  {{#if productList}}
+    "Saludos!"
+    {{#each productList}}
+      <div>
+        {{this}}
+      </div>
+    {{/each }}
+  {{else}}
+    "Adios"
+  {{/if}}
+</div>
