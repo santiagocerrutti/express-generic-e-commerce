@@ -44,23 +44,16 @@ export async function postCart(req, res) {
 
 export async function postProductToCart(req, res) {
   const { cid, pid } = req.params;
-  const { quantity } = req.body;
   try {
-    if (cid && pid && quantity) {
+    if (cid && pid) {
       const manager = new CartManager();
-      const cart = await manager.addProductToCart(cid, pid, quantity);
+      const cart = await manager.addProductToCart(cid, pid, 1);
 
       res.send({ status: "SUCCESS", data: cart });
     } else {
-      if (!quantity) {
-        res
-          .status(400)
-          .send({ status: "ERROR", error: "quantity in body is required." });
-      } else {
-        res
-          .status(400)
-          .send({ status: "ERROR", error: "query params are required." });
-      }
+      res
+        .status(400)
+        .send({ status: "ERROR", error: "query params are required." });
     }
   } catch (error) {
     if (error.code === "NOT_FOUND") {

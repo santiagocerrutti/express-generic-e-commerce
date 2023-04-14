@@ -141,11 +141,12 @@ export class ProductManager {
         !fieldsToUpdate.code ||
         !this.products.some((p) => p.code === fieldsToUpdate.code)
       ) {
-        const index = this.products.findIndex((p) => p.id !== productId);
+        const index = this.products.findIndex((p) => p.id === productId);
         this.products[index] = { ...productToUpdate, ...fieldsToUpdate };
+
         await this.saveProducts(this.products);
 
-        return { ...productToUpdate, ...fieldsToUpdate };
+        return this.products[index];
       } else {
         const error = new Error(`Code ${fieldsToUpdate.code} duplicated`);
         error.code = "DUPLICATED_KEY";

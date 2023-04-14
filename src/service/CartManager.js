@@ -76,6 +76,6 @@ export class CartManager {
 
     await this.saveCarts(this.carts);
 
-    return this.carts;
+    return cartProduct;
   }
 }
