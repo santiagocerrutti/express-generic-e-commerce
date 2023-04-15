@@ -9,12 +9,11 @@ export async function getProductsHandler(req, res) {
   });
 }
 
-// TODO: agregar dinamismo con socket.io
 export async function getRealTimeProductsHandler(req, res) {
   const manager = new ProductManager();
   const products = await manager.getProducts();
 
-  res.render("index", {
+  res.render("realtimeproducts", {
     products,
   });
 }

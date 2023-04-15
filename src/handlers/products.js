@@ -1,4 +1,5 @@
 import { ProductManager } from "../service/ProductManager.js";
+import { io } from "socket.io-client";
 
 export async function getProductsHandler(req, res) {
   const { limit } = req.query;
@@ -36,6 +37,8 @@ export async function postProductHandler(req, res) {
     const manager = new ProductManager();
     const result = await manager.addProduct(req.body);
 
+    await emitProductsUpdate(manager);
+
     res.status(201).send({ status: "SUCCESS", data: result });
   } catch (error) {
     if (error.code === "INVALID_BODY") {
@@ -58,6 +61,8 @@ export async function putProductHandler(req, res) {
   try {
     const manager = new ProductManager();
     const result = await manager.updateProduct(req.params.pid, req.body);
+
+    await emitProductsUpdate(manager);
 
     res.status(200).send({ status: "SUCCESS", data: result });
   } catch (error) {
@@ -86,6 +91,8 @@ export async function deleteProductHandler(req, res) {
     const manager = new ProductManager();
     const result = await manager.deleteProduct(req.params.pid);
 
+    await emitProductsUpdate(manager);
+
     res.status(200).send({ status: "SUCCESS", data: result });
   } catch (error) {
     if (error.code === "NOT_FOUND") {
@@ -96,4 +103,10 @@ export async function deleteProductHandler(req, res) {
 
     res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
   }
+}
+
+async function emitProductsUpdate(manager) {
+  const socket = io("ws://localhost:8080");
+  const products = await manager.getProducts();
+  socket.emit("products-updated", products);
 }
