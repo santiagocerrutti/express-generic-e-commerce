@@ -1,5 +1,5 @@
 import { ProductManager } from "../service/ProductManager.js";
-import { io } from "socket.io-client";
+import { SocketServer } from "../sockets/socket-server.js";
 
 export async function getProductsHandler(req, res) {
   const { limit } = req.query;
@@ -106,7 +106,7 @@ export async function deleteProductHandler(req, res) {
 }
 
 async function emitProductsUpdate(manager) {
-  const socket = io("ws://localhost:8080");
   const products = await manager.getProducts();
-  socket.emit("products-updated", products);
+
+  SocketServer.getInstance().emit("products-updated", products);
 }

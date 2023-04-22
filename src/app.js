@@ -1,10 +1,10 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import { Server } from "socket.io";
 import cartsRouter from "./routes/carts.routes.js";
 import productsRouter from "./routes/products.routes.js";
 import viewsRouter from "./routes/views.routes.js";
 import __dirname from "./utils.js";
+import { SocketServer } from "./sockets/socket-server.js";
 
 async function main() {
   const app = express();
@@ -23,13 +23,8 @@ async function main() {
   const server = app.listen(8080, () => {
     console.log("Listening on port 8080");
   });
-  const io = new Server(server);
 
-  io.on("connection", (socket) => {
-    socket.on("products-updated", (data) => {
-      io.emit("update-products-ui", data);
-    });
-  });
+  SocketServer.createSocketServer(server);
 }
 
 main();

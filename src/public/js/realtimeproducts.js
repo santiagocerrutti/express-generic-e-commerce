@@ -13,7 +13,7 @@ function buildProductCard(product) {
   `;
 }
 
-socket.on("update-products-ui", (products) => {
+socket.on("products-updated", (products) => {
   const productsContainer = document.getElementById("products-container");
   productsContainer.innerHTML = "";
 
