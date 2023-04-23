@@ -17,3 +17,7 @@ export async function getRealTimeProductsHandler(req, res) {
     products,
   });
 }
+
+export async function getChatHandler(req, res) {
+  res.render("chat", {});
+}

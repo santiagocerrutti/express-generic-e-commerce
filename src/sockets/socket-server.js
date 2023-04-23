@@ -1,4 +1,5 @@
 import { Server } from "socket.io";
+import { registerChatHandlers } from "./chat-handlers.js";
 
 export class SocketServer {
   static instance = null;
@@ -16,9 +17,12 @@ export class SocketServer {
 
     SocketServer.instance.on("connection", async (socket) => {
       console.log(`Socket Connected: ${socket.id}`);
+
       socket.on("disconnect", (reason) => {
         console.log(`Socket Disonnected: ${socket.id}; ${reason}`);
       });
+
+      registerChatHandlers(SocketServer.instance, socket);
     });
 
     return SocketServer.instance;
