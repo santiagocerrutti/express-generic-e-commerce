@@ -6,7 +6,7 @@ import {
   getProductsHandler,
   postProductHandler,
   putProductHandler,
-} from "../handlers/products.js";
+} from "../handlers/products.handler.js";
 
 const router = Router();
 

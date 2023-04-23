@@ -4,7 +4,7 @@ import {
   getCartsHandler,
   postCart,
   postProductToCart,
-} from "../handlers/carts.js";
+} from "../handlers/carts.handler.js";
 
 const router = Router();
 

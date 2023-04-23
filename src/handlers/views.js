@@ -1,4 +1,4 @@
-import { ProductManager } from "../service/ProductManager.js";
+import { ProductManager } from "../dao/file/product.manager.js";
 
 export async function getProductsHandler(req, res) {
   const manager = new ProductManager();

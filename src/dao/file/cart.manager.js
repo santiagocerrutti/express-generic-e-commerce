@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { v4 as uuidv4 } from "uuid";
-import { ProductManager } from "./ProductManager.js";
+import { ProductManager } from "./product.manager.js";
 
 const PATH = "./data/carts.json";
 
