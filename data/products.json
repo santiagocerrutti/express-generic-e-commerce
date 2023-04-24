@@ -7,7 +7,7 @@
     "status": true,
     "stock": 75,
     "category": "Drama",
-    "id": "12dbac51-c1fe-4847-8899-947c493ffd68",
+    "_id": { "$uuid": "12dbac51-c1fe-4847-8899-947c493ffd68" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80"
     ]
@@ -20,7 +20,7 @@
     "status": true,
     "stock": 66,
     "category": "Horror|Sci-Fi",
-    "id": "24921daf-82ac-48b0-b51b-5a58d7397d6a",
+    "_id": { "$uuid": "24921daf-82ac-48b0-b51b-5a58d7397d6a" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=859&q=80"
     ]
@@ -33,7 +33,7 @@
     "status": true,
     "stock": 100,
     "category": "Action|Horror",
-    "id": "33968219-defd-4021-aea3-0f902b1752f8",
+    "_id": { "$uuid": "33968219-defd-4021-aea3-0f902b1752f8" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -46,7 +46,7 @@
     "status": false,
     "stock": 95,
     "category": "Crime|Drama|Horror",
-    "id": "c0bee26d-cab0-40a8-a8ea-fdd4ce1a2831",
+    "_id": { "$uuid": "c0bee26d-cab0-40a8-a8ea-fdd4ce1a2831" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1585951237318-9ea5e175b891?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
     ]
@@ -59,7 +59,7 @@
     "status": false,
     "stock": 64,
     "category": "Adventure|Drama",
-    "id": "1aca7396-886a-4ea1-8a21-57f419f90b26",
+    "_id": { "$uuid": "1aca7396-886a-4ea1-8a21-57f419f90b26" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
     ]
@@ -72,7 +72,7 @@
     "status": true,
     "stock": 96,
     "category": "Drama",
-    "id": "4918d46f-32bb-4314-bde7-362e90a6cf60",
+    "_id": { "$uuid": "4918d46f-32bb-4314-bde7-362e90a6cf60" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80"
     ]
@@ -85,7 +85,7 @@
     "status": true,
     "stock": 98,
     "category": "Adventure|Comedy|Fantasy",
-    "id": "78bdc3e1-c860-44c0-a46f-605c9e6abd27",
+    "_id": { "$uuid": "78bdc3e1-c860-44c0-a46f-605c9e6abd27" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=859&q=80"
     ]
@@ -98,7 +98,7 @@
     "status": true,
     "stock": 93,
     "category": "Adventure|Children",
-    "id": "16ca195b-b090-45d9-847a-254aef4c0005",
+    "_id": { "$uuid": "16ca195b-b090-45d9-847a-254aef4c0005" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -111,7 +111,7 @@
     "status": false,
     "stock": 73,
     "category": "Drama",
-    "id": "990150b6-5bbc-437f-96cd-c6aa5a1b2948",
+    "_id": { "$uuid": "990150b6-5bbc-437f-96cd-c6aa5a1b2948" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
     ]
@@ -124,7 +124,7 @@
     "status": false,
     "stock": 95,
     "category": "Comedy",
-    "id": "779acbbe-4e4c-42fb-8abb-ae14bae1dd59",
+    "_id": { "$uuid": "779acbbe-4e4c-42fb-8abb-ae14bae1dd59" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1485095329183-d0797cdc5676?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
     ]
@@ -137,7 +137,7 @@
     "status": false,
     "stock": 99,
     "category": "Comedy|Romance",
-    "id": "965da1ab-a9db-4f77-8982-3551ea2d95e1",
+    "_id": { "$uuid": "965da1ab-a9db-4f77-8982-3551ea2d95e1" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80"
     ]
@@ -150,7 +150,7 @@
     "status": true,
     "stock": 96,
     "category": "Comedy|Crime|Drama|Romance",
-    "id": "75dc92eb-2d85-4fe4-b9d4-c712dd831130",
+    "_id": { "$uuid": "75dc92eb-2d85-4fe4-b9d4-c712dd831130" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=859&q=80"
     ]
@@ -163,7 +163,7 @@
     "status": true,
     "stock": 90,
     "category": "Action|Adventure|Crime|Thriller",
-    "id": "99d6eb5b-1361-43ee-b56b-61d96ae9b0bc",
+    "_id": { "$uuid": "99d6eb5b-1361-43ee-b56b-61d96ae9b0bc" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -176,7 +176,7 @@
     "status": true,
     "stock": 52,
     "category": "Action|Drama|Thriller",
-    "id": "640ef7ca-01c6-4931-b3c0-900fc2e657b1",
+    "_id": { "$uuid": "640ef7ca-01c6-4931-b3c0-900fc2e657b1" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -189,7 +189,7 @@
     "status": true,
     "stock": 75,
     "category": "Drama",
-    "id": "6e324eea-1a29-490b-9e18-69c2e8da7816",
+    "_id": { "$uuid": "6e324eea-1a29-490b-9e18-69c2e8da7816" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
     ]
@@ -202,7 +202,7 @@
     "status": true,
     "stock": 72,
     "category": "Comedy|Drama|Romance",
-    "id": "354d9abc-34cc-4cb7-9748-b6614a1189d3",
+    "_id": { "$uuid": "354d9abc-34cc-4cb7-9748-b6614a1189d3" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80"
     ]
@@ -215,7 +215,7 @@
     "status": true,
     "stock": 72,
     "category": "Romance",
-    "id": "ac0aa0cd-ff7b-45ba-9a34-8c7737c26715",
+    "_id": { "$uuid": "ac0aa0cd-ff7b-45ba-9a34-8c7737c26715" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=859&q=80"
     ]
@@ -228,7 +228,7 @@
     "status": true,
     "stock": 83,
     "category": "Comedy",
-    "id": "6cee0eba-ab02-40a4-8587-a21b37e2e383",
+    "_id": { "$uuid": "6cee0eba-ab02-40a4-8587-a21b37e2e383" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -241,7 +241,7 @@
     "status": true,
     "stock": 65,
     "category": "Documentary",
-    "id": "0731c4c7-31fd-4c18-bdf5-746cbdf5d7b0",
+    "_id": { "$uuid": "0731c4c7-31fd-4c18-bdf5-746cbdf5d7b0" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -254,7 +254,7 @@
     "status": true,
     "stock": 75,
     "category": "Comedy|Drama|Romance",
-    "id": "579ca481-5cab-406c-8d7a-dff826d455d2",
+    "_id": { "$uuid": "579ca481-5cab-406c-8d7a-dff826d455d2" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
     ]
@@ -267,7 +267,7 @@
     "status": true,
     "stock": 92,
     "category": "Crime|Mystery",
-    "id": "f6145ab3-901d-4490-bd9f-7002daf06482",
+    "_id": { "$uuid": "f6145ab3-901d-4490-bd9f-7002daf06482" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1485095329183-d0797cdc5676?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
     ]
@@ -280,7 +280,7 @@
     "status": true,
     "stock": 55,
     "category": "Drama",
-    "id": "7cff6091-ad11-4571-bb01-008c83136139",
+    "_id": { "$uuid": "7cff6091-ad11-4571-bb01-008c83136139" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80"
     ]
@@ -293,7 +293,7 @@
     "status": true,
     "stock": 62,
     "category": "Comedy",
-    "id": "51260bfd-d81f-4331-8dd2-d437a195dc4d",
+    "_id": { "$uuid": "51260bfd-d81f-4331-8dd2-d437a195dc4d" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=859&q=80"
     ]
@@ -306,7 +306,7 @@
     "status": false,
     "stock": 68,
     "category": "Comedy|Musical|Romance",
-    "id": "22713fbf-e97b-4d41-bbd5-f809531d5a72",
+    "_id": { "$uuid": "22713fbf-e97b-4d41-bbd5-f809531d5a72" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -319,7 +319,7 @@
     "status": false,
     "stock": 98,
     "category": "Drama",
-    "id": "07e365b4-e558-4a92-a1ef-ca55f6aafe6e",
+    "_id": { "$uuid": "07e365b4-e558-4a92-a1ef-ca55f6aafe6e" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -332,7 +332,7 @@
     "status": false,
     "stock": 60,
     "category": "Documentary",
-    "id": "8beef926-7a73-4705-af11-a02f484745b3",
+    "_id": { "$uuid": "8beef926-7a73-4705-af11-a02f484745b3" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
     ]
@@ -345,7 +345,7 @@
     "status": false,
     "stock": 100,
     "category": "Documentary",
-    "id": "b85526c3-0d24-499b-9134-815eb3a11af2",
+    "_id": { "$uuid": "b85526c3-0d24-499b-9134-815eb3a11af2" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80"
     ]
@@ -358,7 +358,7 @@
     "status": false,
     "stock": 93,
     "category": "Comedy|Musical",
-    "id": "91380d0a-3cad-4e64-9a19-95411e94e2b3",
+    "_id": { "$uuid": "91380d0a-3cad-4e64-9a19-95411e94e2b3" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=859&q=80"
     ]
@@ -371,7 +371,7 @@
     "status": true,
     "stock": 90,
     "category": "Drama|Romance",
-    "id": "e7d3eea0-089b-4551-b96f-d458ada6845f",
+    "_id": { "$uuid": "e7d3eea0-089b-4551-b96f-d458ada6845f" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -384,7 +384,7 @@
     "status": true,
     "stock": 68,
     "category": "Horror",
-    "id": "02205383-4f04-4f19-b96d-d33e5d3fe627",
+    "_id": { "$uuid": "02205383-4f04-4f19-b96d-d33e5d3fe627" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -397,7 +397,7 @@
     "status": true,
     "stock": 61,
     "category": "Comedy|Drama",
-    "id": "9ea1ac62-d95e-407e-bcb6-55aa860959db",
+    "_id": { "$uuid": "9ea1ac62-d95e-407e-bcb6-55aa860959db" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
     ]
@@ -410,7 +410,7 @@
     "status": false,
     "stock": 88,
     "category": "Crime",
-    "id": "fcd8f5b2-1d4a-4acd-a36c-22eb88934eb9",
+    "_id": { "$uuid": "fcd8f5b2-1d4a-4acd-a36c-22eb88934eb9" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80"
     ]
@@ -423,7 +423,7 @@
     "status": true,
     "stock": 76,
     "category": "Comedy|Musical",
-    "id": "e7210232-1501-457e-93f6-a05a3338cb43",
+    "_id": { "$uuid": "e7210232-1501-457e-93f6-a05a3338cb43" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=859&q=80"
     ]
@@ -436,7 +436,7 @@
     "status": true,
     "stock": 70,
     "category": "Fantasy|Romance",
-    "id": "7d7d5b3f-a73e-4cd8-a561-f7c27e7f1ad8",
+    "_id": { "$uuid": "7d7d5b3f-a73e-4cd8-a561-f7c27e7f1ad8" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -449,7 +449,7 @@
     "status": true,
     "stock": 98,
     "category": "Comedy|Horror|Mystery",
-    "id": "f7045e59-24fc-42b7-96a7-57426a2a32f5",
+    "_id": { "$uuid": "f7045e59-24fc-42b7-96a7-57426a2a32f5" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -462,7 +462,7 @@
     "status": false,
     "stock": 64,
     "category": "Comedy|Drama|Romance",
-    "id": "c801cb39-460c-4e73-b77b-ba6cd4a1c3b9",
+    "_id": { "$uuid": "c801cb39-460c-4e73-b77b-ba6cd4a1c3b9" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
     ]
@@ -475,7 +475,7 @@
     "status": false,
     "stock": 69,
     "category": "Mystery|Thriller",
-    "id": "6868f9a7-d68e-453c-88f4-61aaf624c881",
+    "_id": { "$uuid": "6868f9a7-d68e-453c-88f4-61aaf624c881" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=725&q=80"
     ]
@@ -488,7 +488,7 @@
     "status": true,
     "stock": 83,
     "category": "Drama",
-    "id": "dbe4388d-2091-4776-926b-c41538248c9b",
+    "_id": { "$uuid": "dbe4388d-2091-4776-926b-c41538248c9b" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=859&q=80"
     ]
@@ -501,7 +501,7 @@
     "status": true,
     "stock": 84,
     "category": "Crime|Drama|Film-Noir",
-    "id": "8d126271-4337-4ff0-8ff2-3ee70e56ebff",
+    "_id": { "$uuid": "8d126271-4337-4ff0-8ff2-3ee70e56ebff" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]
@@ -514,7 +514,7 @@
     "status": false,
     "stock": 65,
     "category": "Comedy|Crime",
-    "id": "afecd674-0097-442f-92cd-389f52b5bafe",
+    "_id": { "$uuid": "afecd674-0097-442f-92cd-389f52b5bafe" },
     "thumbnails": [
       "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80"
     ]

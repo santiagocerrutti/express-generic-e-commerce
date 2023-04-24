@@ -1,13 +1,15 @@
-import { randomUUID } from "crypto";
 import { Schema, model } from "mongoose";
+/** @see https://www.npmjs.com/package/uuid-mongodb */
+import MUUID from "uuid-mongodb";
+MUUID.mode("relaxed");
 
-const productCollection = "products";
+export const productCollection = "products";
 
-const productSchema = new Schema({
-  _id: { type: Schema.Types.UUID, default: () => randomUUID() },
+export const productSchema = new Schema({
+  _id: { type: "object", value: { type: "Buffer" }, default: MUUID.v4() },
   title: { type: String, required: true },
   description: { type: String, required: true },
-  code: { type: String, required: true },
+  code: { type: String, required: true, unique: true },
   price: { type: Number, required: true },
   status: { type: Boolean, required: true },
   stock: {

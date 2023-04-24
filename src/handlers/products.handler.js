@@ -1,5 +1,4 @@
 import { ProductManager } from "../dao/db/product.manager.js";
-import { ProductManager as FileProductManager } from "../dao/file/product.manager.js";
 import { SocketServer } from "../sockets/socket-server.js";
 
 export async function getProductsHandler(req, res) {
@@ -17,7 +16,7 @@ export async function getProductByIdHandler(req, res) {
 
   try {
     if (pid) {
-      const manager = new FileProductManager();
+      const manager = new ProductManager();
       const foundProduct = await manager.getProductById(pid);
 
       res.send({ status: "SUCCESS", data: foundProduct });
@@ -35,7 +34,7 @@ export async function getProductByIdHandler(req, res) {
 
 export async function postProductHandler(req, res) {
   try {
-    const manager = new FileProductManager();
+    const manager = new ProductManager();
     const result = await manager.addProduct(req.body);
 
     await emitProductsUpdate(manager);
@@ -60,7 +59,7 @@ export async function postProductHandler(req, res) {
 
 export async function putProductHandler(req, res) {
   try {
-    const manager = new FileProductManager();
+    const manager = new ProductManager();
     const result = await manager.updateProduct(req.params.pid, req.body);
 
     await emitProductsUpdate(manager);
@@ -89,7 +88,7 @@ export async function putProductHandler(req, res) {
 
 export async function deleteProductHandler(req, res) {
   try {
-    const manager = new FileProductManager();
+    const manager = new ProductManager();
     const result = await manager.deleteProduct(req.params.pid);
 
     await emitProductsUpdate(manager);

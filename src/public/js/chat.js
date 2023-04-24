@@ -14,7 +14,6 @@ Swal.fire({
     });
   },
 }).then((result) => {
-  console.log(result);
   user = result.value;
 });
 
