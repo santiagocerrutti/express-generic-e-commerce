@@ -1,4 +1,4 @@
-import { CartManager } from "../dao/file/cart.manager.js";
+import { CartManager } from "../dao/db/cart.manager.js";
 
 export async function getCartsHandler(req, res) {
   const { limit } = req.query;

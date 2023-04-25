@@ -41,13 +41,7 @@ export async function postProductHandler(req, res) {
 
     res.status(201).send({ status: "SUCCESS", data: result });
   } catch (error) {
-    if (error.code === "INVALID_BODY") {
-      res
-        .status(400)
-        .send({ status: "ERROR", error: error.message, errors: error.errors });
-
-      return;
-    } else if (error.code === "DUPLICATED_KEY") {
+    if (error.code === "DUPLICATED_KEY") {
       res.status(409).send({ status: "ERROR", error: error.message });
 
       return;
@@ -68,12 +62,6 @@ export async function putProductHandler(req, res) {
   } catch (error) {
     if (error.code === "NOT_FOUND") {
       res.status(404).send({ status: "ERROR", error: error.message });
-
-      return;
-    } else if (error.code === "INVALID_BODY") {
-      res
-        .status(400)
-        .send({ status: "ERROR", error: error.message, errors: error.errors });
 
       return;
     } else if (error.code === "DUPLICATED_KEY") {
