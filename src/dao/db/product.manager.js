@@ -8,6 +8,10 @@ export class ProductManager {
     return ProductModel.find().limit(limit);
   }
 
+  async getProductsJson(limit = null) {
+    return ProductModel.find().limit(limit).lean();
+  }
+
   async getProductById(productId) {
     const product = await ProductModel.findById(MUUID.from(productId));
 

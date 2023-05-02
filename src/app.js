@@ -1,7 +1,7 @@
 import express from "express";
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
-import { __dirname } from "./config/dirname.js";
+import { __dirname } from "./utils.js";
 import { MONGO_URL } from "./config/env.js";
 import cartsRouter from "./routes/carts.routes.js";
 import productsRouter from "./routes/products.routes.js";
@@ -12,7 +12,12 @@ async function main() {
   const app = express();
 
   /** Handlebars configuration */
-  app.engine("handlebars", handlebars.engine());
+  app.engine(
+    "handlebars",
+    handlebars.engine({
+      allowedProtoMethods: true,
+    })
+  );
   app.set("views", __dirname + "/views");
   app.set("view engine", "handlebars");
   /** Middleware configuration */
