@@ -1,4 +1,7 @@
+import { MessageManager } from "../dao/db/message.manager.js";
+
 const messageLogs = [];
+const manager = new MessageManager();
 
 export function registerChatHandlers(io, socket) {
   function newUser(data) {
@@ -8,8 +11,11 @@ export function registerChatHandlers(io, socket) {
     socket.broadcast.emit("user-logged-in", data);
   }
 
-  function newMessage(data) {
+  async function newMessage(data) {
     messageLogs.push(data);
+
+    await manager.addMessage(data);
+
     /** This event will be received by every socket */
     io.emit("message-received", data);
   }
