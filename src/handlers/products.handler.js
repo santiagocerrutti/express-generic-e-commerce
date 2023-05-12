@@ -1,15 +1,57 @@
+import QueryString from "qs";
+import { env } from "../config/env.js";
 import { ProductManager } from "../dao/db/product.manager.js";
 import { SocketServer } from "../sockets/socket-server.js";
 
 export async function getProductsHandler(req, res) {
-  const { limit } = req.query;
+  const { limit, page, query, sort } = req.query;
+  const queryObject = query
+    ? QueryString.parse(query, { delimiter: /[;,]/ })
+    : {};
+
   const manager = new ProductManager();
-  const products = await manager.getProducts(limit);
+  const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } =
+    await manager.getProductsPaginate(limit, page, queryObject, sort);
+
+  const prevLink = hasPrevPage ? buildLink(req.query, prevPage) : null;
+  const nextLink = hasNextPage ? buildLink(req.query, nextPage) : null;
+
   res.send({
     status: "SUCCESS",
-    data: products,
+    payload: docs,
+    totalPages,
+    hasPrevPage,
+    hasNextPage,
+    prevPage,
+    nextPage,
+    prevLink,
+    nextLink,
   });
 }
+
+function buildLink(reqQuery, page) {
+  const { limit, sort, query } = reqQuery;
+
+  return `${env.HOST_URL}/api/products?limit=${limit || 10}&page=${page}${
+    query ? "&query=" + query : ""
+  }${sort ? "&sort=" + sort : ""}`;
+}
+
+// function buildPrevLink(query, prevPage) {
+//   const { limit, category, available, sort } = query;
+
+//   return `${env.HOST_URL}/api/products?limit=${limit || 10}&page=${prevPage}${
+//     category ? "&category=" + category : ""
+//   }${available ? "&available=" + available : ""}${sort ? "&sort=" + sort : ""}`;
+// }
+
+// function buildNextLink(query, nextPage) {
+//   const { limit, category, available, sort } = query;
+
+//   return `${env.HOST_URL}/api/products?limit=${limit || 10}&page=${nextPage}${
+//     category ? "&category=" + category : ""
+//   }${available ? "&available=" + available : ""}${sort ? "&sort=" + sort : ""}`;
+// }
 
 export async function getProductByIdHandler(req, res) {
   const { pid } = req.params;
@@ -19,7 +61,7 @@ export async function getProductByIdHandler(req, res) {
       const manager = new ProductManager();
       const foundProduct = await manager.getProductById(pid);
 
-      res.send({ status: "SUCCESS", data: foundProduct });
+      res.send({ status: "SUCCESS", payload: foundProduct });
     }
   } catch (error) {
     if (error.code === "NOT_FOUND") {
@@ -39,7 +81,7 @@ export async function postProductHandler(req, res) {
 
     await emitProductsUpdate(manager);
 
-    res.status(201).send({ status: "SUCCESS", data: result });
+    res.status(201).send({ status: "SUCCESS", payload: result });
   } catch (error) {
     if (error.code === "DUPLICATED_KEY") {
       res.status(409).send({ status: "ERROR", error: error.message });
@@ -58,7 +100,7 @@ export async function putProductHandler(req, res) {
 
     await emitProductsUpdate(manager);
 
-    res.status(200).send({ status: "SUCCESS", data: result });
+    res.status(200).send({ status: "SUCCESS", payload: result });
   } catch (error) {
     if (error.code === "NOT_FOUND") {
       res.status(404).send({ status: "ERROR", error: error.message });
@@ -81,7 +123,7 @@ export async function deleteProductHandler(req, res) {
 
     await emitProductsUpdate(manager);
 
-    res.status(200).send({ status: "SUCCESS", data: result });
+    res.status(200).send({ status: "SUCCESS", payload: result });
   } catch (error) {
     if (error.code === "NOT_FOUND") {
       res.status(404).send({ status: "ERROR", error: error.message });

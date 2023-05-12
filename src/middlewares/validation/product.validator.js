@@ -14,6 +14,34 @@ export function validateProductId(req, res, next) {
   }
 }
 
+export function validateGetProductsQuery(req, res, next) {
+  const schema = {
+    type: "object",
+    properties: {
+      page: { type: "string", pattern: "^[0-9]*$" },
+      limit: { type: "string", pattern: "^[0-9]*$" },
+      query: { type: "string" },
+      sort: { enum: ["desc", "asc"] },
+    },
+    required: [],
+    additionalProperties: false,
+  };
+  const ajv = new Ajv();
+  const validate = ajv.compile(schema);
+
+  if (validate(req.query)) {
+    next();
+
+    return;
+  }
+
+  res.status(400).send({
+    status: "ERROR",
+    error: `Invalid query params.`,
+    errors: validate.errors,
+  });
+}
+
 export function validatePostProduct(req, res, next) {
   const schema = {
     type: "object",

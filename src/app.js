@@ -2,7 +2,7 @@ import express from "express";
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
 import { __dirname } from "./utils.js";
-import { MONGO_URL } from "./config/env.js";
+import { env } from "./config/env.js";
 import cartsRouter from "./routes/carts.routes.js";
 import productsRouter from "./routes/products.routes.js";
 import viewsRouter from "./routes/views.routes.js";
@@ -29,15 +29,15 @@ async function main() {
   app.use("/api/products", productsRouter);
   app.use("/api/carts", cartsRouter);
 
-  const server = app.listen(8080, () => {
-    console.log("Listening on port 8080");
+  const server = app.listen(env.PORT, () => {
+    console.log("Listening on port " + env.PORT);
   });
 
   SocketServer.createSocketServer(server);
 
-  console.log("mongoURL", MONGO_URL);
+  console.log("mongoURL", env.MONGO_URL);
   try {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(env.MONGO_URL);
   } catch (error) {
     console.error(error);
   }

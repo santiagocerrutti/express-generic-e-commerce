@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 /** @see https://www.npmjs.com/package/uuid-mongodb */
 import MUUID from "uuid-mongodb";
 MUUID.mode("relaxed");
@@ -21,5 +22,6 @@ export const productSchema = new Schema({
   category: { type: String, required: true },
   thumbnails: { type: [String] },
 });
+productSchema.plugin(mongoosePaginate);
 
 export const ProductModel = model(productCollection, productSchema);

@@ -1,11 +1,61 @@
 import MUUID from "uuid-mongodb";
 import { ProductModel } from "./models/product.model.js";
+import { deleteUndefinedProperties } from "../../utils.js";
 
 export class ProductManager {
   constructor() {}
 
   async getProducts(limit = null) {
     return ProductModel.find().limit(limit);
+  }
+
+  async getProductsPaginate(
+    limit = 10,
+    page = 1,
+    query = {},
+    sort = undefined
+  ) {
+    const findQuery = this._buildFindQuery(query);
+
+    const paginateOptions = {
+      limit,
+      page,
+    };
+
+    if (sort) {
+      paginateOptions.sort = {
+        price: sort,
+      };
+    }
+
+    return ProductModel.paginate(findQuery, paginateOptions);
+  }
+
+  _buildFindQuery(query) {
+    const {
+      title,
+      description,
+      code,
+      price,
+      status,
+      stock,
+      category,
+      available,
+    } = query;
+
+    const findQuery = deleteUndefinedProperties({
+      title,
+      description,
+      code,
+      price,
+      status,
+      stock,
+      category,
+    });
+
+    if (available === "true") {
+      findQuery.stock = { $gt: 0 };
+    }
   }
 
   async getProductsJson(limit = null) {

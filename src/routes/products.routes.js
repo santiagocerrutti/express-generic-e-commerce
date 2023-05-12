@@ -8,6 +8,7 @@ import {
   putProductHandler,
 } from "../handlers/products.handler.js";
 import {
+  validateGetProductsQuery,
   validatePostProduct,
   validateProductId,
   validatePutProduct,
@@ -15,7 +16,7 @@ import {
 
 const router = Router();
 
-router.get("/", getProductsHandler);
+router.get("/", validateGetProductsQuery, getProductsHandler);
 router.get("/:pid", validateProductId, getProductByIdHandler);
 router.post("/", validatePostProduct, postProductHandler);
 router.put("/:pid", validateProductId, validatePutProduct, putProductHandler);

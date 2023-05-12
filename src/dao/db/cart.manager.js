@@ -12,11 +12,13 @@ export class CartManager {
   }
 
   async getCarts(limit = 0) {
-    return CartModel.find().limit(limit);
+    return CartModel.find().populate("products.product").limit(limit);
   }
 
   async getCartById(cartId) {
-    const cart = await CartModel.findById(MUUID.from(cartId));
+    const cart = await CartModel.findById(MUUID.from(cartId)).populate(
+      "products.product"
+    );
 
     if (cart) {
       return cart;
@@ -29,40 +31,149 @@ export class CartManager {
   }
 
   async addProductToCart(cartId, productId, quantity) {
-    const [cartUUID, productUUID] = [MUUID.from(cartId), MUUID.from(productId)];
-    const cart = await CartModel.findById(cartUUID);
+    const { cartDocument, productUUID } = await this._getCartAndProductDocument(
+      cartId,
+      productId
+    );
 
-    if (!cart) {
-      const error = new Error(`Cart ${cartId} not found.`);
-      error.code = "NOT_FOUND";
-
-      throw error;
-    }
-
-    const product = await ProductModel.findById(productUUID);
-
-    if (!product) {
-      const error = new Error(`Product ${productId} not found.`);
-      error.code = "NOT_FOUND";
-
-      throw error;
-    }
-
-    const cartProduct = cart.products.find(
+    const cartProduct = cartDocument.products.find(
       (p) => p.product.toString() === productId.toString()
     );
 
     if (cartProduct) {
       cartProduct.quantity += quantity;
     } else {
-      cart.products.push({
+      cartDocument.products.push({
         product: productUUID,
         quantity,
       });
     }
 
-    await cart.save();
+    await cartDocument.save();
 
-    return cart;
+    return cartDocument;
+  }
+
+  async setProductsToCart(cartId, products) {
+    let result = null;
+    try {
+      const formattedProducts = products.map((p) => {
+        return { ...p, product: MUUID.from(p.product) };
+      });
+      result = await CartModel.findOneAndUpdate(
+        {
+          _id: MUUID.from(cartId),
+        },
+        { products: formattedProducts }
+      );
+    } catch (error) {
+      const e = new Error(`error`);
+      e.code = "UNCAUGHT_EXCEPTION";
+
+      throw e;
+    }
+
+    if (result) {
+      const updatedCart = await CartModel.findById(MUUID.from(cartId));
+
+      return updatedCart;
+    }
+
+    const e = new Error(`Cart ${cartId} not found.`);
+    e.code = "NOT_FOUND";
+
+    throw e;
+  }
+
+  async deleteProductsOfCart(cartId) {
+    return this.setProductsToCart(cartId, []);
+  }
+
+  async updateProductOfCart(cartId, productId, quantity) {
+    const { cartDocument } = await this._getCartAndProductDocument(
+      cartId,
+      productId
+    );
+
+    const cartProduct = cartDocument.products.find(
+      (p) => p.product.toString() === productId.toString()
+    );
+
+    if (cartProduct) {
+      if (quantity > 0) {
+        cartProduct.quantity = quantity;
+      } else {
+        cartDocument.products = cartDocument.products.filter(
+          (p) => p.product.toString() !== productId.toString()
+        );
+      }
+    } else {
+      const error = new Error(
+        `Product ${productId} not included in cart ${cartId}.`
+      );
+      error.code = "NOT_FOUND";
+
+      throw error;
+    }
+
+    await cartDocument.save();
+
+    return cartDocument;
+  }
+
+  async deleteProductOfCart(cartId, productId) {
+    const { cartDocument } = await this._getCartAndProductDocument(
+      cartId,
+      productId
+    );
+
+    const cartProduct = cartDocument.products.find(
+      (p) => p.product.toString() === productId.toString()
+    );
+
+    if (cartProduct) {
+      cartDocument.products = cartDocument.products.filter(
+        (p) => p.product.toString() !== productId.toString()
+      );
+    } else {
+      const error = new Error(
+        `Product ${productId} not included in cart ${cartId}.`
+      );
+      error.code = "NOT_FOUND";
+
+      throw error;
+    }
+
+    await cartDocument.save();
+
+    return cartDocument;
+  }
+
+  async _getCartAndProductDocument(cartId, productId) {
+    const [cartUUID, productUUID] = [MUUID.from(cartId), MUUID.from(productId)];
+    const cartDocument = await CartModel.findById(cartUUID);
+
+    if (!cartDocument) {
+      const error = new Error(`Cart ${cartId} not found.`);
+      error.code = "NOT_FOUND";
+
+      throw error;
+    }
+
+    const productDocument = await ProductModel.findById(productUUID);
+
+    if (!productDocument) {
+      const error = new Error(`Product ${productId} not found.`);
+      error.code = "NOT_FOUND";
+
+      throw error;
+    }
+
+    return {
+      cartUUID,
+      productUUID,
+      cartDocument,
+      productDocument,
+    };
   }
 }
