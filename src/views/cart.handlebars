@@ -1,0 +1,28 @@
+<div class="container">
+  {{#if cart}}
+  <div class="list-group">
+
+    {{#each cart.products}}
+    <div class="card m-1">
+      <div class="row">
+        <div class="col-sm">
+          <h5>{{this.product.title}}</h5>
+        </div>
+        <div class="col-sm text-center">
+          <div>{{this.quantity}}</div>
+        </div>
+        <div class="col-sm text-center">
+          <h5><strong>${{this.subtotal}}</strong></h5>
+        </div>
+      </div>
+    </div>
+    {{/each }}
+
+  </div>
+
+  <br />
+  <div class="d-flex flex-row-reverse">
+    <div class="h5">Total: <strong>${{cart.total}}</strong></div>
+  </div>
+  {{/if}}
+</div>

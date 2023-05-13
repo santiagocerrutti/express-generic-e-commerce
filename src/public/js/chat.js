@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const socket = io();
 
 let user = null;

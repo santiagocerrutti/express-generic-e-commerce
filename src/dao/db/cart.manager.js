@@ -30,6 +30,21 @@ export class CartManager {
     throw error;
   }
 
+  async getCartByIdJson(cartId) {
+    const cart = await CartModel.findById(MUUID.from(cartId))
+      .populate("products.product")
+      .lean();
+
+    if (cart) {
+      return cart;
+    }
+
+    const error = new Error(`Cart ${cartId} not found.`);
+    error.code = "NOT_FOUND";
+
+    throw error;
+  }
+
   async addProductToCart(cartId, productId, quantity) {
     const { cartDocument, productUUID } = await this._getCartAndProductDocument(
       cartId,

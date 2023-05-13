@@ -1,0 +1,53 @@
+<div>
+  <div id="products-container" class="container">
+
+    <div class="row" aria-label="Product List">
+      {{#if products}}
+      {{#each products}}
+      <div class="col">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src={{this.thumbnails}} alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{this.title}}</h5>
+            <p class="card-text">{{this.description}}</p>
+            <div class="container">
+              <div class="row align-items-center">
+                <div class="col-sm align-self-center">
+                  <h5><strong>$ {{this.price}}</strong></h5>
+                </div>
+                <div class="col-sm">
+                  <button class="btn btn-primary add-to-cart-button" data-product-id={{this._id}}>Add to
+                    cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/each }}
+      {{/if}}
+    </div>
+
+    <br />
+
+    <div class=" row justify-content-md-center">
+      <div class="btn-group col-3" role="group" aria-label="Pagination">
+        {{#if hasPrevPage}}
+        <a href={{prevLink}} type="button" class="btn btn-secondary">Prev</a>
+        {{else}}
+        <a href="#" type="button" class="btn btn-secondary disabled">Prev</a>
+        {{/if}}
+        <a type="button" class="btn btn-outline-secondary disabled">{{page}}</a>
+        {{#if hasNextPage}}
+        <a href={{nextLink}} class="btn btn-secondary">Next</a>
+        {{else}}
+        <a href="#" class="btn btn-secondary disabled">Next</a>
+        {{/if}}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script src="/static/js/products.js"></script>

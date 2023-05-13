@@ -37,22 +37,6 @@ function buildLink(reqQuery, page) {
   }${sort ? "&sort=" + sort : ""}`;
 }
 
-// function buildPrevLink(query, prevPage) {
-//   const { limit, category, available, sort } = query;
-
-//   return `${env.HOST_URL}/api/products?limit=${limit || 10}&page=${prevPage}${
-//     category ? "&category=" + category : ""
-//   }${available ? "&available=" + available : ""}${sort ? "&sort=" + sort : ""}`;
-// }
-
-// function buildNextLink(query, nextPage) {
-//   const { limit, category, available, sort } = query;
-
-//   return `${env.HOST_URL}/api/products?limit=${limit || 10}&page=${nextPage}${
-//     category ? "&category=" + category : ""
-//   }${available ? "&available=" + available : ""}${sort ? "&sort=" + sort : ""}`;
-// }
-
 export async function getProductByIdHandler(req, res) {
   const { pid } = req.params;
 

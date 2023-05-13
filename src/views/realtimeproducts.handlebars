@@ -1,18 +1,19 @@
 <div>
   <div id="products-container">
-  {{#if products}}
+    {{#if products}}
     {{#each products}}
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src={{this.thumbnails}} alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">{{this.title}}</h5>
-            <p class="card-text">{{this.description}}</p>
-            <a href="#" class="btn btn-outline-primary">$ {{this.price}}</a>
-          </div>
-        </div>
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src={{this.thumbnails}} alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{this.title}}</h5>
+        <p class="card-text">{{this.description}}</p>
+        <a href="#" class="btn btn-outline-primary">$ {{this.price}}</a>
+      </div>
+    </div>
     {{/each }}
-  {{/if}}
+    {{/if}}
   </div>
 </div>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/realtimeproducts.js"></script>

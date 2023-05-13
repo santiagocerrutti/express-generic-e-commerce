@@ -56,10 +56,23 @@ export class ProductManager {
     if (available === "true") {
       findQuery.stock = { $gt: 0 };
     }
+
+    return findQuery;
   }
 
   async getProductsJson(limit = null) {
     return ProductModel.find().limit(limit).lean();
+  }
+
+  async getProductsPaginateJson(limit = 10, page = 1) {
+    return ProductModel.paginate(
+      {},
+      {
+        limit,
+        page,
+        lean: true,
+      }
+    );
   }
 
   async getProductById(productId) {
