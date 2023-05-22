@@ -1,28 +1,49 @@
 <div class="container">
-  {{#if cart}}
-  <div class="list-group">
+  <div id="products-container" class="container">
+    {{#if user}}
+    <div class="d-flex flex-row-reverse">
+      <form action="/auth/logout" method="POST">
+        <div class="row">
 
-    {{#each cart.products}}
-    <div class="card m-1">
-      <div class="row">
-        <div class="col-sm">
-          <h5>{{this.product.title}}</h5>
+          <div class="col">
+            <h5>
+              User: {{user.email}}, Role: {{user.role}}
+            </h5>
+          </div>
+          <div class="col">
+            <button type="submit" id="logout_button" class="btn btn-outline-primary">Log out</button>
+          </div>
+
         </div>
-        <div class="col-sm text-center">
-          <div>{{this.quantity}}</div>
-        </div>
-        <div class="col-sm text-center">
-          <h5><strong>${{this.subtotal}}</strong></h5>
+      </form>
+    </div>
+    {{/if}}
+
+
+    {{#if cart}}
+    <div class="list-group">
+
+      {{#each cart.products}}
+      <div class="card m-1">
+        <div class="row">
+          <div class="col-sm">
+            <h5>{{this.product.title}}</h5>
+          </div>
+          <div class="col-sm text-center">
+            <div>{{this.quantity}}</div>
+          </div>
+          <div class="col-sm text-center">
+            <h5><strong>${{this.subtotal}}</strong></h5>
+          </div>
         </div>
       </div>
+      {{/each }}
+
     </div>
-    {{/each }}
 
+    <br />
+    <div class="d-flex flex-row-reverse">
+      <div class="h5">Total: <strong>${{cart.total}}</strong></div>
+    </div>
+    {{/if}}
   </div>
-
-  <br />
-  <div class="d-flex flex-row-reverse">
-    <div class="h5">Total: <strong>${{cart.total}}</strong></div>
-  </div>
-  {{/if}}
-</div>

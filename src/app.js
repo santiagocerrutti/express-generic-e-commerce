@@ -69,31 +69,3 @@ async function main() {
 }
 
 main();
-
-/*
-TODO
-  - Crear el Schema y el Model de mongo para usuarios según lo solicita la filmina. <LISTO>
-  - Crear los routes y que llamen a los respectivos Handlers. <LISTO>
-  - Crear los validators para el /register <LISTO>
-  - Desarrollar la funcionalidad en el handler, lógica de negocio y uso del manager
-    - /register <LISTO>
-      - el email debe ser único; se crea un usuario en la BD con los datos ingresados.
-    - /login <LISTO>
-      - el usuario y la contraseña deben coincidir con la base de datos, 
-      - Se debe crear la sesión.
-        req.session.user = {
-          ...datos del usuario
-        }
-    - /logout <LISTO>
-      - Destruir la session
-      
-    - Desarrollar el formulario de registro, el formulario de login.
-
-    - Desarrollar un middleware para verificar que el usuario esté autenticado antes de acceder a los endpoints (ver si esto lo pide en las consignas; si no lo pide, no hacerlo todavía) <LISTO>
-      - Debe verificar que el usuario exista en req.session, 
-
-    - Si el login falla, no se debe poder ingresar al resto de la aplicación
-    - Si no hay usuario logueado, debe redirigir a la vista de login
-    - Al hacer logout, se debe redirigir a la vista de login
-  - 
- */

@@ -1,5 +1,24 @@
 <div>
+
   <div id="products-container" class="container">
+    {{#if user}}
+    <div class="d-flex flex-row-reverse">
+      <form action="/auth/logout" method="POST">
+        <div class="row">
+
+          <div class="col">
+            <h5>
+              User: {{user.email}}, Role: {{user.role}}
+            </h5>
+          </div>
+          <div class="col">
+            <button type="submit" id="logout_button" class="btn btn-outline-primary">Log out</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    {{/if}}
 
     <div class="row" aria-label="Product List">
       {{#if products}}

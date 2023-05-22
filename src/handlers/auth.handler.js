@@ -29,8 +29,10 @@ export async function postLogin(req, res) {
       // La sesión se mantiene hasta que sea destruida (o hasta que expire).
       // ver: https://www.npmjs.com/package/express-session
       delete user["password"];
+      const role = user.email === "santiago@cerrutti.com" ? "admin" : "user";
       req.session.user = {
         ...user,
+        role,
       };
       res.status(200).send({ status: "SUCCESS", message: "Authenticated." });
 
@@ -45,7 +47,6 @@ export async function postLogin(req, res) {
 }
 
 export async function postLogout(req, res) {
-  console.log(req.session.cookie);
   try {
     req.session.destroy();
     res.status(200).send({ status: "SUCCESS", message: "Logout successfull." });

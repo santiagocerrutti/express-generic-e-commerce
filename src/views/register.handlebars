@@ -1,0 +1,76 @@
+<div class="container">
+  {{#if user}}
+  <div class="d-flex flex-row-reverse">
+    <form action="/auth/logout" method="POST">
+      <div class="row">
+
+        <div class="col">
+          <h5>
+            User: {{user.email}}, Role: {{user.role}}
+          </h5>
+        </div>
+        <div class="col">
+          <button type="submit" id="logout_button" class="btn btn-outline-primary">Log out</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+  {{/if}}
+
+  <div>
+    <h1>
+      Register
+    </h1>
+  </div>
+  <hr />
+  <form action="/auth/register" method="POST">
+    <div>
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="first_name" class="col-form-label">First name</label>
+        </div>
+        <div class="col-auto">
+          <input type="text" name="first_name" id="first_name_input" class="form-control">
+        </div>
+      </div>
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="last_name" class="col-form-label">Last name</label>
+        </div>
+        <div class="col-auto">
+          <input type="text" name="last_name" id="last_name_input" class="form-control">
+        </div>
+      </div>
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="email" class="col-form-label">Email</label>
+        </div>
+        <div class="col-auto">
+          <input type="email" name="email" id="email_input" class="form-control">
+        </div>
+      </div>
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="date_of_birth" class="col-form-label">Date of Birth</label>
+        </div>
+        <div class="col-auto">
+          <input type="date" name="date_of_birth" id="date_of_birth_input" class="form-control">
+        </div>
+      </div>
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="password" class="col-form-label">Password</label>
+        </div>
+        <div class="col-auto">
+          <input type="password" name="password" id="password_input" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div>
+      <button type="submit" id="register_button" class="btn btn-primary">Register</button>
+      <a href="/login" type="button" id="login_button" class="btn btn-outline-primary">Log in</a>
+    </div>
+  </form>
+  <hr />
+</div>
