@@ -2,29 +2,29 @@ import { Server } from "socket.io";
 import { registerChatHandlers } from "./chat-handlers.js";
 
 export class SocketServer {
-  static instance = null;
+  static _instance = null;
 
   static getInstance() {
-    if (!SocketServer.instance) {
+    if (!SocketServer._instance) {
       throw new Error("Socket server instance is null");
     }
 
-    return SocketServer.instance;
+    return SocketServer._instance;
   }
 
   static createSocketServer(expressApplication) {
-    SocketServer.instance = new Server(expressApplication);
+    SocketServer._instance = new Server(expressApplication);
 
-    SocketServer.instance.on("connection", async (socket) => {
+    SocketServer._instance.on("connection", async (socket) => {
       console.log(`Socket Connected: ${socket.id}`);
 
       socket.on("disconnect", (reason) => {
         console.log(`Socket Disonnected: ${socket.id}; ${reason}`);
       });
 
-      registerChatHandlers(SocketServer.instance, socket);
+      registerChatHandlers(SocketServer._instance, socket);
     });
 
-    return SocketServer.instance;
+    return SocketServer._instance;
   }
 }

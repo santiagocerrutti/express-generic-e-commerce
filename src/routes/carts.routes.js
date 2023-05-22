@@ -15,29 +15,39 @@ import {
   validateProductsOfCart,
 } from "../middlewares/validation/cart.validator.js";
 import { validateProductId } from "../middlewares/validation/product.validator.js";
+import { isAuthenticated } from "../middlewares/authentication/isAutenticated.js";
 
 const router = Router();
 
-router.get("/", getCartsHandler);
-router.get("/:cid", validateCartId, getCartByIdHandler);
-router.post("/", postCart);
+router.get("/", isAuthenticated, getCartsHandler);
+router.get("/:cid", isAuthenticated, validateCartId, getCartByIdHandler);
+router.post("/", isAuthenticated, postCart);
 router.post(
   "/:cid/products/:pid",
+  isAuthenticated,
   validateCartId,
   validateProductId,
   postProductToCart
 );
-router.put("/:cid", validateCartId, validateProductsOfCart, putCartProducts);
+router.put(
+  "/:cid",
+  isAuthenticated,
+  validateCartId,
+  validateProductsOfCart,
+  putCartProducts
+);
 router.put(
   "/:cid/products/:pid",
+  isAuthenticated,
   validateCartId,
   validateProductId,
   validateProductQuantity,
   putCartProduct
 );
-router.delete("/:cid", validateCartId, deleteAllProducts);
+router.delete("/:cid", isAuthenticated, validateCartId, deleteAllProducts);
 router.delete(
   "/:cid/products/:pid",
+  isAuthenticated,
   validateCartId,
   validateProductId,
   deleteProductOfCart
