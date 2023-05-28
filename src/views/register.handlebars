@@ -1,7 +1,7 @@
 <div class="container">
   {{#if user}}
   <div class="d-flex flex-row-reverse">
-    <form action="/auth/logout" method="POST">
+    <form action="/sessions/logout" method="POST">
       <div class="row">
 
         <div class="col">
@@ -24,7 +24,7 @@
     </h1>
   </div>
   <hr />
-  <form action="/auth/register" method="POST">
+  <form action="/sessions/register" method="POST">
     <div>
       <div class="row g-3 align-items-center">
         <div class="col-auto">
@@ -73,4 +73,9 @@
     </div>
   </form>
   <hr />
+  <input type="text" value="{{message.text}}" id="message.text" hidden></input>
+  <input type="text" value="{{message.type}}" id="message.type" hidden></input>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/static/js/register.js"></script>

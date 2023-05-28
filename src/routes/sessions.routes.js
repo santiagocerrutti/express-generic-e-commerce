@@ -7,7 +7,7 @@ import {
   postLogin,
   postLogout,
   postRegister,
-} from "../handlers/auth.handler.js";
+} from "../handlers/sessions.handler.js";
 
 const router = Router();
 

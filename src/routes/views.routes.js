@@ -5,9 +5,11 @@ import {
   getLoginHandler,
   getProductsHandler,
   getProductsPaginateHandler,
-  getProfileHandler,
   getRealTimeProductsHandler,
   getRegisterHandler,
+  postLogin,
+  postLogout,
+  postRegister,
 } from "../handlers/views.handler.js";
 import { isAuthenticatedView } from "../middlewares/authentication/isAutenticated.js";
 import { validateCartId } from "../middlewares/validation/cart.validator.js";
@@ -31,6 +33,8 @@ router.get(
 );
 router.get("/login", getLoginHandler);
 router.get("/register", getRegisterHandler);
-router.get("/profile", getProfileHandler);
+router.post("/sessions/login", postLogin);
+router.post("/sessions/register", postRegister);
+router.post("/sessions/logout", postLogout);
 
 export default router;

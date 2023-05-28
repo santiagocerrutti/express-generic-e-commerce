@@ -1,6 +1,7 @@
 import { env } from "../config/env.js";
 import { CartManager } from "../dao/db/cart.manager.js";
 import { ProductManager } from "../dao/db/product.manager.js";
+import { UserManager } from "../dao/db/user.manager.js";
 
 export async function getProductsHandler(req, res) {
   const manager = new ProductManager();
@@ -84,6 +85,98 @@ export async function getLoginHandler(req, res) {
   res.render("login", { user: req.session.user });
 }
 
-export async function getProfileHandler(req, res) {
-  res.render("profile", { user: req.session.user });
+export async function postRegister(req, res) {
+  try {
+    const manager = new UserManager();
+    await manager.createUser(req.body);
+
+    res.render("login", {
+      user: null,
+      message: {
+        type: "success",
+        text: "User created successfully",
+      },
+    });
+  } catch (error) {
+    if (error.code === "DUPLICATED_KEY") {
+      res.render("register", {
+        user: null,
+        message: {
+          type: "error",
+          text: "Can't create user: duplicated email.",
+        },
+      });
+
+      return;
+    }
+
+    res.render("register", {
+      user: null,
+      message: {
+        type: "error",
+        text: "Internal Server Error. Try again later.",
+      },
+    });
+  }
+}
+
+export async function postLogin(req, res) {
+  try {
+    const { email, password } = req.body;
+    const manager = new UserManager();
+    const user = await manager.getUserByEmailAndPassword(email, password);
+
+    if (user) {
+      delete user["password"];
+      const role = user.email === "santiago@cerrutti.com" ? "admin" : "user";
+      req.session.user = {
+        ...user,
+        role,
+      };
+      res.redirect("/products");
+
+      return;
+    }
+
+    res.render("login", {
+      user: null,
+      message: {
+        type: "error",
+        text: "Incorrect user and/or password",
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.render("login", {
+      user: null,
+      message: {
+        type: "error",
+        text: "Internal Server Error. Try again later.",
+      },
+    });
+  }
+}
+
+export async function postLogout(req, res) {
+  try {
+    req.session.destroy();
+    res.render("login", {
+      user: null,
+      message: {
+        type: "success",
+        text: "Bye bye :)",
+      },
+    });
+
+    return;
+  } catch (error) {
+    console.log(error);
+    res.render("login", {
+      user: null,
+      message: {
+        type: "error",
+        text: "Internal Server Error. Try again later.",
+      },
+    });
+  }
 }

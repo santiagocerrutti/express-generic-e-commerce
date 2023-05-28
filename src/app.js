@@ -6,12 +6,7 @@ import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 
 import { env } from "./config/env.js";
-import {
-  cartsRouter,
-  productsRouter,
-  authRouter,
-  viewsRouter,
-} from "./routes/index.js";
+import router from "./routes/index.js";
 import { SocketServer } from "./sockets/socket-server.js";
 import { __dirname } from "./utils.js";
 
@@ -48,11 +43,7 @@ async function main() {
   );
 
   /** Routes */
-  app.use("/", viewsRouter);
-  app.use("/static", express.static(`${__dirname}/public`));
-  app.use("/api/products", productsRouter);
-  app.use("/api/carts", cartsRouter);
-  app.use("/auth", authRouter);
+  app.use(router);
 
   const server = app.listen(env.PORT, () => {
     console.log("Listening on port " + env.PORT);
