@@ -75,6 +75,17 @@ export class CartManager {
       const formattedProducts = products.map((p) => {
         return { ...p, product: MUUID.from(p.product) };
       });
+      for (const p of formattedProducts) {
+        const foundProduct = await ProductModel.findById(p.product);
+        console.log(foundProduct);
+
+        if (!foundProduct) {
+          const e = new Error(`Product ${p.product} not found.`);
+          e.code = "NOT_FOUND";
+
+          throw e;
+        }
+      }
       result = await CartModel.findOneAndUpdate(
         {
           _id: MUUID.from(cartId),
@@ -82,6 +93,10 @@ export class CartManager {
         { products: formattedProducts }
       );
     } catch (error) {
+      if (error.code) {
+        throw error;
+      }
+
       const e = new Error(`error`);
       e.code = "UNCAUGHT_EXCEPTION";
 

@@ -17,7 +17,6 @@ export class UserManager {
 
   async getUserByEmailAndPassword(email, password) {
     const foundUser = await UserModel.findOne({ email, password }).lean();
-    console.log(foundUser);
 
     return foundUser;
   }

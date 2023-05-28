@@ -19,6 +19,7 @@ export const cartSchema = new Schema({
         type: "object",
         value: { type: "Buffer" },
         ref: productCollection,
+        required: true,
       },
     },
   ],
