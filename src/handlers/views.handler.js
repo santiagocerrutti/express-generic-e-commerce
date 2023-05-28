@@ -1,7 +1,8 @@
 import { env } from "../config/env.js";
 import { CartManager } from "../dao/db/cart.manager.js";
 import { ProductManager } from "../dao/db/product.manager.js";
-import { UserManager } from "../dao/db/user.manager.js";
+// import { UserManager } from "../dao/db/user.manager.js";
+// import { isValidPassword } from "../utils.js";
 
 export async function getProductsHandler(req, res) {
   const manager = new ProductManager();
@@ -85,79 +86,134 @@ export async function getLoginHandler(req, res) {
   res.render("login", { user: req.session.user });
 }
 
-export async function postRegister(req, res) {
-  try {
-    const manager = new UserManager();
-    await manager.createUser(req.body);
+// export async function postRegisterHandler(req, res) {
+//   try {
+//     const manager = new UserManager();
+//     await manager.createUser(req.body);
 
-    res.render("login", {
-      user: null,
-      message: {
-        type: "success",
-        text: "User created successfully",
-      },
-    });
-  } catch (error) {
-    if (error.code === "DUPLICATED_KEY") {
-      res.render("register", {
-        user: null,
-        message: {
-          type: "error",
-          text: "Can't create user: duplicated email.",
-        },
-      });
+//     res.render("login", {
+//       user: null,
+//       message: {
+//         type: "success",
+//         text: "User created successfully",
+//       },
+//     });
+//   } catch (error) {
+//     if (error.code === "DUPLICATED_KEY") {
+//       res.render("register", {
+//         user: null,
+//         message: {
+//           type: "error",
+//           text: "Can't create user: duplicated email.",
+//         },
+//       });
 
-      return;
-    }
+//       return;
+//     }
 
-    res.render("register", {
-      user: null,
-      message: {
-        type: "error",
-        text: "Internal Server Error. Try again later.",
-      },
-    });
-  }
+//     res.render("register", {
+//       user: null,
+//       message: {
+//         type: "error",
+//         text: "Internal Server Error. Try again later.",
+//       },
+//     });
+//   }
+// }
+
+export async function postRegisterHandler(req, res) {
+  res.render("login", {
+    user: null,
+    message: {
+      type: "success",
+      text: "User created successfully",
+    },
+  });
 }
 
-export async function postLogin(req, res) {
-  try {
-    const { email, password } = req.body;
-    const manager = new UserManager();
-    const user = await manager.getUserByEmailAndPassword(email, password);
-
-    if (user) {
-      delete user["password"];
-      const role = user.email === "santiago@cerrutti.com" ? "admin" : "user";
-      req.session.user = {
-        ...user,
-        role,
-      };
-      res.redirect("/products");
-
-      return;
-    }
-
-    res.render("login", {
-      user: null,
-      message: {
-        type: "error",
-        text: "Incorrect user and/or password",
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    res.render("login", {
-      user: null,
-      message: {
-        type: "error",
-        text: "Internal Server Error. Try again later.",
-      },
-    });
-  }
+export async function postRegisterFailHandler(req, res) {
+  res.render("register", {
+    user: null,
+    message: {
+      type: "error",
+      text: "Internal Server Error. Try again later.",
+    },
+  });
 }
 
-export async function postLogout(req, res) {
+// export async function postLoginHandler(req, res) {
+//   try {
+//     const { email, password } = req.body;
+//     const manager = new UserManager();
+//     const user = await manager.getUserByEmail(email);
+//     const validPassword = await isValidPassword(password, user.password);
+
+//     if (user && validPassword) {
+//       delete user["password"];
+//       const role = user.email === "santiago@cerrutti.com" ? "admin" : "user";
+//       req.session.user = {
+//         ...user,
+//         role,
+//       };
+//       res.redirect("/products");
+
+//       return;
+//     }
+
+//     res.render("login", {
+//       user: null,
+//       message: {
+//         type: "error",
+//         text: "Incorrect user and/or password",
+//       },
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.render("login", {
+//       user: null,
+//       message: {
+//         type: "error",
+//         text: "Internal Server Error. Try again later.",
+//       },
+//     });
+//   }
+// }
+
+export async function postLoginHandler(req, res) {
+  const { user } = req;
+
+  if (user) {
+    delete user["password"];
+    const role = user.email === "santiago@cerrutti.com" ? "admin" : "user";
+    req.session.user = {
+      ...user,
+      role,
+    };
+    res.redirect("/products");
+
+    return;
+  }
+
+  res.render("login", {
+    user: null,
+    message: {
+      type: "error",
+      text: "Incorrect user and/or password",
+    },
+  });
+}
+
+export async function postLoginFailHandler(req, res) {
+  res.render("login", {
+    user: null,
+    message: {
+      type: "error",
+      text: "Incorrect user and/or password",
+    },
+  });
+}
+
+export async function postLogoutHandler(req, res) {
   try {
     req.session.destroy();
     res.render("login", {

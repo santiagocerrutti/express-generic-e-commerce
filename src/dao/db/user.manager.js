@@ -1,10 +1,16 @@
+import MUUID from "uuid-mongodb";
+import { createHash } from "../../utils.js";
 import { UserModel } from "./models/user.model.js";
 
 export class UserManager {
   constructor() {}
   async createUser(user) {
     try {
-      const newUser = await UserModel.create({ ...user });
+      const password = await createHash(user.password);
+      const newUser = await UserModel.create({
+        ...user,
+        password,
+      });
 
       return newUser;
     } catch (error) {
@@ -15,8 +21,14 @@ export class UserManager {
     }
   }
 
-  async getUserByEmailAndPassword(email, password) {
-    const foundUser = await UserModel.findOne({ email, password }).lean();
+  async getUserByEmail(email) {
+    const foundUser = await UserModel.findOne({ email }).lean();
+
+    return foundUser;
+  }
+
+  async findById(userId) {
+    const foundUser = await UserModel.findById(MUUID.from(userId)).lean();
 
     return foundUser;
   }

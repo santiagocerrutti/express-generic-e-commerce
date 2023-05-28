@@ -9,4 +9,5 @@ export const env = {
   PORT: parseInt(process.env.PORT) || 8080,
   SECRET: process.env.SECRET || "sha-256_hash_here",
   HOST_URL: process.env.HOST_URL || "http://localhost:8080",
+  HASH_SALT_ROUNDS: parseInt(process.env.HASH_SALT_ROUNDS) || 10,
 };

@@ -4,11 +4,13 @@ import handlebars from "express-handlebars";
 import session from "express-session";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
+import passport from "passport";
 
 import { env } from "./config/env.js";
 import router from "./routes/index.js";
 import { SocketServer } from "./sockets/socket-server.js";
 import { __dirname } from "./utils.js";
+import { initializePassport } from "./config/passport.config.js";
 
 async function main() {
   const app = express();
@@ -41,6 +43,10 @@ async function main() {
       saveUninitialized: true,
     })
   );
+
+  initializePassport();
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   /** Routes */
   app.use(router);

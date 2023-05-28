@@ -1,18 +1,32 @@
 import { Router } from "express";
+import passport from "passport";
+
+import {
+  postLoginHandler,
+  postLogoutHandler,
+  postRegisterHandler,
+} from "../handlers/sessions.handler.js";
 import {
   validateLogin,
   validateRegister,
 } from "../middlewares/validation/user.validator.js";
-import {
-  postLogin,
-  postLogout,
-  postRegister,
-} from "../handlers/sessions.handler.js";
 
 const router = Router();
 
-router.post("/register", validateRegister, postRegister);
-router.post("/login", validateLogin, postLogin);
-router.post("/logout", postLogout);
+router.post(
+  "/register",
+  validateRegister,
+  passport.authenticate("register", {}),
+  postRegisterHandler
+);
+
+router.post(
+  "/login",
+  validateLogin,
+  passport.authenticate("login", {}),
+  postLoginHandler
+);
+
+router.post("/logout", postLogoutHandler);
 
 export default router;

@@ -77,7 +77,6 @@ export class CartManager {
       });
       for (const p of formattedProducts) {
         const foundProduct = await ProductModel.findById(p.product);
-        console.log(foundProduct);
 
         if (!foundProduct) {
           const e = new Error(`Product ${p.product} not found.`);

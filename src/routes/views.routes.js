@@ -1,4 +1,6 @@
 import { Router } from "express";
+import passport from "passport";
+
 import {
   getCartByIdHandler,
   getChatHandler,
@@ -7,9 +9,11 @@ import {
   getProductsPaginateHandler,
   getRealTimeProductsHandler,
   getRegisterHandler,
-  postLogin,
-  postLogout,
-  postRegister,
+  postLoginFailHandler,
+  postLoginHandler,
+  postLogoutHandler,
+  postRegisterFailHandler,
+  postRegisterHandler,
 } from "../handlers/views.handler.js";
 import { isAuthenticatedView } from "../middlewares/authentication/isAutenticated.js";
 import { validateCartId } from "../middlewares/validation/cart.validator.js";
@@ -31,10 +35,25 @@ router.get(
   validateCartId,
   getCartByIdHandler
 );
+
 router.get("/login", getLoginHandler);
+router.post(
+  "/sessions/login",
+  passport.authenticate("login", { failureRedirect: "/login-fail" }),
+  postLoginHandler
+);
+router.get("/login-fail", postLoginFailHandler);
+
 router.get("/register", getRegisterHandler);
-router.post("/sessions/login", postLogin);
-router.post("/sessions/register", postRegister);
-router.post("/sessions/logout", postLogout);
+router.post(
+  "/sessions/register",
+  passport.authenticate("register", {
+    failureRedirect: "/register-fail",
+  }),
+  postRegisterHandler
+);
+router.get("/register-fail", postRegisterFailHandler);
+
+router.post("/sessions/logout", postLogoutHandler);
 
 export default router;
