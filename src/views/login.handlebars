@@ -53,11 +53,13 @@
       <button type="submit" id="login_button" class="btn btn-primary">Log in</button>
       {{/if}}
       <a href="/register" type="button" id="register_button" class="btn btn-outline-primary">Register</a>
+      <a href="/sessions/login-github" type="button" id="login_github_button" class="btn btn-outline-primary">Log in
+        with Github</a>
     </div>
   </form>
   <hr />
-  <input type="text" value="{{message.text}}" id="message.text" hidden />
-  <input type="text" value="{{message.type}}" id="message.type" hidden />
+  <input type="text" value="{{message.text}}" id="message.text" hidden></input>
+  <input type="text" value="{{message.type}}" id="message.type" hidden></input>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -37,7 +37,7 @@ export async function postRegisterHandler(req, res) {
 //       // La sesión se mantiene hasta que sea destruida (o hasta que expire).
 //       // ver: https://www.npmjs.com/package/express-session
 //       delete user["password"];
-//       const role = user.email === "santiago@cerrutti.com" ? "admin" : "user";
+//       const role = user.email === "adminCoder@coder.com" ? "admin" : "user";
 //       req.session.user = {
 //         ...user,
 //         role,

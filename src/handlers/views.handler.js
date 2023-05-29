@@ -150,7 +150,7 @@ export async function postRegisterFailHandler(req, res) {
 
 //     if (user && validPassword) {
 //       delete user["password"];
-//       const role = user.email === "santiago@cerrutti.com" ? "admin" : "user";
+//       const role = user.email === "adminCoder@coder.com" ? "admin" : "user";
 //       req.session.user = {
 //         ...user,
 //         role,
@@ -184,7 +184,7 @@ export async function postLoginHandler(req, res) {
 
   if (user) {
     delete user["password"];
-    const role = user.email === "santiago@cerrutti.com" ? "admin" : "user";
+    const role = user.email === "adminCoder@coder.com" ? "admin" : "user";
     req.session.user = {
       ...user,
       role,
@@ -235,4 +235,28 @@ export async function postLogoutHandler(req, res) {
       },
     });
   }
+}
+
+export async function getGithubCallbackHandler(req, res) {
+  const { user } = req;
+
+  if (user) {
+    delete user["password"];
+    const role = user.email === "adminCoder@coder.com" ? "admin" : "user";
+    req.session.user = {
+      ...user,
+      role,
+    };
+    res.redirect("/products");
+
+    return;
+  }
+
+  res.render("login", {
+    user: null,
+    message: {
+      type: "error",
+      text: "Incorrect user and/or password",
+    },
+  });
 }

@@ -1,10 +1,10 @@
 import passport from "passport";
-import local from "passport-local";
+import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as GitHubStrategy } from "passport-github2";
 
 import { UserManager } from "../dao/db/user.manager.js";
 import { isValidPassword } from "../utils.js";
-
-const LocalStrategy = local.Strategy;
+import { env } from "./env.js";
 
 export function initializePassport() {
   passport.use(
@@ -52,6 +52,39 @@ export function initializePassport() {
           }
 
           return done(null, false);
+        } catch (error) {
+          return done(error.message);
+        }
+      }
+    )
+  );
+
+  passport.use(
+    "github",
+    new GitHubStrategy(
+      {
+        clientID: env.GITHUB_CLIENT_ID,
+        clientSecret: env.GITHUB_CLIENT_SECRET,
+        callbackURL: env.GITHUB_CALLBACK_URL,
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          const manager = new UserManager();
+          const user = await manager.getUserByEmail(profile._json.email);
+
+          if (!user) {
+            const result = await manager.createUser({
+              first_name: profile._json.name,
+              last_name: null,
+              email: profile._json.email,
+              date_of_birth: null,
+              password: null,
+            });
+
+            return done(null, result);
+          }
+
+          return done(null, user);
         } catch (error) {
           return done(error.message);
         }

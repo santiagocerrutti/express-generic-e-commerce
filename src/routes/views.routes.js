@@ -4,6 +4,7 @@ import passport from "passport";
 import {
   getCartByIdHandler,
   getChatHandler,
+  getGithubCallbackHandler,
   getLoginHandler,
   getProductsHandler,
   getProductsPaginateHandler,
@@ -53,6 +54,18 @@ router.post(
   postRegisterHandler
 );
 router.get("/register-fail", postRegisterFailHandler);
+
+router.get(
+  "/sessions/login-github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+  () => {}
+);
+
+router.get(
+  "/sessions/github-callback",
+  passport.authenticate("github", { failureRedirect: "/login-fail" }),
+  getGithubCallbackHandler
+);
 
 router.post("/sessions/logout", postLogoutHandler);
 

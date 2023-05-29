@@ -7,10 +7,10 @@ export const userSchema = new Schema(
   {
     _id: { type: "object", value: { type: "Buffer" }, default: MUUID.v4() },
     first_name: { type: String, required: true },
-    last_name: { type: String, required: true },
+    last_name: { type: String },
     email: { type: String, required: true, unique: true },
-    date_of_birth: { type: Date, required: true },
-    password: { type: String, required: true },
+    date_of_birth: { type: Date },
+    password: { type: String },
   },
   {
     timestamps: true,

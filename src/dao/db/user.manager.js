@@ -4,16 +4,21 @@ import { UserModel } from "./models/user.model.js";
 
 export class UserManager {
   constructor() {}
+
   async createUser(user) {
     try {
-      const password = await createHash(user.password);
-      const newUser = await UserModel.create({
+      const hashedPassword = user.password
+        ? await createHash(user.password)
+        : null;
+
+      await UserModel.create({
         ...user,
-        password,
+        password: hashedPassword,
       });
 
-      return newUser;
+      return this.getUserByEmail(user.email);
     } catch (error) {
+      console.log(error);
       const e = new Error(`Email ${user.email} duplicated`);
       e.code = "DUPLICATED_KEY";
 

@@ -10,4 +10,9 @@ export const env = {
   SECRET: process.env.SECRET || "sha-256_hash_here",
   HOST_URL: process.env.HOST_URL || "http://localhost:8080",
   HASH_SALT_ROUNDS: parseInt(process.env.HASH_SALT_ROUNDS) || 10,
+  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || "",
+  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || "",
+  GITHUB_CALLBACK_URL:
+    process.env.GITHUB_CALLBACK_URL ||
+    "http://localhost:8080/sessions/github-callback",
 };
