@@ -1,15 +1,14 @@
 import { env } from "../config/env.js";
 import { CartManager } from "../dao/db/cart.manager.js";
 import { ProductManager } from "../dao/db/product.manager.js";
-// import { UserManager } from "../dao/db/user.manager.js";
-// import { isValidPassword } from "../utils.js";
+import { cookieConfig, createTokenFromUser } from "./sessions.handler.js";
 
 export async function getProductsHandler(req, res) {
   const manager = new ProductManager();
   const products = await manager.getProductsJson();
 
   res.render("index", {
-    user: req.session.user,
+    user: req.user?.user || null,
     products,
   });
 }
@@ -26,7 +25,7 @@ export async function getProductsPaginateHandler(req, res) {
   const nextLink = hasNextPage ? buildLink(req.query, nextPage) : null;
 
   res.render("products", {
-    user: req.session.user,
+    user: req.user?.user || null,
     products: docs,
     totalPages,
     page,
@@ -50,7 +49,7 @@ export async function getRealTimeProductsHandler(req, res) {
   const products = await manager.getProductsJson();
 
   res.render("realtimeproducts", {
-    user: req.session.user,
+    user: req.user?.user || null,
     products,
   });
 }
@@ -69,7 +68,7 @@ export async function getCartByIdHandler(req, res) {
   cart.total = total;
 
   res.render("cart", {
-    user: req.session.user,
+    user: req.user?.user || null,
     cart,
   });
 }
@@ -79,47 +78,24 @@ export async function getChatHandler(req, res) {
 }
 
 export async function getRegisterHandler(req, res) {
-  res.render("register", { user: req.session.user });
+  if (req.user?.user) {
+    res.redirect("/products");
+
+    return;
+  }
+
+  res.render("register", { user: req.user?.user || null });
 }
 
 export async function getLoginHandler(req, res) {
-  res.render("login", { user: req.session.user });
+  if (req.user?.user) {
+    res.redirect("/products");
+
+    return;
+  }
+
+  res.render("login", { user: req.user?.user || null });
 }
-
-// export async function postRegisterHandler(req, res) {
-//   try {
-//     const manager = new UserManager();
-//     await manager.createUser(req.body);
-
-//     res.render("login", {
-//       user: null,
-//       message: {
-//         type: "success",
-//         text: "User created successfully",
-//       },
-//     });
-//   } catch (error) {
-//     if (error.code === "DUPLICATED_KEY") {
-//       res.render("register", {
-//         user: null,
-//         message: {
-//           type: "error",
-//           text: "Can't create user: duplicated email.",
-//         },
-//       });
-
-//       return;
-//     }
-
-//     res.render("register", {
-//       user: null,
-//       message: {
-//         type: "error",
-//         text: "Internal Server Error. Try again later.",
-//       },
-//     });
-//   }
-// }
 
 export async function postRegisterHandler(req, res) {
   res.render("login", {
@@ -141,55 +117,13 @@ export async function postRegisterFailHandler(req, res) {
   });
 }
 
-// export async function postLoginHandler(req, res) {
-//   try {
-//     const { email, password } = req.body;
-//     const manager = new UserManager();
-//     const user = await manager.getUserByEmail(email);
-//     const validPassword = await isValidPassword(password, user.password);
-
-//     if (user && validPassword) {
-//       delete user["password"];
-//       const role = user.email === "adminCoder@coder.com" ? "admin" : "user";
-//       req.session.user = {
-//         ...user,
-//         role,
-//       };
-//       res.redirect("/products");
-
-//       return;
-//     }
-
-//     res.render("login", {
-//       user: null,
-//       message: {
-//         type: "error",
-//         text: "Incorrect user and/or password",
-//       },
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.render("login", {
-//       user: null,
-//       message: {
-//         type: "error",
-//         text: "Internal Server Error. Try again later.",
-//       },
-//     });
-//   }
-// }
-
 export async function postLoginHandler(req, res) {
   const { user } = req;
 
   if (user) {
-    delete user["password"];
-    const role = user.email === "adminCoder@coder.com" ? "admin" : "user";
-    req.session.user = {
-      ...user,
-      role,
-    };
-    res.redirect("/products");
+    const token = createTokenFromUser(user);
+
+    res.cookie(env.JWT_COOKIE_NAME, token, cookieConfig).redirect("/products");
 
     return;
   }
@@ -215,7 +149,7 @@ export async function postLoginFailHandler(req, res) {
 
 export async function postLogoutHandler(req, res) {
   try {
-    req.session.destroy();
+    res.clearCookie(env.JWT_COOKIE_NAME);
     res.render("login", {
       user: null,
       message: {
@@ -241,13 +175,9 @@ export async function getGithubCallbackHandler(req, res) {
   const { user } = req;
 
   if (user) {
-    delete user["password"];
-    const role = user.email === "adminCoder@coder.com" ? "admin" : "user";
-    req.session.user = {
-      ...user,
-      role,
-    };
-    res.redirect("/products");
+    const token = createTokenFromUser(user);
+
+    res.cookie(env.JWT_COOKIE_NAME, token, cookieConfig).redirect("/products");
 
     return;
   }

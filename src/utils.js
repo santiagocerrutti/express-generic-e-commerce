@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -26,4 +27,8 @@ export async function createHash(password) {
 
 export async function isValidPassword(password, hash) {
   return bcrypt.compare(password, hash);
+}
+
+export function generateJwt(user) {
+  return jwt.sign({ user }, env.JWT_SECRET, { expiresIn: "1h" });
 }

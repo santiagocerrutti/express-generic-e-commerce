@@ -1,10 +1,19 @@
 import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GitHubStrategy } from "passport-github2";
+import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
+import { Strategy as LocalStrategy } from "passport-local";
 
 import { UserManager } from "../dao/db/user.manager.js";
 import { isValidPassword } from "../utils.js";
 import { env } from "./env.js";
+
+function extractJwtFromCookie(req) {
+  if (req?.cookies) {
+    return req.cookies[env.JWT_COOKIE_NAME];
+  }
+
+  return null;
+}
 
 export function initializePassport() {
   passport.use(
@@ -60,6 +69,27 @@ export function initializePassport() {
           return done(null, false);
         } catch (error) {
           return done(error.message);
+        }
+      }
+    )
+  );
+
+  passport.use(
+    "jwt",
+    new JwtStrategy(
+      {
+        jwtFromRequest: ExtractJwt.fromExtractors([extractJwtFromCookie]),
+        secretOrKey: env.JWT_SECRET,
+      },
+      async (payload, done) => {
+        try {
+          if (payload) {
+            return done(null, payload);
+          }
+
+          return done(null, false);
+        } catch (error) {
+          return done(error);
         }
       }
     )

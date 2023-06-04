@@ -1,16 +1,14 @@
 import cookieParser from "cookie-parser";
 import express from "express";
 import handlebars from "express-handlebars";
-import session from "express-session";
 import mongoose from "mongoose";
-import MongoStore from "connect-mongo";
 import passport from "passport";
 
 import { env } from "./config/env.js";
+import { initializePassport } from "./config/passport.config.js";
 import router from "./routes/index.js";
 import { SocketServer } from "./sockets/socket-server.js";
 import { __dirname } from "./utils.js";
-import { initializePassport } from "./config/passport.config.js";
 
 async function main() {
   const app = express();
@@ -27,26 +25,10 @@ async function main() {
   /** Middleware configuration */
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-  app.use(cookieParser(env.SECRET));
-  app.use(
-    session({
-      store: MongoStore.create({
-        mongoUrl: env.MONGO_URL,
-        mongoOptions: {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-        },
-        ttl: 1500,
-      }),
-      secret: env.SECRET,
-      resave: true,
-      saveUninitialized: true,
-    })
-  );
+  app.use(cookieParser(env.COOKIE_SECRET));
 
   initializePassport();
   app.use(passport.initialize());
-  app.use(passport.session());
 
   /** Routes */
   app.use(router);

@@ -37,18 +37,30 @@ router.get(
   getCartByIdHandler
 );
 
-router.get("/login", getLoginHandler);
+router.get("/login", isAuthenticatedView, getLoginHandler);
 router.post(
   "/sessions/login",
-  passport.authenticate("login", { failureRedirect: "/login-fail" }),
+  passport.authenticate("login", {
+    session: false,
+    failureRedirect: "/login-fail",
+  }),
   postLoginHandler
 );
 router.get("/login-fail", postLoginFailHandler);
 
-router.get("/register", getRegisterHandler);
+router.get(
+  "/register",
+  passport.authenticate("jwt", {
+    session: false,
+    failureRedirect: "/register-fail",
+  }),
+  getRegisterHandler
+);
+
 router.post(
   "/sessions/register",
   passport.authenticate("register", {
+    session: false,
     failureRedirect: "/register-fail",
   }),
   postRegisterHandler
@@ -57,13 +69,16 @@ router.get("/register-fail", postRegisterFailHandler);
 
 router.get(
   "/sessions/login-github",
-  passport.authenticate("github", { scope: ["user:email"] }),
+  passport.authenticate("github", { session: false, scope: ["user:email"] }),
   () => {}
 );
 
 router.get(
   "/sessions/github-callback",
-  passport.authenticate("github", { failureRedirect: "/login-fail" }),
+  passport.authenticate("github", {
+    session: false,
+    failureRedirect: "/login-fail",
+  }),
   getGithubCallbackHandler
 );
 

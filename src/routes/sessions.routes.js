@@ -18,14 +18,14 @@ const router = Router();
 router.post(
   "/register",
   validateRegister,
-  passport.authenticate("register", {}),
+  passport.authenticate("register", { session: false }),
   postRegisterHandler
 );
 
 router.post(
   "/login",
   validateLogin,
-  passport.authenticate("login", {}),
+  passport.authenticate("login", { session: false }),
   postLoginHandler
 );
 

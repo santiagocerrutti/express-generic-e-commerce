@@ -1,19 +1,29 @@
-export function isAuthenticated(req, res, next) {
-  if (req.session.user) {
-    next();
+// import jwt from "jsonwebtoken";
+// import { env } from "../../config/env";
 
-    return;
-  }
+import passport from "passport";
 
-  res.status(401).send({ status: "ERROR", error: "Not authenticated." });
-}
+// export function isAuthenticated(req, res, next) {
+//   const authHeader = req.headers["Authorization"];
 
-export function isAuthenticatedView(req, res, next) {
-  if (req.session.user) {
-    next();
+//   if (authHeader) {
+//     const token = authHeader.split(" ")[1];
 
-    return;
-  }
+//     try {
+//       const user = jwt.verify(token, env.JWT_SECRET);
+//       req.user = user;
+//       next();
 
-  res.render("login", {});
-}
+//       return;
+//     } catch (error) {
+//       res.status(401).send({ status: "ERROR", error: "Not authenticated." });
+//     }
+//   }
+// }
+
+export const isAuthenticated = passport.authenticate("jwt", { session: false });
+
+export const isAuthenticatedView = passport.authenticate("jwt", {
+  session: false,
+  failureRedirect: "/login-fail",
+});
