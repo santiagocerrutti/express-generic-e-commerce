@@ -2,10 +2,12 @@ import { Router } from "express";
 import passport from "passport";
 
 import {
+  getCurrentHandler,
   postLoginHandler,
   postLogoutHandler,
   postRegisterHandler,
 } from "../handlers/sessions.handler.js";
+import { isAuthenticated } from "../middlewares/authentication/isAutenticated.js";
 import {
   validateLogin,
   validateRegister,
@@ -27,6 +29,7 @@ router.post(
   postLoginHandler
 );
 
+router.get("/current", isAuthenticated, getCurrentHandler);
 router.post("/logout", postLogoutHandler);
 
 export default router;

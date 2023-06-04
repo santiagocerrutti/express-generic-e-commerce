@@ -83,3 +83,7 @@ export async function postLogoutHandler(req, res) {
     res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
   }
 }
+
+export async function getCurrentHandler(req, res) {
+  res.status(200).send({ payload: req.session.user });
+}
