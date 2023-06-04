@@ -45,10 +45,16 @@ export function initializePassport() {
         try {
           const manager = new UserManager();
           const user = await manager.getUserByEmail(username);
-          const validPassword = await isValidPassword(password, user.password);
 
-          if (user && validPassword) {
-            return done(null, user);
+          if (user) {
+            const validPassword = await isValidPassword(
+              password,
+              user.password
+            );
+
+            if (validPassword) {
+              return done(null, user);
+            }
           }
 
           return done(null, false);
