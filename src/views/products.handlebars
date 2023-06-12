@@ -3,7 +3,7 @@
   <div id="products-container" class="container">
     {{#if user}}
     <div class="d-flex flex-row-reverse">
-      <form action="/sessions/logout" method="POST">
+      <form id="logout_form" method="POST">
         <div class="row">
 
           <div class="col">
@@ -71,3 +71,4 @@
 
 
 <script src="/static/js/products.js"></script>
+<script src="/static/js/logout.js"></script>

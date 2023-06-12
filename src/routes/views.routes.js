@@ -5,16 +5,14 @@ import {
   getCartByIdHandler,
   getChatHandler,
   getGithubCallbackHandler,
+  getLoginFailHandler,
   getLoginHandler,
+  getLogoutHandler,
   getProductsHandler,
   getProductsPaginateHandler,
   getRealTimeProductsHandler,
+  getRegisterFailHandler,
   getRegisterHandler,
-  postLoginFailHandler,
-  postLoginHandler,
-  postLogoutHandler,
-  postRegisterFailHandler,
-  postRegisterHandler,
 } from "../handlers/views.handler.js";
 import { isAuthenticatedView } from "../middlewares/authentication/isAutenticated.js";
 import { validateCartId } from "../middlewares/validation/cart.validator.js";
@@ -37,35 +35,13 @@ router.get(
   getCartByIdHandler
 );
 
-router.get("/login", isAuthenticatedView, getLoginHandler);
-router.post(
-  "/sessions/login",
-  passport.authenticate("login", {
-    session: false,
-    failureRedirect: "/login-fail",
-  }),
-  postLoginHandler
-);
-router.get("/login-fail", postLoginFailHandler);
+router.get("/login", getLoginHandler);
 
-router.get(
-  "/register",
-  passport.authenticate("jwt", {
-    session: false,
-    failureRedirect: "/register-fail",
-  }),
-  getRegisterHandler
-);
+router.get("/login-fail", getLoginFailHandler);
 
-router.post(
-  "/sessions/register",
-  passport.authenticate("register", {
-    session: false,
-    failureRedirect: "/register-fail",
-  }),
-  postRegisterHandler
-);
-router.get("/register-fail", postRegisterFailHandler);
+router.get("/register", getRegisterHandler);
+
+router.get("/register-fail", getRegisterFailHandler);
 
 router.get(
   "/sessions/login-github",
@@ -82,6 +58,6 @@ router.get(
   getGithubCallbackHandler
 );
 
-router.post("/sessions/logout", postLogoutHandler);
+router.get("/logout", getLogoutHandler);
 
 export default router;

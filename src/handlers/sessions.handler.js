@@ -20,10 +20,7 @@ export async function postRegisterHandler(req, res) {
   const { user } = req;
 
   if (user) {
-    const token = createTokenFromUser(user);
-
     res
-      .cookie(env.JWT_COOKIE_NAME, token, cookieConfig)
       .status(201)
       .send({ status: "SUCCESS", message: "User created successfully" });
 

@@ -97,17 +97,7 @@ export async function getLoginHandler(req, res) {
   res.render("login", { user: req.user?.user || null });
 }
 
-export async function postRegisterHandler(req, res) {
-  res.render("login", {
-    user: null,
-    message: {
-      type: "success",
-      text: "User created successfully",
-    },
-  });
-}
-
-export async function postRegisterFailHandler(req, res) {
+export async function getRegisterFailHandler(req, res) {
   res.render("register", {
     user: null,
     message: {
@@ -117,17 +107,7 @@ export async function postRegisterFailHandler(req, res) {
   });
 }
 
-export async function postLoginHandler(req, res) {
-  const { user } = req;
-
-  if (user) {
-    const token = createTokenFromUser(user);
-
-    res.cookie(env.JWT_COOKIE_NAME, token, cookieConfig).redirect("/products");
-
-    return;
-  }
-
+export async function getLoginFailHandler(req, res) {
   res.render("login", {
     user: null,
     message: {
@@ -137,19 +117,8 @@ export async function postLoginHandler(req, res) {
   });
 }
 
-export async function postLoginFailHandler(req, res) {
-  res.render("login", {
-    user: null,
-    message: {
-      type: "error",
-      text: "Incorrect user and/or password",
-    },
-  });
-}
-
-export async function postLogoutHandler(req, res) {
+export async function getLogoutHandler(req, res) {
   try {
-    res.clearCookie(env.JWT_COOKIE_NAME);
     res.render("login", {
       user: null,
       message: {

@@ -20,3 +20,35 @@ if (type && text) {
     title: text,
   });
 }
+
+const registerForm = document.getElementById("register_form");
+
+if (registerForm) {
+  registerForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const data = new FormData(registerForm);
+    const formObject = {};
+    for (const [key, value] of data) {
+      formObject[key] = value;
+    }
+    try {
+      result = await fetch("/api/sessions/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formObject),
+      });
+
+      if (result.ok) {
+        window.location.href = "/login";
+      } else {
+        window.location.href = "/register-fail";
+      }
+    } catch (error) {
+      console.log(error);
+      window.location.href = "/register-fail";
+    }
+  });
+}
