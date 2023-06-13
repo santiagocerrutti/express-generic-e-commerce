@@ -8,7 +8,7 @@ export const cookieConfig = {
 
 export function createTokenFromUser(user) {
   delete user["password"];
-  const role = user.email === "santiago@cerrutti.com" ? "admin" : "user";
+  const role = user.email === "santiago@encina.com" ? "admin" : "user";
 
   return generateJwt({
     ...user,

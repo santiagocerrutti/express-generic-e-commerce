@@ -1,13 +1,13 @@
 import { Router } from "express";
-import passport from "passport";
 
+import { passportCall } from "../config/passportCall.js";
 import {
   getCurrentHandler,
   postLoginHandler,
   postLogoutHandler,
   postRegisterHandler,
 } from "../handlers/sessions.handler.js";
-import { isAuthenticated } from "../middlewares/authentication/isAutenticated.js";
+import { isAuthenticated } from "../middlewares/auth/index.js";
 import {
   validateLogin,
   validateRegister,
@@ -18,14 +18,14 @@ const router = Router();
 router.post(
   "/register",
   validateRegister,
-  passport.authenticate("register", { session: false }),
+  passportCall("register", { session: false }),
   postRegisterHandler
 );
 
 router.post(
   "/login",
   validateLogin,
-  passport.authenticate("login", { session: false }),
+  passportCall("login", { session: false }),
   postLoginHandler
 );
 

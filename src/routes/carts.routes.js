@@ -15,7 +15,7 @@ import {
   validateProductsOfCart,
 } from "../middlewares/validation/cart.validator.js";
 import { validateProductId } from "../middlewares/validation/product.validator.js";
-import { isAuthenticated } from "../middlewares/authentication/isAutenticated.js";
+import { isAuthenticated } from "../middlewares/auth/index.js";
 
 const router = Router();
 

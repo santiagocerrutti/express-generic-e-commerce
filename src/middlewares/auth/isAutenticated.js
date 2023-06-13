@@ -1,7 +1,8 @@
 // import jwt from "jsonwebtoken";
 // import { env } from "../../config/env";
 
-import passport from "passport";
+// import passport from "passport";
+import { passportCall } from "../../config/passportCall.js";
 
 // export function isAuthenticated(req, res, next) {
 //   const authHeader = req.headers["Authorization"];
@@ -21,9 +22,9 @@ import passport from "passport";
 //   }
 // }
 
-export const isAuthenticated = passport.authenticate("jwt", { session: false });
+export const isAuthenticated = passportCall("jwt", { session: false });
 
-export const isAuthenticatedView = passport.authenticate("jwt", {
+export const isAuthenticatedView = passportCall("jwt", {
   session: false,
   failureRedirect: "/login-fail",
 });

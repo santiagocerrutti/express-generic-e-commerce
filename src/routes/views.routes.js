@@ -1,6 +1,6 @@
 import { Router } from "express";
-import passport from "passport";
 
+import { passportCall } from "../config/passportCall.js";
 import {
   getCartByIdHandler,
   getChatHandler,
@@ -14,7 +14,7 @@ import {
   getRegisterFailHandler,
   getRegisterHandler,
 } from "../handlers/views.handler.js";
-import { isAuthenticatedView } from "../middlewares/authentication/isAutenticated.js";
+import { isAuthenticatedView } from "../middlewares/auth/index.js";
 import { validateCartId } from "../middlewares/validation/cart.validator.js";
 
 const router = Router();
@@ -45,13 +45,13 @@ router.get("/register-fail", getRegisterFailHandler);
 
 router.get(
   "/sessions/login-github",
-  passport.authenticate("github", { session: false, scope: ["user:email"] }),
+  passportCall("github", { session: false, scope: ["user:email"] }),
   () => {}
 );
 
 router.get(
   "/sessions/github-callback",
-  passport.authenticate("github", {
+  passportCall("github", {
     session: false,
     failureRedirect: "/login-fail",
   }),

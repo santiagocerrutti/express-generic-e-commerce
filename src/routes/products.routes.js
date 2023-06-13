@@ -13,20 +13,36 @@ import {
   validateProductId,
   validatePutProduct,
 } from "../middlewares/validation/product.validator.js";
-import { isAuthenticated } from "../middlewares/authentication/isAutenticated.js";
+import {
+  isAuthenticated,
+  ROLES,
+  isAuthorized,
+} from "../middlewares/auth/index.js";
 
 const router = Router();
 
 router.get("/", isAuthenticated, validateGetProductsQuery, getProductsHandler);
 router.get("/:pid", isAuthenticated, validateProductId, getProductByIdHandler);
-router.post("/", isAuthenticated, validatePostProduct, postProductHandler);
+router.post(
+  "/",
+  isAuthenticated,
+  isAuthorized(ROLES.ADMIN),
+  validatePostProduct,
+  postProductHandler
+);
 router.put(
   "/:pid",
   isAuthenticated,
+  isAuthorized(ROLES.ADMIN),
   validateProductId,
   validatePutProduct,
   putProductHandler
 );
-router.delete("/:pid", isAuthenticated, deleteProductHandler);
+router.delete(
+  "/:pid",
+  isAuthenticated,
+  isAuthorized(ROLES.ADMIN),
+  deleteProductHandler
+);
 
 export default router;
