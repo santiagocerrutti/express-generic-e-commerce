@@ -9,7 +9,7 @@ export function validateCartId(req, res, next) {
 
     return;
   } catch (error) {
-    res.status(400).send({ status: "ERROR", error: `Invalid UUID: ${cid}` });
+    res.sendBadRequest(`Invalid UUID: ${cid}`, null);
   }
 }
 
@@ -49,11 +49,7 @@ export function validateProductsOfCart(req, res, next) {
     return;
   }
 
-  res.status(400).send({
-    status: "ERROR",
-    error: "Invalid products array.",
-    errors: validate.errors,
-  });
+  res.sendBadRequest("Invalid products array.", validate.errors);
 }
 
 export function validateProductQuantity(req, res, next) {
@@ -77,9 +73,5 @@ export function validateProductQuantity(req, res, next) {
     return;
   }
 
-  res.status(400).send({
-    status: "ERROR",
-    error: "Invalid product quantity.",
-    errors: validate.errors,
-  });
+  res.sendBadRequest("Invalid product quantity.", validate.errors);
 }

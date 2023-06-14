@@ -31,11 +31,7 @@ export function validateRegister(req, res, next) {
     return;
   }
 
-  res.status(400).send({
-    status: "ERROR",
-    error: `Invalid user: ${inspect(req.body)}.`,
-    errors: validate.errors,
-  });
+  res.sendBadRequest(`Invalid user: ${inspect(req.body)}.`, validate.errors);
 }
 
 export function validateLogin(req, res, next) {
@@ -57,9 +53,8 @@ export function validateLogin(req, res, next) {
     return;
   }
 
-  res.status(400).send({
-    status: "ERROR",
-    error: `Invalid login payload: ${inspect(req.body)}.`,
-    errors: validate.errors,
-  });
+  res.sendBadRequest(
+    `Invalid login payload: ${inspect(req.body)}.`,
+    validate.errors
+  );
 }

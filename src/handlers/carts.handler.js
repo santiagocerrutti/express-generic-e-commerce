@@ -4,10 +4,7 @@ export async function getCartsHandler(req, res) {
   const { limit } = req.query;
   const manager = new CartManager();
   const carts = await manager.getCarts(limit);
-  res.send({
-    status: "SUCCESS",
-    payload: carts,
-  });
+  res.sendSuccess(carts);
 }
 
 export async function getCartByIdHandler(req, res) {
@@ -15,17 +12,17 @@ export async function getCartByIdHandler(req, res) {
 
   try {
     const manager = new CartManager();
-    const foundProduct = await manager.getCartById(cid);
+    const foundCart = await manager.getCartById(cid);
 
-    res.send({ status: "SUCCESS", payload: foundProduct });
+    res.sendSuccess(foundCart);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
-      res.status(404).send({ status: "ERROR", error: error.message });
+      res.sendNotFound(error.message);
 
       return;
     }
 
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 
@@ -34,9 +31,9 @@ export async function postCart(req, res) {
     const manager = new CartManager();
     const cart = await manager.addCart();
 
-    res.send({ status: "SUCCESS", payload: cart });
+    res.sendSuccess(cart);
   } catch (error) {
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 
@@ -46,15 +43,15 @@ export async function postProductToCart(req, res) {
     const manager = new CartManager();
     const cart = await manager.addProductToCart(cid, pid, 1);
 
-    res.send({ status: "SUCCESS", payload: cart });
+    res.sendSuccess(cart);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
-      res.status(404).send({ status: "ERROR", error: error.message });
+      res.sendNotFound(error.message);
 
       return;
     }
 
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 
@@ -64,15 +61,15 @@ export async function putCartProducts(req, res) {
   try {
     const manager = new CartManager();
     const cart = await manager.setProductsToCart(cid, products);
-    res.send({ status: "SUCCESS", payload: cart });
+    res.sendSuccess(cart);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
-      res.status(404).send({ status: "ERROR", error: error.message });
+      res.sendNotFound(error.message);
 
       return;
     }
 
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 
@@ -82,15 +79,15 @@ export async function putCartProduct(req, res) {
   try {
     const manager = new CartManager();
     const cart = await manager.updateProductOfCart(cid, pid, quantity);
-    res.send({ status: "SUCCESS", payload: cart });
+    res.sendSuccess(cart);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
-      res.status(404).send({ status: "ERROR", error: error.message });
+      res.sendNotFound(error.message);
 
       return;
     }
 
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 
@@ -99,15 +96,15 @@ export async function deleteAllProducts(req, res) {
   try {
     const manager = new CartManager();
     const cart = await manager.deleteProductsOfCart(cid);
-    res.send({ status: "SUCCESS", payload: cart });
+    res.sendSuccess(cart);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
-      res.status(404).send({ status: "ERROR", error: error.message });
+      res.sendNotFound(error.message);
 
       return;
     }
 
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 
@@ -116,14 +113,14 @@ export async function deleteProductOfCart(req, res) {
   try {
     const manager = new CartManager();
     const cart = await manager.deleteProductOfCart(cid, pid);
-    res.send({ status: "SUCCESS", payload: cart });
+    res.sendSuccess(cart);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
-      res.status(404).send({ status: "ERROR", error: error.message });
+      res.sendNotFound(error.message);
 
       return;
     }
 
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }

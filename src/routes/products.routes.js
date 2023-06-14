@@ -1,5 +1,3 @@
-import { Router } from "express";
-
 import {
   deleteProductHandler,
   getProductByIdHandler,
@@ -8,41 +6,54 @@ import {
   putProductHandler,
 } from "../handlers/products.handler.js";
 import {
+  ROLES,
+  isAuthenticated,
+  isAuthorized,
+} from "../middlewares/auth/index.js";
+import {
   validateGetProductsQuery,
   validatePostProduct,
   validateProductId,
   validatePutProduct,
 } from "../middlewares/validation/product.validator.js";
-import {
-  isAuthenticated,
-  ROLES,
-  isAuthorized,
-} from "../middlewares/auth/index.js";
+import { Router } from "./Router.js";
 
-const router = Router();
+class ProductsRouter extends Router {
+  init() {
+    this.get(
+      "/",
+      isAuthenticated,
+      validateGetProductsQuery,
+      getProductsHandler
+    );
+    this.get(
+      "/:pid",
+      isAuthenticated,
+      validateProductId,
+      getProductByIdHandler
+    );
+    this.post(
+      "/",
+      isAuthenticated,
+      isAuthorized(ROLES.ADMIN),
+      validatePostProduct,
+      postProductHandler
+    );
+    this.put(
+      "/:pid",
+      isAuthenticated,
+      isAuthorized(ROLES.ADMIN),
+      validateProductId,
+      validatePutProduct,
+      putProductHandler
+    );
+    this.delete(
+      "/:pid",
+      isAuthenticated,
+      isAuthorized(ROLES.ADMIN),
+      deleteProductHandler
+    );
+  }
+}
 
-router.get("/", isAuthenticated, validateGetProductsQuery, getProductsHandler);
-router.get("/:pid", isAuthenticated, validateProductId, getProductByIdHandler);
-router.post(
-  "/",
-  isAuthenticated,
-  isAuthorized(ROLES.ADMIN),
-  validatePostProduct,
-  postProductHandler
-);
-router.put(
-  "/:pid",
-  isAuthenticated,
-  isAuthorized(ROLES.ADMIN),
-  validateProductId,
-  validatePutProduct,
-  putProductHandler
-);
-router.delete(
-  "/:pid",
-  isAuthenticated,
-  isAuthorized(ROLES.ADMIN),
-  deleteProductHandler
-);
-
-export default router;
+export const productsRouter = new ProductsRouter().getRouter();

@@ -1,5 +1,6 @@
 import passport from "passport";
 
+// Documentación? (TODO: buscar ejemplos)
 export function passportCall(strategy, options) {
   return async function (req, res, next) {
     const middleware = passport.authenticate(

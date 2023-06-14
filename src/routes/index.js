@@ -1,10 +1,9 @@
 import express, { Router } from "express";
 import { __dirname } from "../utils.js";
-
-import cartsRouter from "./carts.routes.js";
-import productsRouter from "./products.routes.js";
-import sessionsRouter from "./sessions.routes.js";
-import viewsRouter from "./views.routes.js";
+import { viewsRouter } from "./views.routes.js";
+import { productsRouter } from "./products.routes.js";
+import { cartsRouter } from "./carts.routes.js";
+import { sessionsRouter } from "./sessions.routes.js";
 
 const router = Router();
 

@@ -20,14 +20,12 @@ export async function postRegisterHandler(req, res) {
   const { user } = req;
 
   if (user) {
-    res
-      .status(201)
-      .send({ status: "SUCCESS", message: "User created successfully" });
+    res.sendCreated("User created successfully");
 
     return;
   }
 
-  res.status(401).send({ status: "ERROR", error: "Invalid User" });
+  res.sendNotAutenticated("Invalid User");
 }
 
 export async function postLoginHandler(req, res) {
@@ -36,29 +34,27 @@ export async function postLoginHandler(req, res) {
   if (user) {
     const token = createTokenFromUser(user);
 
-    res
-      .cookie(env.JWT_COOKIE_NAME, token, cookieConfig)
-      .status(200)
-      .send({ status: "SUCCESS", message: "Login successfull" });
+    res.cookie(env.JWT_COOKIE_NAME, token, cookieConfig);
+    res.sendSuccess("Login successfull");
 
     return;
   }
 
-  res.status(401).send({ status: "ERROR", error: "Invalid User" });
+  res.sendNotAutenticated("Invalid User");
 }
 
 export async function postLogoutHandler(req, res) {
   try {
     res.clearCookie(env.JWT_COOKIE_NAME);
-    res.status(200).send({ status: "SUCCESS", message: "Logout successfull." });
+    res.sendSuccess("Logout successfull.");
 
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 
 export async function getCurrentHandler(req, res) {
-  res.status(200).send({ payload: req.user });
+  res.sendSuccess(req.user);
 }

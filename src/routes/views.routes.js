@@ -1,5 +1,3 @@
-import { Router } from "express";
-
 import { passportCall } from "../config/passportCall.js";
 import {
   getCartByIdHandler,
@@ -16,48 +14,50 @@ import {
 } from "../handlers/views.handler.js";
 import { isAuthenticatedView } from "../middlewares/auth/index.js";
 import { validateCartId } from "../middlewares/validation/cart.validator.js";
+import { Router } from "./Router.js";
 
-const router = Router();
+class ViewsRouter extends Router {
+  init() {
+    this.get("/", getLoginHandler);
+    this.get("/products", isAuthenticatedView, getProductsPaginateHandler);
+    this.get("/carts/:cid", isAuthenticatedView, getProductsHandler);
+    this.get(
+      "/realtimeproducts",
+      isAuthenticatedView,
+      getRealTimeProductsHandler
+    );
+    this.get("/chat", isAuthenticatedView, getChatHandler);
+    this.get(
+      "/cart/:cid",
+      isAuthenticatedView,
+      validateCartId,
+      getCartByIdHandler
+    );
 
-router.get("/", getLoginHandler);
-router.get("/products", isAuthenticatedView, getProductsPaginateHandler);
-router.get("/carts/:cid", isAuthenticatedView, getProductsHandler);
-router.get(
-  "/realtimeproducts",
-  isAuthenticatedView,
-  getRealTimeProductsHandler
-);
-router.get("/chat", isAuthenticatedView, getChatHandler);
-router.get(
-  "/cart/:cid",
-  isAuthenticatedView,
-  validateCartId,
-  getCartByIdHandler
-);
+    this.get("/login", getLoginHandler);
 
-router.get("/login", getLoginHandler);
+    this.get("/login-fail", getLoginFailHandler);
 
-router.get("/login-fail", getLoginFailHandler);
+    this.get("/register", getRegisterHandler);
 
-router.get("/register", getRegisterHandler);
+    this.get("/register-fail", getRegisterFailHandler);
 
-router.get("/register-fail", getRegisterFailHandler);
+    this.get(
+      "/sessions/login-github",
+      passportCall("github", { session: false, scope: ["user:email"] })
+    );
 
-router.get(
-  "/sessions/login-github",
-  passportCall("github", { session: false, scope: ["user:email"] }),
-  () => {}
-);
+    this.get(
+      "/sessions/github-callback",
+      passportCall("github", {
+        session: false,
+        failureRedirect: "/login-fail",
+      }),
+      getGithubCallbackHandler
+    );
 
-router.get(
-  "/sessions/github-callback",
-  passportCall("github", {
-    session: false,
-    failureRedirect: "/login-fail",
-  }),
-  getGithubCallbackHandler
-);
+    this.get("/logout", getLogoutHandler);
+  }
+}
 
-router.get("/logout", getLogoutHandler);
-
-export default router;
+export const viewsRouter = new ViewsRouter().getRouter();

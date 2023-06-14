@@ -1,5 +1,3 @@
-import { Router } from "express";
-
 import { passportCall } from "../config/passportCall.js";
 import {
   getCurrentHandler,
@@ -12,24 +10,27 @@ import {
   validateLogin,
   validateRegister,
 } from "../middlewares/validation/user.validator.js";
+import { Router } from "./Router.js";
 
-const router = Router();
+class SessionsRouter extends Router {
+  init() {
+    this.post(
+      "/register",
+      validateRegister,
+      passportCall("register", { session: false }),
+      postRegisterHandler
+    );
 
-router.post(
-  "/register",
-  validateRegister,
-  passportCall("register", { session: false }),
-  postRegisterHandler
-);
+    this.post(
+      "/login",
+      validateLogin,
+      passportCall("login", { session: false }),
+      postLoginHandler
+    );
 
-router.post(
-  "/login",
-  validateLogin,
-  passportCall("login", { session: false }),
-  postLoginHandler
-);
+    this.get("/current", isAuthenticated, getCurrentHandler);
+    this.post("/logout", postLogoutHandler);
+  }
+}
 
-router.get("/current", isAuthenticated, getCurrentHandler);
-router.post("/logout", postLogoutHandler);
-
-export default router;
+export const sessionsRouter = new SessionsRouter().getRouter();

@@ -45,16 +45,16 @@ export async function getProductByIdHandler(req, res) {
       const manager = new ProductManager();
       const foundProduct = await manager.getProductById(pid);
 
-      res.send({ status: "SUCCESS", payload: foundProduct });
+      res.sendSuccess(foundProduct);
     }
   } catch (error) {
     if (error.code === "NOT_FOUND") {
-      res.status(404).send({ status: "ERROR", error: error.message });
+      res.sendNotFound(error.message);
 
       return;
     }
 
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 
@@ -65,15 +65,15 @@ export async function postProductHandler(req, res) {
 
     await emitProductsUpdate(manager);
 
-    res.status(201).send({ status: "SUCCESS", payload: result });
+    res.sendCreated(result);
   } catch (error) {
     if (error.code === "DUPLICATED_KEY") {
-      res.status(409).send({ status: "ERROR", error: error.message });
+      res.sendConflict(error.message);
 
       return;
     }
 
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 
@@ -84,19 +84,19 @@ export async function putProductHandler(req, res) {
 
     await emitProductsUpdate(manager);
 
-    res.status(200).send({ status: "SUCCESS", payload: result });
+    res.sendSuccess(result);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
-      res.status(404).send({ status: "ERROR", error: error.message });
+      res.sendNotFound(error.message);
 
       return;
     } else if (error.code === "DUPLICATED_KEY") {
-      res.status(409).send({ status: "ERROR", error: error.message });
+      res.sendConflict(error.message);
 
       return;
     }
 
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 
@@ -107,15 +107,15 @@ export async function deleteProductHandler(req, res) {
 
     await emitProductsUpdate(manager);
 
-    res.status(200).send({ status: "SUCCESS", payload: result });
+    res.sendSuccess(result);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
-      res.status(404).send({ status: "ERROR", error: error.message });
+      res.sendNotFound(error.message);
 
       return;
     }
 
-    res.status(500).send({ status: "ERROR", error: "Internal Server Error" });
+    res.sendInternalServerError();
   }
 }
 

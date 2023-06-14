@@ -1,56 +1,58 @@
-import { Router } from "express";
 import {
+  deleteAllProducts,
+  deleteProductOfCart,
   getCartByIdHandler,
   getCartsHandler,
   postCart,
   postProductToCart,
-  putCartProducts,
   putCartProduct,
-  deleteAllProducts,
-  deleteProductOfCart,
+  putCartProducts,
 } from "../handlers/carts.handler.js";
+import { isAuthenticated } from "../middlewares/auth/index.js";
 import {
   validateCartId,
   validateProductQuantity,
   validateProductsOfCart,
 } from "../middlewares/validation/cart.validator.js";
 import { validateProductId } from "../middlewares/validation/product.validator.js";
-import { isAuthenticated } from "../middlewares/auth/index.js";
+import { Router } from "./Router.js";
 
-const router = Router();
+class CartsRouter extends Router {
+  init() {
+    this.get("/", isAuthenticated, getCartsHandler);
+    this.get("/:cid", isAuthenticated, validateCartId, getCartByIdHandler);
+    this.post("/", isAuthenticated, postCart);
+    this.post(
+      "/:cid/products/:pid",
+      isAuthenticated,
+      validateCartId,
+      validateProductId,
+      postProductToCart
+    );
+    this.put(
+      "/:cid",
+      isAuthenticated,
+      validateCartId,
+      validateProductsOfCart,
+      putCartProducts
+    );
+    this.put(
+      "/:cid/products/:pid",
+      isAuthenticated,
+      validateCartId,
+      validateProductId,
+      validateProductQuantity,
+      putCartProduct
+    );
+    this.delete("/:cid", isAuthenticated, validateCartId, deleteAllProducts);
+    this.delete(
+      "/:cid/products/:pid",
+      isAuthenticated,
+      validateCartId,
+      validateProductId,
+      deleteProductOfCart
+    );
+  }
+}
 
-router.get("/", isAuthenticated, getCartsHandler);
-router.get("/:cid", isAuthenticated, validateCartId, getCartByIdHandler);
-router.post("/", isAuthenticated, postCart);
-router.post(
-  "/:cid/products/:pid",
-  isAuthenticated,
-  validateCartId,
-  validateProductId,
-  postProductToCart
-);
-router.put(
-  "/:cid",
-  isAuthenticated,
-  validateCartId,
-  validateProductsOfCart,
-  putCartProducts
-);
-router.put(
-  "/:cid/products/:pid",
-  isAuthenticated,
-  validateCartId,
-  validateProductId,
-  validateProductQuantity,
-  putCartProduct
-);
-router.delete("/:cid", isAuthenticated, validateCartId, deleteAllProducts);
-router.delete(
-  "/:cid/products/:pid",
-  isAuthenticated,
-  validateCartId,
-  validateProductId,
-  deleteProductOfCart
-);
-
-export default router;
+export const cartsRouter = new CartsRouter().getRouter();

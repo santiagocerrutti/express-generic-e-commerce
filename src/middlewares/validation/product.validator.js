@@ -10,7 +10,7 @@ export function validateProductId(req, res, next) {
 
     return;
   } catch (error) {
-    res.status(400).send({ status: "ERROR", error: `Invalid UUID: ${pid}` });
+    res.sendBadRequest(`Invalid UUID: ${pid}`, null);
   }
 }
 
@@ -35,11 +35,10 @@ export function validateGetProductsQuery(req, res, next) {
     return;
   }
 
-  res.status(400).send({
-    status: "ERROR",
-    error: `Invalid query params.`,
-    errors: validate.errors,
-  });
+  res.sendBadRequest(
+    `Invalid login payload: ${inspect(req.body)}.`,
+    validate.errors
+  );
 }
 
 export function validatePostProduct(req, res, next) {
@@ -75,11 +74,7 @@ export function validatePostProduct(req, res, next) {
     return;
   }
 
-  res.status(400).send({
-    status: "ERROR",
-    error: `Invalid product: ${inspect(req.body)}.`,
-    errors: validate.errors,
-  });
+  res.sendBadRequest(`Invalid product: ${inspect(req.body)}.`, validate.errors);
 }
 
 export function validatePutProduct(req, res, next) {
@@ -106,9 +101,5 @@ export function validatePutProduct(req, res, next) {
     return;
   }
 
-  res.status(400).send({
-    status: "ERROR",
-    error: `Invalid product: ${inspect(req.body)}.`,
-    errors: validate.errors,
-  });
+  res.sendBadRequest(`Invalid product: ${inspect(req.body)}.`, validate.errors);
 }
