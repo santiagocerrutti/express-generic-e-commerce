@@ -1,10 +1,10 @@
 import { passportCall } from "../config/passportCall.js";
 import {
-  getCurrentHandler,
-  postLoginHandler,
-  postLogoutHandler,
-  postRegisterHandler,
-} from "../handlers/sessions.handler.js";
+  getCurrent,
+  login,
+  logout,
+  register,
+} from "../controllers/sessions.controller.js";
 import { isAuthenticated } from "../middlewares/auth/index.js";
 import {
   validateLogin,
@@ -18,18 +18,19 @@ class SessionsRouter extends Router {
       "/register",
       validateRegister,
       passportCall("register", { session: false }),
-      postRegisterHandler
+      register
     );
 
     this.post(
       "/login",
       validateLogin,
       passportCall("login", { session: false }),
-      postLoginHandler
+      login
     );
 
-    this.get("/current", isAuthenticated, getCurrentHandler);
-    this.post("/logout", postLogoutHandler);
+    this.get("/current", isAuthenticated, getCurrent);
+
+    this.post("/logout", logout);
   }
 }
 

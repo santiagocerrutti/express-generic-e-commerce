@@ -1,10 +1,10 @@
 import {
-  deleteProductHandler,
-  getProductByIdHandler,
-  getProductsHandler,
-  postProductHandler,
-  putProductHandler,
-} from "../handlers/products.handler.js";
+  createProduct,
+  deleteProduct,
+  getProductById,
+  getProducts,
+  updateProduct,
+} from "../controllers/products.controller.js";
 import {
   ROLES,
   isAuthenticated,
@@ -20,38 +20,32 @@ import { Router } from "./Router.js";
 
 class ProductsRouter extends Router {
   init() {
-    this.get(
-      "/",
-      isAuthenticated,
-      validateGetProductsQuery,
-      getProductsHandler
-    );
-    this.get(
-      "/:pid",
-      isAuthenticated,
-      validateProductId,
-      getProductByIdHandler
-    );
+    this.get("/", isAuthenticated, validateGetProductsQuery, getProducts);
+
+    this.get("/:pid", isAuthenticated, validateProductId, getProductById);
+
     this.post(
       "/",
       isAuthenticated,
       isAuthorized(ROLES.ADMIN),
       validatePostProduct,
-      postProductHandler
+      createProduct
     );
+
     this.put(
       "/:pid",
       isAuthenticated,
       isAuthorized(ROLES.ADMIN),
       validateProductId,
       validatePutProduct,
-      putProductHandler
+      updateProduct
     );
+
     this.delete(
       "/:pid",
       isAuthenticated,
       isAuthorized(ROLES.ADMIN),
-      deleteProductHandler
+      deleteProduct
     );
   }
 }

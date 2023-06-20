@@ -1,46 +1,47 @@
 import { passportCall } from "../config/passportCall.js";
 import {
-  getCartByIdHandler,
-  getChatHandler,
-  getGithubCallbackHandler,
-  getLoginFailHandler,
-  getLoginHandler,
-  getLogoutHandler,
-  getProductsHandler,
-  getProductsPaginateHandler,
-  getRealTimeProductsHandler,
-  getRegisterFailHandler,
-  getRegisterHandler,
-} from "../handlers/views.handler.js";
+  getCartByIdView,
+  getChatView,
+  getGithubCallbackView,
+  getLoginFailView,
+  getLoginView,
+  getLogoutView,
+  getProductsPaginateView,
+  getProductsView,
+  getRealTimeProductsView,
+  getRegisterFailView,
+  getRegisterView,
+} from "../controllers/views.controller.js";
 import { isAuthenticatedView } from "../middlewares/auth/index.js";
 import { validateCartId } from "../middlewares/validation/cart.validator.js";
 import { Router } from "./Router.js";
 
 class ViewsRouter extends Router {
   init() {
-    this.get("/", getLoginHandler);
-    this.get("/products", isAuthenticatedView, getProductsPaginateHandler);
-    this.get("/carts/:cid", isAuthenticatedView, getProductsHandler);
-    this.get(
-      "/realtimeproducts",
-      isAuthenticatedView,
-      getRealTimeProductsHandler
-    );
-    this.get("/chat", isAuthenticatedView, getChatHandler);
+    this.get("/", getLoginView);
+
+    this.get("/products", isAuthenticatedView, getProductsPaginateView);
+
+    this.get("/carts/:cid", isAuthenticatedView, getProductsView);
+
+    this.get("/realtimeproducts", isAuthenticatedView, getRealTimeProductsView);
+
+    this.get("/chat", isAuthenticatedView, getChatView);
+
     this.get(
       "/cart/:cid",
       isAuthenticatedView,
       validateCartId,
-      getCartByIdHandler
+      getCartByIdView
     );
 
-    this.get("/login", getLoginHandler);
+    this.get("/login", getLoginView);
 
-    this.get("/login-fail", getLoginFailHandler);
+    this.get("/login-fail", getLoginFailView);
 
-    this.get("/register", getRegisterHandler);
+    this.get("/register", getRegisterView);
 
-    this.get("/register-fail", getRegisterFailHandler);
+    this.get("/register-fail", getRegisterFailView);
 
     this.get(
       "/sessions/login-github",
@@ -53,10 +54,10 @@ class ViewsRouter extends Router {
         session: false,
         failureRedirect: "/login-fail",
       }),
-      getGithubCallbackHandler
+      getGithubCallbackView
     );
 
-    this.get("/logout", getLogoutHandler);
+    this.get("/logout", getLogoutView);
   }
 }
 

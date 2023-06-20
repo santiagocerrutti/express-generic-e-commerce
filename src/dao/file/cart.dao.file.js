@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import { v4 as uuidv4 } from "uuid";
-import { ProductManager } from "./product.manager.js";
+import { ProductDaoFile } from "./product.dao.file.js";
 
 const PATH = "./data/carts.json";
 
-export class CartManager {
+export class CartDaoFile {
   constructor() {
     this.path = PATH;
     this.carts = [];
@@ -60,7 +60,7 @@ export class CartManager {
 
   async addProductToCart(cartId, productId, quantity) {
     const cart = await this.getCartById(cartId);
-    const productManager = new ProductManager();
+    const productManager = new ProductDaoFile();
     await productManager.getProductById(productId);
 
     const cartProduct = cart.products.find((p) => p.product === productId);

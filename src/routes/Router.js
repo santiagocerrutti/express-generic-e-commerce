@@ -37,8 +37,9 @@ export class Router {
 
   // Callbacks or callback function or handler functions generally mean a function that is run after an asynchronous function have been completed
 
-  // El opreador Spread ... hace que todos los parametros siguientes se reciban en un array
+  // El opreador Spread en la firma ... hace que todos los parametros siguientes se reciban en un array
   get(path, ...middlewares) {
+    // al hacer la desestructuración al llamar, se reciben uno por uno (separados por comas)
     this.router.get(path, ...middlewares);
   }
 

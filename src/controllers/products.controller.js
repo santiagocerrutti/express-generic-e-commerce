@@ -1,15 +1,15 @@
 import QueryString from "qs";
 import { env } from "../config/env.js";
-import { ProductManager } from "../dao/db/product.manager.js";
+import { ProductDaoMongo } from "../dao/db/product.dao.mongo.js";
 import { SocketServer } from "../sockets/socket-server.js";
 
-export async function getProductsHandler(req, res) {
+export async function getProducts(req, res) {
   const { limit, page, query, sort } = req.query;
   const queryObject = query
     ? QueryString.parse(query, { delimiter: /[;,]/ })
     : {};
 
-  const manager = new ProductManager();
+  const manager = new ProductDaoMongo();
   const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } =
     await manager.getProductsPaginate(limit, page, queryObject, sort);
 
@@ -37,12 +37,12 @@ function buildLink(reqQuery, page) {
   }${sort ? "&sort=" + sort : ""}`;
 }
 
-export async function getProductByIdHandler(req, res) {
+export async function getProductById(req, res) {
   const { pid } = req.params;
 
   try {
     if (pid) {
-      const manager = new ProductManager();
+      const manager = new ProductDaoMongo();
       const foundProduct = await manager.getProductById(pid);
 
       res.sendSuccess(foundProduct);
@@ -58,9 +58,9 @@ export async function getProductByIdHandler(req, res) {
   }
 }
 
-export async function postProductHandler(req, res) {
+export async function createProduct(req, res) {
   try {
-    const manager = new ProductManager();
+    const manager = new ProductDaoMongo();
     const result = await manager.addProduct(req.body);
 
     await emitProductsUpdate(manager);
@@ -77,9 +77,9 @@ export async function postProductHandler(req, res) {
   }
 }
 
-export async function putProductHandler(req, res) {
+export async function updateProduct(req, res) {
   try {
-    const manager = new ProductManager();
+    const manager = new ProductDaoMongo();
     const result = await manager.updateProduct(req.params.pid, req.body);
 
     await emitProductsUpdate(manager);
@@ -100,9 +100,9 @@ export async function putProductHandler(req, res) {
   }
 }
 
-export async function deleteProductHandler(req, res) {
+export async function deleteProduct(req, res) {
   try {
-    const manager = new ProductManager();
+    const manager = new ProductDaoMongo();
     const result = await manager.deleteProduct(req.params.pid);
 
     await emitProductsUpdate(manager);

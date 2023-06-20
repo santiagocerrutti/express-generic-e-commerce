@@ -1,7 +1,7 @@
-import { MessageManager } from "../dao/db/message.manager.js";
+import { MessageDaoMongo } from "../dao/db/message.dao.mongo.js";
 
 const messageLogs = [];
-const manager = new MessageManager();
+const manager = new MessageDaoMongo();
 
 export function registerChatHandlers(io, socket) {
   function newUser(data) {

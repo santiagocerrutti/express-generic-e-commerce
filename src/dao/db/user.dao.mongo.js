@@ -2,7 +2,7 @@ import MUUID from "uuid-mongodb";
 import { createHash } from "../../utils.js";
 import { UserModel } from "./models/user.model.js";
 
-export class UserManager {
+export class UserDaoMongo {
   constructor() {}
 
   async createUser(user) {

@@ -2,7 +2,7 @@ import MUUID from "uuid-mongodb";
 import { CartModel } from "./models/cart.model.js";
 import { ProductModel } from "./models/product.model.js";
 
-export class CartManager {
+export class CartDaoMongo {
   constructor() {}
 
   async addCart() {

@@ -8,7 +8,7 @@ export const cookieConfig = {
 
 export function createTokenFromUser(user) {
   delete user["password"];
-  const role = user.email === "santiago@encina.com" ? "admin" : "user";
+  const role = user.email === env.ADMIN_EMAIL ? "admin" : "user";
 
   return generateJwt({
     ...user,
@@ -16,7 +16,7 @@ export function createTokenFromUser(user) {
   });
 }
 
-export async function postRegisterHandler(req, res) {
+export async function register(req, res) {
   const { user } = req;
 
   if (user) {
@@ -28,7 +28,7 @@ export async function postRegisterHandler(req, res) {
   res.sendNotAutenticated("Invalid User");
 }
 
-export async function postLoginHandler(req, res) {
+export async function login(req, res) {
   const { user } = req;
 
   if (user) {
@@ -43,7 +43,7 @@ export async function postLoginHandler(req, res) {
   res.sendNotAutenticated("Invalid User");
 }
 
-export async function postLogoutHandler(req, res) {
+export async function logout(req, res) {
   try {
     res.clearCookie(env.JWT_COOKIE_NAME);
     res.sendSuccess("Logout successfull.");
@@ -55,6 +55,6 @@ export async function postLogoutHandler(req, res) {
   }
 }
 
-export async function getCurrentHandler(req, res) {
+export async function getCurrent(req, res) {
   res.sendSuccess(req.user);
 }

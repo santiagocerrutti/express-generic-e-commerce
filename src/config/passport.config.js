@@ -3,7 +3,7 @@ import { Strategy as GitHubStrategy } from "passport-github2";
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
 
-import { UserManager } from "../dao/db/user.manager.js";
+import { UserDaoMongo } from "../dao/db/user.dao.mongo.js";
 import { isValidPassword } from "../utils.js";
 import { env } from "./env.js";
 
@@ -25,7 +25,7 @@ export function initializePassport() {
       },
       async (req, username, password, done) => {
         try {
-          const manager = new UserManager();
+          const manager = new UserDaoMongo();
           const result = await manager.createUser({
             ...req.body,
             email: username,
@@ -52,7 +52,7 @@ export function initializePassport() {
       },
       async (username, password, done) => {
         try {
-          const manager = new UserManager();
+          const manager = new UserDaoMongo();
           const user = await manager.getUserByEmail(username);
 
           if (user) {
@@ -105,7 +105,7 @@ export function initializePassport() {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          const manager = new UserManager();
+          const manager = new UserDaoMongo();
           const user = await manager.getUserByEmail(profile._json.email);
 
           if (!user) {
@@ -134,7 +134,7 @@ export function initializePassport() {
 
   passport.deserializeUser(async (id, done) => {
     try {
-      const manager = new UserManager();
+      const manager = new UserDaoMongo();
       const user = await manager.findById(id);
 
       return done(null, user);

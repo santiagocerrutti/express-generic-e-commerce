@@ -2,7 +2,7 @@ import MUUID from "uuid-mongodb";
 import { ProductModel } from "./models/product.model.js";
 import { deleteUndefinedProperties } from "../../utils.js";
 
-export class ProductManager {
+export class ProductDaoMongo {
   constructor() {}
 
   async getProducts(limit = null) {

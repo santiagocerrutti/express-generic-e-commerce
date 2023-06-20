@@ -1,10 +1,10 @@
 import { env } from "../config/env.js";
-import { CartManager } from "../dao/db/cart.manager.js";
-import { ProductManager } from "../dao/db/product.manager.js";
-import { cookieConfig, createTokenFromUser } from "./sessions.handler.js";
+import { CartDaoMongo } from "../dao/db/cart.dao.mongo.js";
+import { ProductDaoMongo } from "../dao/db/product.dao.mongo.js";
+import { cookieConfig, createTokenFromUser } from "./sessions.controller.js";
 
-export async function getProductsHandler(req, res) {
-  const manager = new ProductManager();
+export async function getProductsView(req, res) {
+  const manager = new ProductDaoMongo();
   const products = await manager.getProductsJson();
 
   res.render("index", {
@@ -13,9 +13,9 @@ export async function getProductsHandler(req, res) {
   });
 }
 
-export async function getProductsPaginateHandler(req, res) {
+export async function getProductsPaginateView(req, res) {
   const { page, limit } = req.query;
-  const manager = new ProductManager();
+  const manager = new ProductDaoMongo();
 
   const result = await manager.getProductsPaginateJson(limit, page);
 
@@ -44,8 +44,8 @@ function buildLink(reqQuery, page) {
   return `${env.HOST_URL}/products?limit=${limit || 10}&page=${page}`;
 }
 
-export async function getRealTimeProductsHandler(req, res) {
-  const manager = new ProductManager();
+export async function getRealTimeProductsView(req, res) {
+  const manager = new ProductDaoMongo();
   const products = await manager.getProductsJson();
 
   res.render("realtimeproducts", {
@@ -54,9 +54,9 @@ export async function getRealTimeProductsHandler(req, res) {
   });
 }
 
-export async function getCartByIdHandler(req, res) {
+export async function getCartByIdView(req, res) {
   const { cid } = req.params;
-  const manager = new CartManager();
+  const manager = new CartDaoMongo();
   const cart = await manager.getCartByIdJson(cid);
 
   let total = 0;
@@ -73,11 +73,11 @@ export async function getCartByIdHandler(req, res) {
   });
 }
 
-export async function getChatHandler(req, res) {
+export async function getChatView(req, res) {
   res.render("chat", {});
 }
 
-export async function getRegisterHandler(req, res) {
+export async function getRegisterView(req, res) {
   if (req.user?.user) {
     res.redirect("/products");
 
@@ -87,7 +87,7 @@ export async function getRegisterHandler(req, res) {
   res.render("register", { user: req.user?.user || null });
 }
 
-export async function getLoginHandler(req, res) {
+export async function getLoginView(req, res) {
   if (req.user?.user) {
     res.redirect("/products");
 
@@ -97,7 +97,7 @@ export async function getLoginHandler(req, res) {
   res.render("login", { user: req.user?.user || null });
 }
 
-export async function getRegisterFailHandler(req, res) {
+export async function getRegisterFailView(req, res) {
   res.render("register", {
     user: null,
     message: {
@@ -107,7 +107,7 @@ export async function getRegisterFailHandler(req, res) {
   });
 }
 
-export async function getLoginFailHandler(req, res) {
+export async function getLoginFailView(req, res) {
   res.render("login", {
     user: null,
     message: {
@@ -117,7 +117,7 @@ export async function getLoginFailHandler(req, res) {
   });
 }
 
-export async function getLogoutHandler(req, res) {
+export async function getLogoutView(req, res) {
   try {
     res.render("login", {
       user: null,
@@ -140,7 +140,7 @@ export async function getLogoutHandler(req, res) {
   }
 }
 
-export async function getGithubCallbackHandler(req, res) {
+export async function getGithubCallbackView(req, res) {
   const { user } = req;
 
   if (user) {

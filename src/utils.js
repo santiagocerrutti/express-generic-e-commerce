@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
+import { Command, Option } from "commander";
 import jwt from "jsonwebtoken";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-
 import { env } from "./config/env.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,3 +32,19 @@ export async function isValidPassword(password, hash) {
 export function generateJwt(user) {
   return jwt.sign({ user }, env.JWT_SECRET, { expiresIn: "1h" });
 }
+
+export const ENV_OPTION = {
+  DEV: "development",
+  STAGE: "stage",
+  PROD: "production",
+};
+
+export const program = new Command()
+  .addOption(
+    new Option("--mode <mode>", "Environment").choices([
+      ENV_OPTION.DEV,
+      ENV_OPTION.STAGE,
+      ENV_OPTION.PROD,
+    ])
+  )
+  .parse();

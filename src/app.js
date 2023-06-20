@@ -1,10 +1,10 @@
 import cookieParser from "cookie-parser";
 import express from "express";
 import handlebars from "express-handlebars";
-import mongoose from "mongoose";
 import passport from "passport";
 
 import { env } from "./config/env.js";
+import { MongoConnection } from "./config/mongo.connection.js";
 import { initializePassport } from "./config/passport.config.js";
 import router from "./routes/index.js";
 import { SocketServer } from "./sockets/socket-server.js";
@@ -22,6 +22,7 @@ async function main() {
   );
   app.set("views", __dirname + "/views");
   app.set("view engine", "handlebars");
+
   /** Middleware configuration */
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -33,18 +34,17 @@ async function main() {
   /** Routes */
   app.use(router);
 
+  try {
+    MongoConnection.getInstance();
+  } catch (error) {
+    console.error(error);
+  }
+
   const server = app.listen(env.PORT, () => {
     console.log("Listening on port " + env.PORT);
   });
 
   SocketServer.createSocketServer(server);
-
-  console.log("mongoURL", env.MONGO_URL);
-  try {
-    await mongoose.connect(env.MONGO_URL);
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 main();

@@ -1,7 +1,7 @@
 import MUUID from "uuid-mongodb";
 import { MessageModel } from "./models/message.model.js";
 
-export class MessageManager {
+export class MessageDaoMongo {
   constructor() {}
 
   async addMessage(message) {

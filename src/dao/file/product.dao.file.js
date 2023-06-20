@@ -3,7 +3,7 @@ import Ajv from "ajv";
 import { v4 as uuidv4 } from "uuid";
 
 const PATH = "./data/products.json";
-export class ProductManager {
+export class ProductDaoFile {
   constructor() {
     this.path = PATH;
     this.products = [];
