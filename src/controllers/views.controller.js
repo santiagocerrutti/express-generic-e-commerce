@@ -1,6 +1,6 @@
 import { env } from "../config/env.js";
 import { CartDaoMongo } from "../dao/db/cart.dao.mongo.js";
-import { ProductsService } from "../services/products.service.js";
+import { ProductsService } from "../services/index.js";
 import { cookieConfig, createTokenFromUser } from "./sessions.controller.js";
 
 export async function getProductsView(req, res) {

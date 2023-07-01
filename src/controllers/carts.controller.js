@@ -1,4 +1,4 @@
-import { CartsService } from "../services/carts.service";
+import { CartsService } from "../services/index.js";
 
 export async function getCarts(req, res) {
   const { limit } = req.query;

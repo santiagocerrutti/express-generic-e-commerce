@@ -3,7 +3,7 @@ import { Strategy as GitHubStrategy } from "passport-github2";
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
 
-import { UsersService } from "../services/users.service.js";
+import { UsersService } from "../services/index.js";
 import { isValidPassword } from "../utils.js";
 import { env } from "./env.js";
 
