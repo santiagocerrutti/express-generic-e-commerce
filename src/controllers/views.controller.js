@@ -1,11 +1,11 @@
 import { env } from "../config/env.js";
 import { CartDaoMongo } from "../dao/db/cart.dao.mongo.js";
-import { ProductDaoMongo } from "../dao/db/product.dao.mongo.js";
+import { ProductsService } from "../services/products.service.js";
 import { cookieConfig, createTokenFromUser } from "./sessions.controller.js";
 
 export async function getProductsView(req, res) {
-  const manager = new ProductDaoMongo();
-  const products = await manager.getProductsJson();
+  const service = new ProductsService();
+  const products = await service.getProductsJson();
 
   res.render("index", {
     user: req.user?.user || null,
@@ -15,7 +15,7 @@ export async function getProductsView(req, res) {
 
 export async function getProductsPaginateView(req, res) {
   const { page, limit } = req.query;
-  const manager = new ProductDaoMongo();
+  const manager = new ProductsService();
 
   const result = await manager.getProductsPaginateJson(limit, page);
 
@@ -45,8 +45,8 @@ function buildLink(reqQuery, page) {
 }
 
 export async function getRealTimeProductsView(req, res) {
-  const manager = new ProductDaoMongo();
-  const products = await manager.getProductsJson();
+  const service = new ProductsService();
+  const products = await service.getProductsJson();
 
   res.render("realtimeproducts", {
     user: req.user?.user || null,
@@ -56,8 +56,8 @@ export async function getRealTimeProductsView(req, res) {
 
 export async function getCartByIdView(req, res) {
   const { cid } = req.params;
-  const manager = new CartDaoMongo();
-  const cart = await manager.getCartByIdJson(cid);
+  const service = new CartDaoMongo();
+  const cart = await service.getCartByIdJson(cid);
 
   let total = 0;
   for (const item of cart.products) {

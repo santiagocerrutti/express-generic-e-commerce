@@ -1,7 +1,7 @@
 import QueryString from "qs";
 import { env } from "../config/env.js";
-import { ProductDaoMongo } from "../dao/db/product.dao.mongo.js";
 import { SocketServer } from "../sockets/socket-server.js";
+import { ProductsService } from "../services/index.js";
 
 export async function getProducts(req, res) {
   const { limit, page, query, sort } = req.query;
@@ -9,9 +9,9 @@ export async function getProducts(req, res) {
     ? QueryString.parse(query, { delimiter: /[;,]/ })
     : {};
 
-  const manager = new ProductDaoMongo();
+  const service = new ProductsService();
   const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } =
-    await manager.getProductsPaginate(limit, page, queryObject, sort);
+    await service.getProductsPaginate(limit, page, queryObject, sort);
 
   const prevLink = hasPrevPage ? buildLink(req.query, prevPage) : null;
   const nextLink = hasNextPage ? buildLink(req.query, nextPage) : null;
@@ -42,8 +42,8 @@ export async function getProductById(req, res) {
 
   try {
     if (pid) {
-      const manager = new ProductDaoMongo();
-      const foundProduct = await manager.getProductById(pid);
+      const service = new ProductsService();
+      const foundProduct = await service.getProductById(pid);
 
       res.sendSuccess(foundProduct);
     }
@@ -60,10 +60,10 @@ export async function getProductById(req, res) {
 
 export async function createProduct(req, res) {
   try {
-    const manager = new ProductDaoMongo();
-    const result = await manager.addProduct(req.body);
+    const service = new ProductsService();
+    const result = await service.addProduct(req.body);
 
-    await emitProductsUpdate(manager);
+    await emitProductsUpdate(service);
 
     res.sendCreated(result);
   } catch (error) {
@@ -79,10 +79,10 @@ export async function createProduct(req, res) {
 
 export async function updateProduct(req, res) {
   try {
-    const manager = new ProductDaoMongo();
-    const result = await manager.updateProduct(req.params.pid, req.body);
+    const service = new ProductsService();
+    const result = await service.updateProduct(req.params.pid, req.body);
 
-    await emitProductsUpdate(manager);
+    await emitProductsUpdate(service);
 
     res.sendSuccess(result);
   } catch (error) {
@@ -102,10 +102,10 @@ export async function updateProduct(req, res) {
 
 export async function deleteProduct(req, res) {
   try {
-    const manager = new ProductDaoMongo();
-    const result = await manager.deleteProduct(req.params.pid);
+    const service = new ProductsService();
+    const result = await service.deleteProduct(req.params.pid);
 
-    await emitProductsUpdate(manager);
+    await emitProductsUpdate(service);
 
     res.sendSuccess(result);
   } catch (error) {
@@ -119,8 +119,8 @@ export async function deleteProduct(req, res) {
   }
 }
 
-async function emitProductsUpdate(manager) {
-  const products = await manager.getProducts();
+async function emitProductsUpdate(service) {
+  const products = await service.getProducts();
 
   SocketServer.getInstance().emit("products-updated", products);
 }

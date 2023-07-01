@@ -1,5 +1,6 @@
-import fs from "node:fs";
+/* eslint-disable no-unused-vars */
 import Ajv from "ajv";
+import fs from "node:fs";
 import { v4 as uuidv4 } from "uuid";
 
 const PATH = "./data/products.json";
@@ -9,19 +10,19 @@ export class ProductDaoFile {
     this.products = [];
   }
 
-  async retreiveProducts() {
+  async _retreiveProducts() {
     const content = await fs.promises.readFile(this.path);
     const products = JSON.parse(content);
 
     return products;
   }
 
-  async saveProducts(products) {
+  async _saveProducts(products) {
     const content = JSON.stringify(products);
     fs.promises.writeFile(this.path, content);
   }
 
-  validateAddProduct(product) {
+  _validateAddProduct(product) {
     const schema = {
       type: "object",
       properties: {
@@ -54,9 +55,50 @@ export class ProductDaoFile {
     };
   }
 
+  async getProducts(limit = 0) {
+    this.products = await this._retreiveProducts();
+
+    if (limit) {
+      return this.products.slice(0, limit);
+    }
+
+    return this.products;
+  }
+
+  async getProductsPaginate(
+    limit = 10,
+    page = 1,
+    query = {},
+    sort = undefined
+  ) {
+    throw new Error("Not implemented yet.");
+  }
+
+  async getProductsJson(limit = 0) {
+    return this.getProducts(limit);
+  }
+
+  async getProductsPaginateJson(limit = 10, page = 1) {
+    throw new Error("Not implemented yet.");
+  }
+
+  async getProductById(productId) {
+    this.products = await this._retreiveProducts();
+    const product = this.products.find((p) => p.id == productId);
+
+    if (product) {
+      return product;
+    }
+
+    const error = new Error(`Product ${productId} not found.`);
+    error.code = "NOT_FOUND";
+
+    throw error;
+  }
+
   async addProduct(product) {
-    this.products = await this.retreiveProducts();
-    const validateResult = this.validateAddProduct(product);
+    this.products = await this._retreiveProducts();
+    const validateResult = this._validateAddProduct(product);
 
     if (
       validateResult.valid &&
@@ -67,7 +109,7 @@ export class ProductDaoFile {
         id: uuidv4(),
       };
       this.products.push(newProduct);
-      await this.saveProducts(this.products);
+      await this._saveProducts(this.products);
 
       return newProduct;
     } else if (!validateResult.valid) {
@@ -84,31 +126,7 @@ export class ProductDaoFile {
     }
   }
 
-  async getProducts(limit = 0) {
-    this.products = await this.retreiveProducts();
-
-    if (limit) {
-      return this.products.slice(0, limit);
-    }
-
-    return this.products;
-  }
-
-  async getProductById(productId) {
-    this.products = await this.retreiveProducts();
-    const product = this.products.find((p) => p.id == productId);
-
-    if (product) {
-      return product;
-    }
-
-    const error = new Error(`Product ${productId} not found.`);
-    error.code = "NOT_FOUND";
-
-    throw error;
-  }
-
-  validateUpdateProduct(product) {
+  _validateUpdateProduct(product) {
     const schema = {
       type: "object",
       properties: {
@@ -134,7 +152,7 @@ export class ProductDaoFile {
 
   async updateProduct(productId, fieldsToUpdate) {
     const productToUpdate = await this.getProductById(productId);
-    const validateResult = this.validateUpdateProduct(fieldsToUpdate);
+    const validateResult = this._validateUpdateProduct(fieldsToUpdate);
 
     if (validateResult.valid && productToUpdate) {
       if (
@@ -144,7 +162,7 @@ export class ProductDaoFile {
         const index = this.products.findIndex((p) => p.id === productId);
         this.products[index] = { ...productToUpdate, ...fieldsToUpdate };
 
-        await this.saveProducts(this.products);
+        await this._saveProducts(this.products);
 
         return this.products[index];
       } else {
@@ -171,7 +189,7 @@ export class ProductDaoFile {
 
     if (productToDelete) {
       const products = this.products.filter((p) => p.id !== productId);
-      await this.saveProducts(products);
+      await this._saveProducts(products);
 
       return productToDelete;
     }

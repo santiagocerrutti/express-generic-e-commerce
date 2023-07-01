@@ -1,9 +1,9 @@
-import { CartDaoMongo } from "../dao/db/cart.dao.mongo.js";
+import { CartsService } from "../services/carts.service";
 
 export async function getCarts(req, res) {
   const { limit } = req.query;
-  const manager = new CartDaoMongo();
-  const carts = await manager.getCarts(limit);
+  const service = new CartsService();
+  const carts = await service.getCarts(limit);
   res.sendSuccess(carts);
 }
 
@@ -11,8 +11,8 @@ export async function getCartById(req, res) {
   const { cid } = req.params;
 
   try {
-    const manager = new CartDaoMongo();
-    const foundCart = await manager.getCartById(cid);
+    const service = new CartsService();
+    const foundCart = await service.getCartById(cid);
 
     res.sendSuccess(foundCart);
   } catch (error) {
@@ -28,8 +28,8 @@ export async function getCartById(req, res) {
 
 export async function createCart(req, res) {
   try {
-    const manager = new CartDaoMongo();
-    const cart = await manager.addCart();
+    const service = new CartsService();
+    const cart = await service.addCart();
 
     res.sendSuccess(cart);
   } catch (error) {
@@ -40,8 +40,8 @@ export async function createCart(req, res) {
 export async function addProductToCart(req, res) {
   const { cid, pid } = req.params;
   try {
-    const manager = new CartDaoMongo();
-    const cart = await manager.addProductToCart(cid, pid, 1);
+    const service = new CartsService();
+    const cart = await service.addProductToCart(cid, pid, 1);
 
     res.sendSuccess(cart);
   } catch (error) {
@@ -59,8 +59,8 @@ export async function updateProductsOfCart(req, res) {
   const { cid } = req.params;
   const { products } = req.body;
   try {
-    const manager = new CartDaoMongo();
-    const cart = await manager.setProductsToCart(cid, products);
+    const service = new CartsService();
+    const cart = await service.setProductsToCart(cid, products);
     res.sendSuccess(cart);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
@@ -77,8 +77,8 @@ export async function updateProductOfCart(req, res) {
   const { cid, pid } = req.params;
   const { quantity } = req.body;
   try {
-    const manager = new CartDaoMongo();
-    const cart = await manager.updateProductOfCart(cid, pid, quantity);
+    const service = new CartsService();
+    const cart = await service.updateProductOfCart(cid, pid, quantity);
     res.sendSuccess(cart);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
@@ -94,8 +94,8 @@ export async function updateProductOfCart(req, res) {
 export async function deleteAllProducts(req, res) {
   const { cid } = req.params;
   try {
-    const manager = new CartDaoMongo();
-    const cart = await manager.deleteProductsOfCart(cid);
+    const service = new CartsService();
+    const cart = await service.deleteProductsOfCart(cid);
     res.sendSuccess(cart);
   } catch (error) {
     if (error.code === "NOT_FOUND") {
@@ -111,8 +111,8 @@ export async function deleteAllProducts(req, res) {
 export async function deleteProductOfCart(req, res) {
   const { cid, pid } = req.params;
   try {
-    const manager = new CartDaoMongo();
-    const cart = await manager.deleteProductOfCart(cid, pid);
+    const service = new CartsService();
+    const cart = await service.deleteProductOfCart(cid, pid);
     res.sendSuccess(cart);
   } catch (error) {
     if (error.code === "NOT_FOUND") {

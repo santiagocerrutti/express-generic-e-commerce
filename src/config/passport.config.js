@@ -3,7 +3,7 @@ import { Strategy as GitHubStrategy } from "passport-github2";
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
 
-import { UserDaoMongo } from "../dao/db/user.dao.mongo.js";
+import { UsersService } from "../services/users.service.js";
 import { isValidPassword } from "../utils.js";
 import { env } from "./env.js";
 
@@ -25,8 +25,8 @@ export function initializePassport() {
       },
       async (req, username, password, done) => {
         try {
-          const manager = new UserDaoMongo();
-          const result = await manager.createUser({
+          const service = new UsersService();
+          const result = await service.createUser({
             ...req.body,
             email: username,
             password,
@@ -52,8 +52,8 @@ export function initializePassport() {
       },
       async (username, password, done) => {
         try {
-          const manager = new UserDaoMongo();
-          const user = await manager.getUserByEmail(username);
+          const service = new UsersService();
+          const user = await service.getUserByEmail(username);
 
           if (user) {
             const validPassword = await isValidPassword(
@@ -105,11 +105,11 @@ export function initializePassport() {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          const manager = new UserDaoMongo();
-          const user = await manager.getUserByEmail(profile._json.email);
+          const service = new UsersService();
+          const user = await service.getUserByEmail(profile._json.email);
 
           if (!user) {
-            const result = await manager.createUser({
+            const result = await service.createUser({
               first_name: profile._json.name,
               last_name: null,
               email: profile._json.email,
@@ -134,8 +134,8 @@ export function initializePassport() {
 
   passport.deserializeUser(async (id, done) => {
     try {
-      const manager = new UserDaoMongo();
-      const user = await manager.findById(id);
+      const service = new UsersService();
+      const user = await service.findById(id);
 
       return done(null, user);
     } catch (error) {
