@@ -1,7 +1,6 @@
-import { MessageDaoMongo } from "../dao/db/message.dao.mongo.js";
+import { messagesService } from "../services/index.js";
 
 const messageLogs = [];
-const manager = new MessageDaoMongo();
 
 export function registerChatHandlers(io, socket) {
   function newUser(data) {
@@ -14,7 +13,7 @@ export function registerChatHandlers(io, socket) {
   async function newMessage(data) {
     messageLogs.push(data);
 
-    await manager.addMessage(data);
+    await messagesService.addMessage(data);
 
     /** This event will be received by every socket */
     io.emit("message-received", data);

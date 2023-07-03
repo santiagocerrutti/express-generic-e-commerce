@@ -1,14 +1,15 @@
-import { CartDaoMongo } from "../dao/db/cart.dao.mongo.js";
-import { MessageDaoMongo } from "../dao/db/message.dao.mongo.js";
-import { ProductDaoMongo } from "../dao/db/product.dao.mongo.js";
-import { UserDaoMongo } from "../dao/db/user.dao.mongo.js";
+import { CartDao, MessageDao, ProductDao, UserDao } from "../dao/factory.js";
+import {
+  CartRepository,
+  MessageRepository,
+  ProductRepository,
+  UserRepository,
+} from "../repository/index.js";
 
-export const CartsService = CartDaoMongo;
+export const cartsService = new CartRepository(new CartDao());
 
-export const MessagesService = MessageDaoMongo;
-// import { ProductDaoFile } from "../dao/file/product.dao.file.js";
+export const messagesService = new MessageRepository(new MessageDao());
 
-export const ProductsService = ProductDaoMongo;
-// export const ProductsService = ProductDaoFile;
+export const productsService = new ProductRepository(new ProductDao());
 
-export const UsersService = UserDaoMongo;
+export const usersService = new UserRepository(new UserDao());

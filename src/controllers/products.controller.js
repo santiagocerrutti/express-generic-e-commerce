@@ -1,7 +1,7 @@
 import QueryString from "qs";
 import { env } from "../config/env.js";
 import { SocketServer } from "../sockets/socket-server.js";
-import { ProductsService } from "../services/index.js";
+import { productsService } from "../services/index.js";
 
 export async function getProducts(req, res) {
   const { limit, page, query, sort } = req.query;
@@ -9,9 +9,8 @@ export async function getProducts(req, res) {
     ? QueryString.parse(query, { delimiter: /[;,]/ })
     : {};
 
-  const service = new ProductsService();
   const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } =
-    await service.getProductsPaginate(limit, page, queryObject, sort);
+    await productsService.getProductsPaginate(limit, page, queryObject, sort);
 
   const prevLink = hasPrevPage ? buildLink(req.query, prevPage) : null;
   const nextLink = hasNextPage ? buildLink(req.query, nextPage) : null;
@@ -42,8 +41,7 @@ export async function getProductById(req, res) {
 
   try {
     if (pid) {
-      const service = new ProductsService();
-      const foundProduct = await service.getProductById(pid);
+      const foundProduct = await productsService.getProductById(pid);
 
       res.sendSuccess(foundProduct);
     }
@@ -60,10 +58,9 @@ export async function getProductById(req, res) {
 
 export async function createProduct(req, res) {
   try {
-    const service = new ProductsService();
-    const result = await service.addProduct(req.body);
+    const result = await productsService.addProduct(req.body);
 
-    await emitProductsUpdate(service);
+    await emitProductsUpdate(productsService);
 
     res.sendCreated(result);
   } catch (error) {
@@ -79,10 +76,12 @@ export async function createProduct(req, res) {
 
 export async function updateProduct(req, res) {
   try {
-    const service = new ProductsService();
-    const result = await service.updateProduct(req.params.pid, req.body);
+    const result = await productsService.updateProduct(
+      req.params.pid,
+      req.body
+    );
 
-    await emitProductsUpdate(service);
+    await emitProductsUpdate(productsService);
 
     res.sendSuccess(result);
   } catch (error) {
@@ -102,10 +101,9 @@ export async function updateProduct(req, res) {
 
 export async function deleteProduct(req, res) {
   try {
-    const service = new ProductsService();
-    const result = await service.deleteProduct(req.params.pid);
+    const result = await productsService.deleteProduct(req.params.pid);
 
-    await emitProductsUpdate(service);
+    await emitProductsUpdate(productsService);
 
     res.sendSuccess(result);
   } catch (error) {
@@ -119,8 +117,8 @@ export async function deleteProduct(req, res) {
   }
 }
 
-async function emitProductsUpdate(service) {
-  const products = await service.getProducts();
+async function emitProductsUpdate(productsService) {
+  const products = await productsService.getProducts();
 
   SocketServer.getInstance().emit("products-updated", products);
 }

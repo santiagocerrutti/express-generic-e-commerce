@@ -12,7 +12,11 @@ import {
   getRegisterFailView,
   getRegisterView,
 } from "../controllers/views.controller.js";
-import { isAuthenticatedView } from "../middlewares/auth/index.js";
+import {
+  ROLES,
+  isAuthenticatedView,
+  isAuthorized,
+} from "../middlewares/auth/index.js";
 import { validateCartId } from "../middlewares/validation/cart.validator.js";
 import { Router } from "./Router.js";
 
@@ -26,7 +30,12 @@ class ViewsRouter extends Router {
 
     this.get("/realtimeproducts", isAuthenticatedView, getRealTimeProductsView);
 
-    this.get("/chat", isAuthenticatedView, getChatView);
+    this.get(
+      "/chat",
+      isAuthenticatedView,
+      isAuthorized(ROLES.USER),
+      getChatView
+    );
 
     this.get(
       "/cart/:cid",

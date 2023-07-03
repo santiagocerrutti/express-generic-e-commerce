@@ -1,4 +1,5 @@
 import { env } from "../config/env.js";
+import { UserDto } from "../dto/user.dto.js";
 import { generateJwt } from "../utils.js";
 
 export const cookieConfig = {
@@ -56,5 +57,6 @@ export async function logout(req, res) {
 }
 
 export async function getCurrent(req, res) {
-  res.sendSuccess(req.user);
+  const user = new UserDto(req.user.user);
+  res.sendSuccess({ user });
 }

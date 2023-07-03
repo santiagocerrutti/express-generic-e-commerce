@@ -4,7 +4,6 @@ import handlebars from "express-handlebars";
 import passport from "passport";
 
 import { env } from "./config/env.js";
-import { MongoConnection } from "./config/mongo.connection.js";
 import { initializePassport } from "./config/passport.config.js";
 import router from "./routes/index.js";
 import { SocketServer } from "./sockets/socket-server.js";
@@ -33,12 +32,6 @@ async function main() {
 
   /** Routes */
   app.use(router);
-
-  try {
-    MongoConnection.getInstance();
-  } catch (error) {
-    console.error(error);
-  }
 
   const server = app.listen(env.PORT, () => {
     console.log("Listening on port " + env.PORT);

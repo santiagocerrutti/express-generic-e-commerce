@@ -5,8 +5,9 @@
   "description": "application for managing products and orders of ecommerce",
   "main": "src/index.js",
   "scripts": {
+    "start:local": "node src/app.js --mode local",
     "start": "node src/app.js --mode production",
-    "dev": "nodemon src/app.js --mode development",
+    "start:dev": "nodemon src/app.js --mode development",
     "test": "jest"
   },
   "engines": {

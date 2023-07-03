@@ -7,6 +7,7 @@ import { ENV_OPTION, program } from "../utils.js";
 const { mode } = program.opts();
 
 const envPaths = {
+  [ENV_OPTION.LOCAL]: process.cwd() + "/.env.local",
   [ENV_OPTION.DEV]: process.cwd() + "/.env.dev",
   [ENV_OPTION.STAGE]: process.cwd() + "/.env.stage",
   [ENV_OPTION.PROD]: process.cwd() + "/.env.prod",
@@ -20,6 +21,7 @@ export const env = {
   //TODO: sería bueno que las base de datos de aplicación y de sesión sean distintas
   // Revisar cómo hacer para conectarnos a otra BD desde los manager.
   NODE_ENV: mode,
+  PERSISTENCE: process.env.PERSISTENCE || "MONGO",
   MONGO_URL:
     process.env.MONGO_URL ||
     "mongodb+srv://user:password@coderhousecluster.q3o8n6f.mongodb.net/db_name?retryWrites=true&w=majority",

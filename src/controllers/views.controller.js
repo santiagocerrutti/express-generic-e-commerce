@@ -1,11 +1,10 @@
 import { env } from "../config/env.js";
 import { CartDaoMongo } from "../dao/db/cart.dao.mongo.js";
-import { ProductsService } from "../services/index.js";
+import { productsService } from "../services/index.js";
 import { cookieConfig, createTokenFromUser } from "./sessions.controller.js";
 
 export async function getProductsView(req, res) {
-  const service = new ProductsService();
-  const products = await service.getProductsJson();
+  const products = await productsService.getProductsJson();
 
   res.render("index", {
     user: req.user?.user || null,
@@ -15,9 +14,8 @@ export async function getProductsView(req, res) {
 
 export async function getProductsPaginateView(req, res) {
   const { page, limit } = req.query;
-  const manager = new ProductsService();
 
-  const result = await manager.getProductsPaginateJson(limit, page);
+  const result = await productsService.getProductsPaginateJson(limit, page);
 
   const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } =
     result;
@@ -45,8 +43,7 @@ function buildLink(reqQuery, page) {
 }
 
 export async function getRealTimeProductsView(req, res) {
-  const service = new ProductsService();
-  const products = await service.getProductsJson();
+  const products = await productsService.getProductsJson();
 
   res.render("realtimeproducts", {
     user: req.user?.user || null,
