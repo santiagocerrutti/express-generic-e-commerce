@@ -71,7 +71,7 @@ export async function getCartByIdView(req, res) {
 }
 
 export async function getChatView(req, res) {
-  res.render("chat", {});
+  res.render("chat", { user: req.user?.user || null });
 }
 
 export async function getRegisterView(req, res) {

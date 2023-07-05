@@ -1,7 +1,7 @@
 // Los middlewares deben devolver funciones que respeten la firma (req, res, next)
-export function isAuthorized(roles) {
+export function isAuthorized(...roles) {
   return async function (req, res, next) {
-    if (roles.include(ROLES.PUBLIC)) {
+    if (roles.includes(ROLES.PUBLIC)) {
       next();
 
       return;
@@ -9,7 +9,7 @@ export function isAuthorized(roles) {
 
     const { user } = req.user;
 
-    if (user && roles.include(user.role)) {
+    if (user && roles.includes(user.role)) {
       next();
 
       return;

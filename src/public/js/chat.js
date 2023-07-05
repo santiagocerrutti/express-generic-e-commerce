@@ -1,30 +1,36 @@
 /* eslint-disable no-undef */
 const socket = io();
 
-let user = null;
+// let user = null;
 let messageInput = document.getElementById("message_input");
 let messageLog = document.getElementById("message_log");
 
-Swal.fire({
-  input: "email",
-  text: "Ingrese su email para chatear:",
-  allowOutsideClick: false,
-  didClose: () => {
-    socket.emit("new-user", {
-      user,
-    });
-  },
-}).then((result) => {
-  user = result.value;
+const userEmail = document.getElementById("user.email")?.getAttribute("value");
+// const userId = document.getElementById("user._id")?.getAttribute("value");
+
+// Swal.fire({
+//   input: "email",
+//   text: "Ingrese su email para chatear:",
+//   allowOutsideClick: false,
+//   didClose: () => {
+socket.emit("new-user", {
+  user: userEmail,
 });
+//   },
+// }).then((result) => {
+//   user = result.value;
+// });
 
 messageInput.addEventListener("keyup", (event) => {
+  console.log("HERE");
+
   if (event.key === "Enter") {
     const { value } = messageInput;
+    console.log(userEmail);
 
     if (value.trim().length >= 0) {
       socket.emit("new-message", {
-        user,
+        user: userEmail,
         message: value,
       });
       messageInput.value = "";

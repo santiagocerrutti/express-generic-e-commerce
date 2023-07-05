@@ -9,6 +9,7 @@ import {
   updateProductsOfCart,
 } from "../controllers/carts.controller.js";
 import { isAuthenticated } from "../middlewares/auth/index.js";
+import { validateCartOwnership } from "../middlewares/validation/cart-ownership.validator.js";
 import {
   validateCartId,
   validateProductQuantity,
@@ -21,7 +22,13 @@ class CartsRouter extends Router {
   init() {
     this.get("/", isAuthenticated, getCarts);
 
-    this.get("/:cid", isAuthenticated, validateCartId, getCartById);
+    this.get(
+      "/:cid",
+      isAuthenticated,
+      validateCartId,
+      validateCartOwnership,
+      getCartById
+    );
 
     this.post("/", isAuthenticated, createCart);
 
@@ -31,6 +38,7 @@ class CartsRouter extends Router {
       isAuthenticated,
       validateCartId,
       validateProductId,
+      validateCartOwnership,
       addProductToCart
     );
 
@@ -40,6 +48,7 @@ class CartsRouter extends Router {
       isAuthenticated,
       validateCartId,
       validateProductsOfCart,
+      validateCartOwnership,
       updateProductsOfCart
     );
 
@@ -50,11 +59,18 @@ class CartsRouter extends Router {
       validateCartId,
       validateProductId,
       validateProductQuantity,
+      validateCartOwnership,
       updateProductOfCart
     );
 
     // TODO: validar ownership del carrito
-    this.delete("/:cid", isAuthenticated, validateCartId, deleteAllProducts);
+    this.delete(
+      "/:cid",
+      isAuthenticated,
+      validateCartId,
+      validateCartOwnership,
+      deleteAllProducts
+    );
 
     // TODO: validar ownership del carrito
     this.delete(
@@ -62,6 +78,7 @@ class CartsRouter extends Router {
       isAuthenticated,
       validateCartId,
       validateProductId,
+      validateCartOwnership,
       deleteProductOfCart
     );
   }

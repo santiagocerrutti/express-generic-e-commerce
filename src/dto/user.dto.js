@@ -5,5 +5,6 @@ export class UserDto {
     this.email = user.email;
     this.date_of_birth = user.date_of_birth;
     this.role = user.role;
+    this.cart = user.cart;
   }
 }
