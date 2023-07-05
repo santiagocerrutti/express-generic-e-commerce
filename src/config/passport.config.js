@@ -3,7 +3,12 @@ import { Strategy as GitHubStrategy } from "passport-github2";
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
 
-import { cartsService, usersService } from "../services/index.js";
+import {
+  addCart,
+  createUser,
+  findUserById,
+  getUserByEmail,
+} from "../use-cases/index.js";
 import { isValidPassword } from "../utils.js";
 import { env } from "./env.js";
 
@@ -25,10 +30,10 @@ export function initializePassport() {
       },
       async (req, username, password, done) => {
         try {
-          const cart = await cartsService.addCart();
+          const cart = await addCart();
           const role = username === env.ADMIN_EMAIL ? "admin" : "user";
 
-          const result = await usersService.createUser({
+          const result = await createUser({
             ...req.body,
             email: username,
             password,
@@ -56,7 +61,7 @@ export function initializePassport() {
       },
       async (username, password, done) => {
         try {
-          const user = await usersService.getUserByEmail(username);
+          const user = await getUserByEmail(username);
 
           if (user) {
             const validPassword = await isValidPassword(
@@ -108,14 +113,14 @@ export function initializePassport() {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          const user = await usersService.getUserByEmail(profile._json.email);
+          const user = await getUserByEmail(profile._json.email);
 
           if (!user) {
-            const cart = await cartsService.addCart();
+            const cart = await addCart();
             const role =
               profile._json.email === env.ADMIN_EMAIL ? "admin" : "user";
 
-            const result = await usersService.createUser({
+            const result = await createUser({
               first_name: profile._json.name,
               last_name: null,
               email: profile._json.email,
@@ -142,7 +147,7 @@ export function initializePassport() {
 
   passport.deserializeUser(async (id, done) => {
     try {
-      const user = await usersService.findById(id);
+      const user = await findUserById(id);
 
       return done(null, user);
     } catch (error) {

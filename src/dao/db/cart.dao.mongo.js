@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import MUUID from "uuid-mongodb";
 import { CartModel } from "./models/cart.model.js";
 import { ProductModel } from "./models/product.model.js";
@@ -5,91 +6,42 @@ import { ProductModel } from "./models/product.model.js";
 export class CartDaoMongo {
   constructor() {}
 
-  async addCart() {
-    const newCart = await CartModel.create({});
+  async getAll(limit = 0) {
+    return CartModel.find().populate("products.product").limit(limit).lean();
+  }
+
+  async getById(cartId) {
+    return CartModel.findById(MUUID.from(cartId))
+      .populate("products.product")
+      .lean();
+  }
+
+  async getOneByFilter(filterQuery) {
+    throw new Error("Not implemented yet.");
+  }
+
+  async addOne(cart) {
+    const newCart = await CartModel.create(cart);
 
     return newCart;
   }
 
-  async getCarts(limit = 0) {
-    return CartModel.find().populate("products.product").limit(limit);
-  }
-
-  async getCartById(cartId) {
-    const cart = await CartModel.findById(MUUID.from(cartId)).populate(
-      "products.product"
-    );
-
-    if (cart) {
-      return cart;
-    }
-
-    const error = new Error(`Cart ${cartId} not found.`);
-    error.code = "NOT_FOUND";
-
-    throw error;
-  }
-
-  async getCartByIdJson(cartId) {
-    const cart = await CartModel.findById(MUUID.from(cartId))
-      .populate("products.product")
-      .lean();
-
-    if (cart) {
-      return cart;
-    }
-
-    const error = new Error(`Cart ${cartId} not found.`);
-    error.code = "NOT_FOUND";
-
-    throw error;
-  }
-
-  async addProductToCart(cartId, productId, quantity) {
-    const { cartDocument, productUUID } = await this._getCartAndProductDocument(
-      cartId,
-      productId
-    );
-
-    const cartProduct = cartDocument.products.find(
-      (p) => p.product.toString() === productId.toString()
-    );
-
-    if (cartProduct) {
-      cartProduct.quantity += quantity;
-    } else {
-      cartDocument.products.push({
-        product: productUUID,
-        quantity,
-      });
-    }
-
-    await cartDocument.save();
-
-    return cartDocument;
-  }
-
-  async setProductsToCart(cartId, products) {
+  async updateOne(cartId, fieldsToUpdate) {
     let result = null;
+    const formattedFieldsToUpdate = fieldsToUpdate;
+
+    if (fieldsToUpdate.products) {
+      formattedFieldsToUpdate.products = this._validateAndFormatProducts(
+        fieldsToUpdate.products
+      );
+    }
+
     try {
-      const formattedProducts = products.map((p) => {
-        return { ...p, product: MUUID.from(p.product) };
-      });
-      for (const p of formattedProducts) {
-        const foundProduct = await ProductModel.findById(p.product);
-
-        if (!foundProduct) {
-          const e = new Error(`Product ${p.product} not found.`);
-          e.code = "NOT_FOUND";
-
-          throw e;
-        }
-      }
-      result = await CartModel.findOneAndUpdate(
+      result = CartModel.findOneAndUpdate(
         {
           _id: MUUID.from(cartId),
         },
-        { products: formattedProducts }
+        { ...formattedFieldsToUpdate }
       );
     } catch (error) {
       if (error.code) {
@@ -108,101 +60,28 @@ export class CartDaoMongo {
       return updatedCart;
     }
 
-    const e = new Error(`Cart ${cartId} not found.`);
-    e.code = "NOT_FOUND";
-
-    throw e;
+    return null;
   }
 
-  async deleteProductsOfCart(cartId) {
-    return this.setProductsToCart(cartId, []);
-  }
+  async _validateAndFormatProducts(products) {
+    const formattedProducts = products.map((p) => {
+      return { ...p, product: MUUID.from(p.product) };
+    });
+    for (const p of formattedProducts) {
+      const foundProduct = await ProductModel.findById(p.product);
 
-  async updateProductOfCart(cartId, productId, quantity) {
-    const { cartDocument } = await this._getCartAndProductDocument(
-      cartId,
-      productId
-    );
+      if (!foundProduct) {
+        const e = new Error(`Product ${p.product} not found.`);
+        e.code = "NOT_FOUND";
 
-    const cartProduct = cartDocument.products.find(
-      (p) => p.product.toString() === productId.toString()
-    );
-
-    if (cartProduct) {
-      if (quantity > 0) {
-        cartProduct.quantity = quantity;
-      } else {
-        cartDocument.products = cartDocument.products.filter(
-          (p) => p.product.toString() !== productId.toString()
-        );
+        throw e;
       }
-    } else {
-      const error = new Error(
-        `Product ${productId} not included in cart ${cartId}.`
-      );
-      error.code = "NOT_FOUND";
-
-      throw error;
     }
 
-    await cartDocument.save();
-
-    return cartDocument;
+    return formattedProducts;
   }
 
-  async deleteProductOfCart(cartId, productId) {
-    const { cartDocument } = await this._getCartAndProductDocument(
-      cartId,
-      productId
-    );
-
-    const cartProduct = cartDocument.products.find(
-      (p) => p.product.toString() === productId.toString()
-    );
-
-    if (cartProduct) {
-      cartDocument.products = cartDocument.products.filter(
-        (p) => p.product.toString() !== productId.toString()
-      );
-    } else {
-      const error = new Error(
-        `Product ${productId} not included in cart ${cartId}.`
-      );
-      error.code = "NOT_FOUND";
-
-      throw error;
-    }
-
-    await cartDocument.save();
-
-    return cartDocument;
-  }
-
-  async _getCartAndProductDocument(cartId, productId) {
-    const [cartUUID, productUUID] = [MUUID.from(cartId), MUUID.from(productId)];
-    const cartDocument = await CartModel.findById(cartUUID);
-
-    if (!cartDocument) {
-      const error = new Error(`Cart ${cartId} not found.`);
-      error.code = "NOT_FOUND";
-
-      throw error;
-    }
-
-    const productDocument = await ProductModel.findById(productUUID);
-
-    if (!productDocument) {
-      const error = new Error(`Product ${productId} not found.`);
-      error.code = "NOT_FOUND";
-
-      throw error;
-    }
-
-    return {
-      cartUUID,
-      productUUID,
-      cartDocument,
-      productDocument,
-    };
+  async deleteOne(objectId) {
+    throw new Error("Not implemented yet.");
   }
 }

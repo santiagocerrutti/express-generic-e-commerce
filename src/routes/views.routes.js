@@ -1,5 +1,14 @@
 import { passportCall } from "../config/passportCall.js";
+import { viewsController } from "../controllers/views.controller.js";
 import {
+  ROLES,
+  isAuthenticatedView,
+  isAuthorized,
+} from "../middlewares/auth/index.js";
+import { validateCartId } from "../middlewares/validation/cart.validator.js";
+import { Router } from "./Router.js";
+
+const {
   getCartByIdView,
   getChatView,
   getGithubCallbackView,
@@ -11,15 +20,7 @@ import {
   getRealTimeProductsView,
   getRegisterFailView,
   getRegisterView,
-} from "../controllers/views.controller.js";
-import {
-  ROLES,
-  isAuthenticatedView,
-  isAuthorized,
-} from "../middlewares/auth/index.js";
-import { validateCartId } from "../middlewares/validation/cart.validator.js";
-import { Router } from "./Router.js";
-
+} = viewsController;
 class ViewsRouter extends Router {
   init() {
     this.get("/", getLoginView);

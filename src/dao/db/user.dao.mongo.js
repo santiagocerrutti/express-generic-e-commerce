@@ -1,40 +1,39 @@
+/* eslint-disable no-unused-vars */
 import MUUID from "uuid-mongodb";
-import { createHash } from "../../utils.js";
 import { UserModel } from "./models/user.model.js";
 
 export class UserDaoMongo {
   constructor() {}
 
-  async createUser(user) {
-    try {
-      const hashedPassword = user.password
-        ? await createHash(user.password)
-        : null;
-
-      await UserModel.create({
-        ...user,
-        password: hashedPassword,
-      });
-
-      return this.getUserByEmail(user.email);
-    } catch (error) {
-      console.log(error);
-      const e = new Error(`Email ${user.email} duplicated`);
-      e.code = "DUPLICATED_KEY";
-
-      throw e;
-    }
+  async getAll(limit = 0) {
+    throw new Error("Not implemented yet.");
   }
 
-  async getUserByEmail(email) {
-    const foundUser = await UserModel.findOne({ email }).lean();
-
-    return foundUser;
+  async getAllPaginate(limit = 10, page = 1, query = {}, sort = undefined) {
+    throw new Error("Not implemented yet.");
   }
 
-  async findById(userId) {
+  async getById(userId) {
     const foundUser = await UserModel.findById(MUUID.from(userId)).lean();
 
     return foundUser;
+  }
+
+  async getOneByFilter(filterQuery) {
+    const foundUser = await UserModel.findOne(filterQuery).lean();
+
+    return foundUser;
+  }
+
+  async addOne(user) {
+    await UserModel.create(user);
+  }
+
+  async updateOne(objectId, fieldsToUpdate) {
+    throw new Error("Not implemented yet.");
+  }
+
+  async deleteOne(productId) {
+    throw new Error("Not implemented yet.");
   }
 }

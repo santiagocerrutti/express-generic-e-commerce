@@ -55,7 +55,7 @@ export class ProductDaoFile {
     };
   }
 
-  async getProducts(limit = 0) {
+  async getAll(limit = 0) {
     this.products = await this._retreiveProducts();
 
     if (limit) {
@@ -65,24 +65,11 @@ export class ProductDaoFile {
     return this.products;
   }
 
-  async getProductsPaginate(
-    limit = 10,
-    page = 1,
-    query = {},
-    sort = undefined
-  ) {
+  async getAllPaginate(limit = 10, page = 1, query = {}, sort = undefined) {
     throw new Error("Not implemented yet.");
   }
 
-  async getProductsJson(limit = 0) {
-    return this.getProducts(limit);
-  }
-
-  async getProductsPaginateJson(limit = 10, page = 1) {
-    throw new Error("Not implemented yet.");
-  }
-
-  async getProductById(productId) {
+  async getById(productId) {
     this.products = await this._retreiveProducts();
     const product = this.products.find((p) => p.id == productId);
 
@@ -96,7 +83,11 @@ export class ProductDaoFile {
     throw error;
   }
 
-  async addProduct(product) {
+  async getOneByFilter(filterQuery) {
+    throw new Error("Not implemented yet.");
+  }
+
+  async addOne(product) {
     this.products = await this._retreiveProducts();
     const validateResult = this._validateAddProduct(product);
 
@@ -150,7 +141,7 @@ export class ProductDaoFile {
     };
   }
 
-  async updateProduct(productId, fieldsToUpdate) {
+  async updateOne(productId, fieldsToUpdate) {
     const productToUpdate = await this.getProductById(productId);
     const validateResult = this._validateUpdateProduct(fieldsToUpdate);
 
@@ -184,7 +175,7 @@ export class ProductDaoFile {
     return null;
   }
 
-  async deleteProduct(productId) {
+  async deleteOne(productId) {
     const productToDelete = await this.getProductById(productId);
 
     if (productToDelete) {

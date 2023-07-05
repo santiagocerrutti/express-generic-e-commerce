@@ -1,119 +1,157 @@
-import { cartsService } from "../services/index.js";
+import {
+  addCart,
+  addProductToCart,
+  deleteProductOfCart,
+  deleteProductsOfCart,
+  getCartById,
+  getCarts,
+  purchaseCart,
+  updateProductOfCart,
+  updateProductsOfCart,
+} from "../use-cases/index.js";
 
-export async function getCarts(req, res) {
-  const { limit } = req.query;
+class CartsController {
+  constructor() {}
 
-  const carts = await cartsService.getCarts(limit);
-  res.sendSuccess(carts);
-}
+  getCarts = async (req, res) => {
+    const { limit } = req.query;
 
-export async function getCartById(req, res) {
-  const { cid } = req.params;
+    const carts = await getCarts(limit);
+    res.sendSuccess(carts);
+  };
 
-  try {
-    const foundCart = await cartsService.getCartById(cid);
+  getCartById = async (req, res) => {
+    const { cid } = req.params;
 
-    res.sendSuccess(foundCart);
-  } catch (error) {
-    if (error.code === "NOT_FOUND") {
-      res.sendNotFound(error.message);
+    try {
+      const foundCart = await getCartById(cid);
 
-      return;
+      res.sendSuccess(foundCart);
+    } catch (error) {
+      if (error.code === "NOT_FOUND") {
+        res.sendNotFound(error.message);
+
+        return;
+      }
+
+      res.sendInternalServerError();
     }
+  };
 
-    res.sendInternalServerError();
-  }
-}
+  createCart = async (req, res) => {
+    try {
+      const cart = await addCart();
 
-export async function createCart(req, res) {
-  try {
-    const cart = await cartsService.addCart();
-
-    res.sendSuccess(cart);
-  } catch (error) {
-    res.sendInternalServerError();
-  }
-}
-
-export async function addProductToCart(req, res) {
-  const { cid, pid } = req.params;
-  try {
-    const cart = await cartsService.addProductToCart(cid, pid, 1);
-
-    res.sendSuccess(cart);
-  } catch (error) {
-    if (error.code === "NOT_FOUND") {
-      res.sendNotFound(error.message);
-
-      return;
+      res.sendSuccess(cart);
+    } catch (error) {
+      res.sendInternalServerError();
     }
+  };
 
-    res.sendInternalServerError();
-  }
-}
+  addProductToCart = async (req, res) => {
+    const { cid, pid } = req.params;
+    try {
+      const cart = await addProductToCart(cid, pid, 1);
 
-export async function updateProductsOfCart(req, res) {
-  const { cid } = req.params;
-  const { products } = req.body;
-  try {
-    const cart = await cartsService.setProductsToCart(cid, products);
-    res.sendSuccess(cart);
-  } catch (error) {
-    if (error.code === "NOT_FOUND") {
-      res.sendNotFound(error.message);
+      res.sendSuccess(cart);
+    } catch (error) {
+      if (error.code === "NOT_FOUND") {
+        res.sendNotFound(error.message);
 
-      return;
+        return;
+      }
+
+      res.sendInternalServerError();
     }
+  };
 
-    res.sendInternalServerError();
-  }
-}
+  updateProductsOfCart = async (req, res) => {
+    const { cid } = req.params;
+    const { products } = req.body;
+    try {
+      const cart = await updateProductsOfCart(cid, products);
+      res.sendSuccess(cart);
+    } catch (error) {
+      if (error.code === "NOT_FOUND") {
+        res.sendNotFound(error.message);
 
-export async function updateProductOfCart(req, res) {
-  const { cid, pid } = req.params;
-  const { quantity } = req.body;
-  try {
-    const cart = await cartsService.updateProductOfCart(cid, pid, quantity);
-    res.sendSuccess(cart);
-  } catch (error) {
-    if (error.code === "NOT_FOUND") {
-      res.sendNotFound(error.message);
+        return;
+      }
 
-      return;
+      res.sendInternalServerError();
     }
+  };
 
-    res.sendInternalServerError();
-  }
-}
+  updateProductOfCart = async (req, res) => {
+    const { cid, pid } = req.params;
+    const { quantity } = req.body;
+    try {
+      const cart = await updateProductOfCart(cid, pid, quantity);
+      res.sendSuccess(cart);
+    } catch (error) {
+      if (error.code === "NOT_FOUND") {
+        res.sendNotFound(error.message);
 
-export async function deleteAllProducts(req, res) {
-  const { cid } = req.params;
-  try {
-    const cart = await cartsService.deleteProductsOfCart(cid);
-    res.sendSuccess(cart);
-  } catch (error) {
-    if (error.code === "NOT_FOUND") {
-      res.sendNotFound(error.message);
+        return;
+      }
 
-      return;
+      res.sendInternalServerError();
     }
+  };
 
-    res.sendInternalServerError();
-  }
-}
+  deleteAllProducts = async (req, res) => {
+    const { cid } = req.params;
+    try {
+      const cart = await deleteProductsOfCart(cid);
+      res.sendSuccess(cart);
+    } catch (error) {
+      if (error.code === "NOT_FOUND") {
+        res.sendNotFound(error.message);
 
-export async function deleteProductOfCart(req, res) {
-  const { cid, pid } = req.params;
-  try {
-    const cart = await cartsService.deleteProductOfCart(cid, pid);
-    res.sendSuccess(cart);
-  } catch (error) {
-    if (error.code === "NOT_FOUND") {
-      res.sendNotFound(error.message);
+        return;
+      }
 
-      return;
+      res.sendInternalServerError();
     }
+  };
 
-    res.sendInternalServerError();
-  }
+  deleteProductOfCart = async (req, res) => {
+    const { cid, pid } = req.params;
+    try {
+      const cart = await deleteProductOfCart(cid, pid);
+      res.sendSuccess(cart);
+    } catch (error) {
+      if (error.code === "NOT_FOUND") {
+        res.sendNotFound(error.message);
+
+        return;
+      }
+
+      res.sendInternalServerError();
+    }
+  };
+
+  purchaseCart = async (req, res) => {
+    const { cid } = req.params;
+    try {
+      const cart = await purchaseCart(cid);
+      // hacerlo bien: ACA TIENE QUE ESTAR LA LOGICA QUE SE PIDE,
+      // los service deben ser solo para acceso a datos: recordar que el service debe proveer metodos de acceso a los objetos, pero no debería hacer validaciones ni tener lógica de negocio,
+      // se necesitarán otros services como cartsService, ticketService,
+      // FILTRAR LOS PRODUCTOS POR STOCK, es decir, crear un ticket con los productos que tienen stock.
+      // GUARDAR EL CARRITO
+      // GUARDAR EL TICKET
+      res.sendSuccess(cart);
+    } catch (error) {
+      if (error.code === "NOT_FOUND") {
+        res.sendNotFound(error.message);
+
+        return;
+      }
+
+      res.sendInternalServerError();
+    }
+  };
 }
+
+export const cartController = new CartsController();

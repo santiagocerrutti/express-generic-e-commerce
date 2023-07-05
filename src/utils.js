@@ -33,6 +33,19 @@ export function generateJwt(user) {
   return jwt.sign({ user }, env.JWT_SECRET, { expiresIn: "1h" });
 }
 
+export const cookieConfig = {
+  maxAge: 60 * 60 * 1000, // 1 hour
+  httpOnly: true, // esto es para que la cookie no sea accesible desde el browser, sino solo al enviar peticiones http
+};
+
+export function createTokenFromUser(user) {
+  delete user["password"];
+
+  return generateJwt({
+    ...user,
+  });
+}
+
 export const ENV_OPTION = {
   LOCAL: "local",
   DEV: "development",

@@ -1,124 +1,134 @@
 import QueryString from "qs";
 import { env } from "../config/env.js";
 import { SocketServer } from "../sockets/socket-server.js";
-import { productsService } from "../services/index.js";
+import {
+  addProduct,
+  deleteProduct,
+  getProductById,
+  getProducts,
+  getProductsPaginate,
+  updateProduct,
+} from "../use-cases/index.js";
 
-export async function getProducts(req, res) {
-  const { limit, page, query, sort } = req.query;
-  const queryObject = query
-    ? QueryString.parse(query, { delimiter: /[;,]/ })
-    : {};
+class ProductsController {
+  constructor() {}
 
-  const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } =
-    await productsService.getProductsPaginate(limit, page, queryObject, sort);
+  getProducts = async (req, res) => {
+    const { limit, page, query, sort } = req.query;
+    const queryObject = query
+      ? QueryString.parse(query, { delimiter: /[;,]/ })
+      : {};
 
-  const prevLink = hasPrevPage ? buildLink(req.query, prevPage) : null;
-  const nextLink = hasNextPage ? buildLink(req.query, nextPage) : null;
+    const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } =
+      await getProductsPaginate(limit, page, queryObject, sort);
 
-  res.send({
-    status: "SUCCESS",
-    payload: docs,
-    totalPages,
-    hasPrevPage,
-    hasNextPage,
-    prevPage,
-    nextPage,
-    prevLink,
-    nextLink,
-  });
-}
+    const prevLink = hasPrevPage ? this._buildLink(req.query, prevPage) : null;
+    const nextLink = hasNextPage ? this._buildLink(req.query, nextPage) : null;
 
-function buildLink(reqQuery, page) {
-  const { limit, sort, query } = reqQuery;
+    res.send({
+      status: "SUCCESS",
+      payload: docs,
+      totalPages,
+      hasPrevPage,
+      hasNextPage,
+      prevPage,
+      nextPage,
+      prevLink,
+      nextLink,
+    });
+  };
 
-  return `${env.HOST_URL}/api/products?limit=${limit || 10}&page=${page}${
-    query ? "&query=" + query : ""
-  }${sort ? "&sort=" + sort : ""}`;
-}
+  _buildLink(reqQuery, page) {
+    const { limit, sort, query } = reqQuery;
 
-export async function getProductById(req, res) {
-  const { pid } = req.params;
+    return `${env.HOST_URL}/api/products?limit=${limit || 10}&page=${page}${
+      query ? "&query=" + query : ""
+    }${sort ? "&sort=" + sort : ""}`;
+  }
 
-  try {
-    if (pid) {
-      const foundProduct = await productsService.getProductById(pid);
+  getProductById = async (req, res) => {
+    const { pid } = req.params;
 
-      res.sendSuccess(foundProduct);
+    try {
+      if (pid) {
+        const foundProduct = await getProductById(pid);
+
+        res.sendSuccess(foundProduct);
+      }
+    } catch (error) {
+      if (error.code === "NOT_FOUND") {
+        res.sendNotFound(error.message);
+
+        return;
+      }
+
+      res.sendInternalServerError();
     }
-  } catch (error) {
-    if (error.code === "NOT_FOUND") {
-      res.sendNotFound(error.message);
+  };
 
-      return;
+  createProduct = async (req, res) => {
+    try {
+      const result = await addProduct(req.body);
+
+      await this._emitProductsUpdate();
+
+      res.sendCreated(result);
+    } catch (error) {
+      if (error.code === "DUPLICATED_KEY") {
+        res.sendConflict(error.message);
+
+        return;
+      }
+
+      res.sendInternalServerError();
     }
+  };
 
-    res.sendInternalServerError();
+  updateProduct = async (req, res) => {
+    try {
+      const result = await updateProduct(req.params.pid, req.body);
+
+      await this._emitProductsUpdate();
+
+      res.sendSuccess(result);
+    } catch (error) {
+      if (error.code === "NOT_FOUND") {
+        res.sendNotFound(error.message);
+
+        return;
+      } else if (error.code === "DUPLICATED_KEY") {
+        res.sendConflict(error.message);
+
+        return;
+      }
+
+      res.sendInternalServerError();
+    }
+  };
+
+  deleteProduct = async (req, res) => {
+    try {
+      const result = await deleteProduct(req.params.pid);
+
+      await this._emitProductsUpdate();
+
+      res.sendSuccess(result);
+    } catch (error) {
+      if (error.code === "NOT_FOUND") {
+        res.sendNotFound(error.message);
+
+        return;
+      }
+
+      res.sendInternalServerError();
+    }
+  };
+
+  async _emitProductsUpdate() {
+    const products = await getProducts();
+
+    SocketServer.getInstance().emit("products-updated", products);
   }
 }
 
-export async function createProduct(req, res) {
-  try {
-    const result = await productsService.addProduct(req.body);
-
-    await emitProductsUpdate(productsService);
-
-    res.sendCreated(result);
-  } catch (error) {
-    if (error.code === "DUPLICATED_KEY") {
-      res.sendConflict(error.message);
-
-      return;
-    }
-
-    res.sendInternalServerError();
-  }
-}
-
-export async function updateProduct(req, res) {
-  try {
-    const result = await productsService.updateProduct(
-      req.params.pid,
-      req.body
-    );
-
-    await emitProductsUpdate(productsService);
-
-    res.sendSuccess(result);
-  } catch (error) {
-    if (error.code === "NOT_FOUND") {
-      res.sendNotFound(error.message);
-
-      return;
-    } else if (error.code === "DUPLICATED_KEY") {
-      res.sendConflict(error.message);
-
-      return;
-    }
-
-    res.sendInternalServerError();
-  }
-}
-
-export async function deleteProduct(req, res) {
-  try {
-    const result = await productsService.deleteProduct(req.params.pid);
-
-    await emitProductsUpdate(productsService);
-
-    res.sendSuccess(result);
-  } catch (error) {
-    if (error.code === "NOT_FOUND") {
-      res.sendNotFound(error.message);
-
-      return;
-    }
-
-    res.sendInternalServerError();
-  }
-}
-
-async function emitProductsUpdate(productsService) {
-  const products = await productsService.getProducts();
-
-  SocketServer.getInstance().emit("products-updated", products);
-}
+export const productsController = new ProductsController();

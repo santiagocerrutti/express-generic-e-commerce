@@ -1,10 +1,5 @@
 import { passportCall } from "../config/passportCall.js";
-import {
-  getCurrent,
-  login,
-  logout,
-  register,
-} from "../controllers/sessions.controller.js";
+import { sessionsController } from "../controllers/sessions.controller.js";
 import { isAuthenticated } from "../middlewares/auth/index.js";
 import {
   validateLogin,
@@ -12,6 +7,7 @@ import {
 } from "../middlewares/validation/user.validator.js";
 import { Router } from "./Router.js";
 
+const { getCurrent, login, logout, register } = sessionsController;
 class SessionsRouter extends Router {
   init() {
     this.post(

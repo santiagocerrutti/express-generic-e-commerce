@@ -1,15 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { CartDao, MessageDao, ProductDao, UserDao } from "../dao/factory.js";
-import {
-  CartRepository,
-  MessageRepository,
-  ProductRepository,
-  UserRepository,
-} from "../repository/index.js";
+import { Repository } from "../repository/index.js";
 
-export const cartsService = new CartRepository(new CartDao());
+export const cartsService = new Repository(new CartDao());
 
-export const messagesService = new MessageRepository(new MessageDao());
+export const messagesService = new Repository(new MessageDao());
 
-export const productsService = new ProductRepository(new ProductDao());
+export const productsService = new Repository(new ProductDao());
 
-export const usersService = new UserRepository(new UserDao());
+export const usersService = new Repository(new UserDao());

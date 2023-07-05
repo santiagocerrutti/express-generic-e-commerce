@@ -23,19 +23,7 @@ export class CartDaoFile {
     fs.promises.writeFile(this.path, content);
   }
 
-  async addCart() {
-    this.carts = await this._retreiveCarts();
-    const newCart = {
-      products: [],
-      id: uuidv4(),
-    };
-    this.carts.push(newCart);
-    await this._saveCarts(this.carts);
-
-    return newCart;
-  }
-
-  async getCarts(limit = 0) {
+  async getAll(limit = 0) {
     this.carts = await this._retreiveCarts();
 
     if (limit) {
@@ -45,7 +33,7 @@ export class CartDaoFile {
     return this.carts;
   }
 
-  async getCartById(cartId) {
+  async getById(cartId) {
     this.carts = await this._retreiveCarts();
     const cart = this.carts.find((p) => p.id == cartId);
 
@@ -58,49 +46,48 @@ export class CartDaoFile {
 
     throw error;
   }
-
-  async getCartByIdJson(cartId) {
-    return this.getCartById(cartId);
+  async getOneByFilter(filterQuery) {
+    throw new Error("Not implemented yet.");
   }
 
-  async addProductToCart(cartId, productId, quantity) {
-    const cart = await this.getCartById(cartId);
-    const productManager = new ProductDaoFile();
-    await productManager.getProductById(productId);
-
-    const cartProduct = cart.products.find((p) => p.product === productId);
-
-    if (cartProduct) {
-      cartProduct.quantity += quantity;
-    } else {
-      cart.products.push({
-        product: productId,
-        quantity,
-      });
-    }
-
+  async addOne(cart) {
+    this.carts = await this._retreiveCarts();
+    const newCart = {
+      id: uuidv4(),
+      ...cart,
+    };
+    this.carts.push(newCart);
     await this._saveCarts(this.carts);
 
-    return cartProduct;
+    return newCart;
   }
 
-  async setProductsToCart(cartId, products) {
+  // async addProductToCart(cartId, productId, quantity) {
+  //   const cart = await this.getCartById(cartId);
+  //   const productManager = new ProductDaoFile();
+  //   await productManager.getProductById(productId);
+
+  //   const cartProduct = cart.products.find((p) => p.product === productId);
+
+  //   if (cartProduct) {
+  //     cartProduct.quantity += quantity;
+  //   } else {
+  //     cart.products.push({
+  //       product: productId,
+  //       quantity,
+  //     });
+  //   }
+
+  //   await this._saveCarts(this.carts);
+
+  //   return cartProduct;
+  // }
+
+  async updateOne(cartId, products) {
     throw new Error("Not implemented yet.");
   }
 
-  async deleteProductsOfCart(cartId) {
-    throw new Error("Not implemented yet.");
-  }
-
-  async updateProductOfCart(cartId, productId, quantity) {
-    throw new Error("Not implemented yet.");
-  }
-
-  async deleteProductOfCart(cartId, productId) {
-    throw new Error("Not implemented yet.");
-  }
-
-  async _getCartAndProductDocument(cartId, productId) {
+  async deleteOne(objectId) {
     throw new Error("Not implemented yet.");
   }
 }

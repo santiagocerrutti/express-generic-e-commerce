@@ -1,13 +1,4 @@
-import {
-  addProductToCart,
-  createCart,
-  deleteAllProducts,
-  deleteProductOfCart,
-  getCartById,
-  getCarts,
-  updateProductOfCart,
-  updateProductsOfCart,
-} from "../controllers/carts.controller.js";
+import { cartController } from "../controllers/carts.controller.js";
 import { isAuthenticated } from "../middlewares/auth/index.js";
 import { validateCartOwnership } from "../middlewares/validation/cart-ownership.validator.js";
 import {
@@ -17,6 +8,18 @@ import {
 } from "../middlewares/validation/cart.validator.js";
 import { validateProductId } from "../middlewares/validation/product.validator.js";
 import { Router } from "./Router.js";
+
+const {
+  addProductToCart,
+  createCart,
+  deleteAllProducts,
+  deleteProductOfCart,
+  getCartById,
+  getCarts,
+  purchaseCart,
+  updateProductOfCart,
+  updateProductsOfCart,
+} = cartController;
 
 class CartsRouter extends Router {
   init() {
@@ -80,6 +83,14 @@ class CartsRouter extends Router {
       validateProductId,
       validateCartOwnership,
       deleteProductOfCart
+    );
+
+    this.post(
+      "/:cid/purchase",
+      isAuthenticated,
+      validateCartId,
+      validateCartOwnership,
+      purchaseCart
     );
   }
 }

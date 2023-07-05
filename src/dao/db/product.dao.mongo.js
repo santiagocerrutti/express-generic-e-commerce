@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import MUUID from "uuid-mongodb";
 import { ProductModel } from "./models/product.model.js";
 import { deleteUndefinedProperties } from "../../utils.js";
@@ -5,16 +6,11 @@ import { deleteUndefinedProperties } from "../../utils.js";
 export class ProductDaoMongo {
   constructor() {}
 
-  async getProducts(limit = null) {
-    return ProductModel.find().limit(limit);
+  async getAll(limit = null) {
+    return ProductModel.find().limit(limit).lean();
   }
 
-  async getProductsPaginate(
-    limit = 10,
-    page = 1,
-    query = {},
-    sort = undefined
-  ) {
+  async getAllPaginate(limit = 10, page = 1, query = {}, sort = undefined) {
     const findQuery = this._buildFindQuery(query);
 
     const paginateOptions = {
@@ -28,7 +24,7 @@ export class ProductDaoMongo {
       };
     }
 
-    return ProductModel.paginate(findQuery, paginateOptions);
+    return ProductModel.paginate(findQuery, { ...paginateOptions, lean: true });
   }
 
   _buildFindQuery(query) {
@@ -60,48 +56,19 @@ export class ProductDaoMongo {
     return findQuery;
   }
 
-  async getProductsJson(limit = null) {
-    return ProductModel.find().limit(limit).lean();
+  async getById(productId) {
+    return await ProductModel.findById(MUUID.from(productId)).lean();
   }
 
-  async getProductsPaginateJson(limit = 10, page = 1) {
-    return ProductModel.paginate(
-      {},
-      {
-        limit,
-        page,
-        lean: true,
-      }
-    );
+  async getOneByFilter(filterQuery) {
+    throw new Error("Not implemented yet.");
   }
 
-  async getProductById(productId) {
-    const product = await ProductModel.findById(MUUID.from(productId));
-
-    if (product) {
-      return product;
-    }
-
-    const error = new Error(`Product ${productId} not found.`);
-    error.code = "NOT_FOUND";
-
-    throw error;
+  async addOne(product) {
+    return await ProductModel.create({ ...product });
   }
 
-  async addProduct(product) {
-    try {
-      const newProduct = await ProductModel.create({ ...product });
-
-      return newProduct;
-    } catch (error) {
-      const e = new Error(`Code ${product.code} duplicated`);
-      e.code = "DUPLICATED_KEY";
-
-      throw e;
-    }
-  }
-
-  async updateProduct(productId, fieldsToUpdate) {
+  async updateOne(productId, fieldsToUpdate) {
     let result = null;
     try {
       result = await ProductModel.findOneAndUpdate(
@@ -123,24 +90,12 @@ export class ProductDaoMongo {
       return updatedProduct;
     }
 
-    const e = new Error(`Product ${productId} not found.`);
-    e.code = "NOT_FOUND";
-
-    throw e;
+    return null;
   }
 
-  async deleteProduct(productId) {
-    const result = await ProductModel.findOneAndDelete({
+  async deleteOne(productId) {
+    return ProductModel.findOneAndDelete({
       _id: MUUID.from(productId),
     });
-
-    if (result) {
-      return result;
-    }
-
-    const error = new Error(`Product ${productId} not found.`);
-    error.code = "NOT_FOUND";
-
-    throw error;
   }
 }

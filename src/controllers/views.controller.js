@@ -1,158 +1,170 @@
 import { env } from "../config/env.js";
-import { CartDaoMongo } from "../dao/db/cart.dao.mongo.js";
-import { productsService } from "../services/index.js";
-import { cookieConfig, createTokenFromUser } from "./sessions.controller.js";
+import {
+  getCartById,
+  getProducts,
+  getProductsPaginate,
+} from "../use-cases/index.js";
+import { cookieConfig, createTokenFromUser } from "../utils.js";
 
-export async function getProductsView(req, res) {
-  const products = await productsService.getProductsJson();
+export class ViewsController {
+  constructor() {}
 
-  res.render("index", {
-    user: req.user?.user || null,
-    products,
-  });
-}
+  getProductsView = async (req, res) => {
+    const products = await getProducts();
 
-export async function getProductsPaginateView(req, res) {
-  const { page, limit } = req.query;
-
-  const result = await productsService.getProductsPaginateJson(limit, page);
-
-  const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } =
-    result;
-  const prevLink = hasPrevPage ? buildLink(req.query, prevPage) : null;
-  const nextLink = hasNextPage ? buildLink(req.query, nextPage) : null;
-
-  res.render("products", {
-    user: req.user?.user || null,
-    products: docs,
-    totalPages,
-    page,
-    hasPrevPage,
-    hasNextPage,
-    prevPage,
-    nextPage,
-    prevLink,
-    nextLink,
-  });
-}
-
-function buildLink(reqQuery, page) {
-  const { limit } = reqQuery;
-
-  return `${env.HOST_URL}/products?limit=${limit || 10}&page=${page}`;
-}
-
-export async function getRealTimeProductsView(req, res) {
-  const products = await productsService.getProductsJson();
-
-  res.render("realtimeproducts", {
-    user: req.user?.user || null,
-    products,
-  });
-}
-
-export async function getCartByIdView(req, res) {
-  const { cid } = req.params;
-  const service = new CartDaoMongo();
-  const cart = await service.getCartByIdJson(cid);
-
-  let total = 0;
-  for (const item of cart.products) {
-    const subtotal = item.product.price * item.quantity;
-    item.subtotal = subtotal;
-    total += subtotal;
-  }
-  cart.total = total;
-
-  res.render("cart", {
-    user: req.user?.user || null,
-    cart,
-  });
-}
-
-export async function getChatView(req, res) {
-  res.render("chat", { user: req.user?.user || null });
-}
-
-export async function getRegisterView(req, res) {
-  if (req.user?.user) {
-    res.redirect("/products");
-
-    return;
-  }
-
-  res.render("register", { user: req.user?.user || null });
-}
-
-export async function getLoginView(req, res) {
-  if (req.user?.user) {
-    res.redirect("/products");
-
-    return;
-  }
-
-  res.render("login", { user: req.user?.user || null });
-}
-
-export async function getRegisterFailView(req, res) {
-  res.render("register", {
-    user: null,
-    message: {
-      type: "error",
-      text: "Internal Server Error. Try again later.",
-    },
-  });
-}
-
-export async function getLoginFailView(req, res) {
-  res.render("login", {
-    user: null,
-    message: {
-      type: "error",
-      text: "Incorrect user and/or password",
-    },
-  });
-}
-
-export async function getLogoutView(req, res) {
-  try {
-    res.render("login", {
-      user: null,
-      message: {
-        type: "success",
-        text: "Bye bye :)",
-      },
+    res.render("index", {
+      user: req.user?.user || null,
+      products,
     });
+  };
 
-    return;
-  } catch (error) {
-    console.log(error);
-    res.render("login", {
+  // https://stackoverflow.com/questions/71094583/cannot-read-properties-of-undefined-javascript-class
+  getProductsPaginateView = async (req, res) => {
+    const { page, limit } = req.query;
+
+    const result = await getProductsPaginate(limit, page);
+
+    const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } =
+      result;
+
+    const prevLink = hasPrevPage ? this._buildLink(req.query, prevPage) : null;
+    const nextLink = hasNextPage ? this._buildLink(req.query, nextPage) : null;
+
+    res.render("products", {
+      user: req.user?.user || null,
+      products: docs,
+      totalPages,
+      page,
+      hasPrevPage,
+      hasNextPage,
+      prevPage,
+      nextPage,
+      prevLink,
+      nextLink,
+    });
+  };
+
+  _buildLink(reqQuery, page) {
+    const { limit } = reqQuery;
+
+    return `${env.HOST_URL}/products?limit=${limit || 10}&page=${page}`;
+  }
+
+  getRealTimeProductsView = async (req, res) => {
+    const products = await getProducts();
+
+    res.render("realtimeproducts", {
+      user: req.user?.user || null,
+      products,
+    });
+  };
+
+  getCartByIdView = async (req, res) => {
+    const { cid } = req.params;
+    const cart = await getCartById(cid);
+
+    let total = 0;
+    for (const item of cart.products) {
+      const subtotal = item.product.price * item.quantity;
+      item.subtotal = subtotal;
+      total += subtotal;
+    }
+    cart.total = total;
+
+    res.render("cart", {
+      user: req.user?.user || null,
+      cart,
+    });
+  };
+
+  getChatView = async (req, res) => {
+    res.render("chat", { user: req.user?.user || null });
+  };
+
+  getRegisterView = async (req, res) => {
+    if (req.user?.user) {
+      res.redirect("/products");
+
+      return;
+    }
+
+    res.render("register", { user: req.user?.user || null });
+  };
+
+  getLoginView = async (req, res) => {
+    if (req.user?.user) {
+      res.redirect("/products");
+
+      return;
+    }
+
+    res.render("login", { user: req.user?.user || null });
+  };
+
+  getRegisterFailView = async (req, res) => {
+    res.render("register", {
       user: null,
       message: {
         type: "error",
         text: "Internal Server Error. Try again later.",
       },
     });
-  }
+  };
+
+  getLoginFailView = async (req, res) => {
+    res.render("login", {
+      user: null,
+      message: {
+        type: "error",
+        text: "Incorrect user and/or password",
+      },
+    });
+  };
+
+  getLogoutView = async (req, res) => {
+    try {
+      res.render("login", {
+        user: null,
+        message: {
+          type: "success",
+          text: "Bye bye :)",
+        },
+      });
+
+      return;
+    } catch (error) {
+      console.log(error);
+      res.render("login", {
+        user: null,
+        message: {
+          type: "error",
+          text: "Internal Server Error. Try again later.",
+        },
+      });
+    }
+  };
+
+  getGithubCallbackView = async (req, res) => {
+    const { user } = req;
+
+    if (user) {
+      const token = createTokenFromUser(user);
+
+      res
+        .cookie(env.JWT_COOKIE_NAME, token, cookieConfig)
+        .redirect("/products");
+
+      return;
+    }
+
+    res.render("login", {
+      user: null,
+      message: {
+        type: "error",
+        text: "Incorrect user and/or password",
+      },
+    });
+  };
 }
 
-export async function getGithubCallbackView(req, res) {
-  const { user } = req;
-
-  if (user) {
-    const token = createTokenFromUser(user);
-
-    res.cookie(env.JWT_COOKIE_NAME, token, cookieConfig).redirect("/products");
-
-    return;
-  }
-
-  res.render("login", {
-    user: null,
-    message: {
-      type: "error",
-      text: "Incorrect user and/or password",
-    },
-  });
-}
+export const viewsController = new ViewsController();

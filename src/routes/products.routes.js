@@ -1,10 +1,4 @@
-import {
-  createProduct,
-  deleteProduct,
-  getProductById,
-  getProducts,
-  updateProduct,
-} from "../controllers/products.controller.js";
+import { productsController } from "../controllers/products.controller.js";
 import {
   ROLES,
   isAuthenticated,
@@ -17,6 +11,14 @@ import {
   validatePutProduct,
 } from "../middlewares/validation/product.validator.js";
 import { Router } from "./Router.js";
+
+const {
+  createProduct,
+  deleteProduct,
+  getProductById,
+  getProducts,
+  updateProduct,
+} = productsController;
 
 class ProductsRouter extends Router {
   init() {
