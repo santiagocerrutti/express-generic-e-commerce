@@ -1,11 +1,11 @@
+import { usersService } from "../../services/index.js";
 import { ROLES } from "../auth/index.js";
 
-export function validateCartOwnership(req, res, next) {
-  const { user: userJwt } = req;
-  const { user } = userJwt;
+export async function validateCartOwnership(req, res, next) {
+  const user = await usersService.getById(req.user.user._id);
   const { cid } = req.params;
 
-  if (user.cart === cid || user.role === ROLES.ADMIN) {
+  if (String(user.cart) === cid || user.role === ROLES.ADMIN) {
     next();
 
     return;

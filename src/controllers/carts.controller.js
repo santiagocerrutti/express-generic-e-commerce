@@ -40,7 +40,7 @@ class CartsController {
 
   createCart = async (req, res) => {
     try {
-      const cart = await addCart();
+      const cart = await addCart(req.user.user);
 
       res.sendSuccess(cart);
     } catch (error) {
@@ -133,15 +133,11 @@ class CartsController {
 
   purchaseCart = async (req, res) => {
     const { cid } = req.params;
+    const { user } = req.user;
+
     try {
-      const cart = await purchaseCart(cid);
-      // hacerlo bien: ACA TIENE QUE ESTAR LA LOGICA QUE SE PIDE,
-      // los service deben ser solo para acceso a datos: recordar que el service debe proveer metodos de acceso a los objetos, pero no debería hacer validaciones ni tener lógica de negocio,
-      // se necesitarán otros services como cartsService, ticketService,
-      // FILTRAR LOS PRODUCTOS POR STOCK, es decir, crear un ticket con los productos que tienen stock.
-      // GUARDAR EL CARRITO
-      // GUARDAR EL TICKET
-      res.sendSuccess(cart);
+      const ticket = await purchaseCart(cid, user);
+      res.sendSuccess(ticket);
     } catch (error) {
       if (error.code === "NOT_FOUND") {
         res.sendNotFound(error.message);

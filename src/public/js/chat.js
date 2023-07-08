@@ -22,11 +22,8 @@ socket.emit("new-user", {
 // });
 
 messageInput.addEventListener("keyup", (event) => {
-  console.log("HERE");
-
   if (event.key === "Enter") {
     const { value } = messageInput;
-    console.log(userEmail);
 
     if (value.trim().length >= 0) {
       socket.emit("new-message", {

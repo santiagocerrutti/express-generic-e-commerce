@@ -4,12 +4,14 @@ import {
   CartDaoMongo,
   MessageDaoMongo,
   ProductDaoMongo,
+  TicketDaoMongo,
   UserDaoMongo,
 } from "./db/index.js";
 import {
   CartDaoFile,
   MessageDaoFile,
   ProductDaoFile,
+  TicketDaoFile,
   UserDaoFile,
 } from "./file/index.js";
 
@@ -17,6 +19,7 @@ let ProductDao;
 let UserDao;
 let MessageDao;
 let CartDao;
+let TicketDao;
 
 switch (env.PERSISTENCE) {
   case "MONGO":
@@ -25,6 +28,7 @@ switch (env.PERSISTENCE) {
     UserDao = UserDaoMongo;
     MessageDao = MessageDaoMongo;
     CartDao = CartDaoMongo;
+    TicketDao = TicketDaoMongo;
     break;
   case "FILE":
     console.log("Using File Persistence");
@@ -32,9 +36,10 @@ switch (env.PERSISTENCE) {
     UserDao = UserDaoFile;
     MessageDao = MessageDaoFile;
     CartDao = CartDaoFile;
+    TicketDao = TicketDaoFile;
     break;
   default:
     break;
 }
 
-export { ProductDao, UserDao, MessageDao, CartDao };
+export { ProductDao, UserDao, MessageDao, CartDao, TicketDao };

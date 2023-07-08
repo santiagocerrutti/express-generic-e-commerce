@@ -35,7 +35,6 @@ class CartsRouter extends Router {
 
     this.post("/", isAuthenticated, createCart);
 
-    // TODO: validar ownership del carrito
     this.post(
       "/:cid/products/:pid",
       isAuthenticated,
@@ -45,7 +44,6 @@ class CartsRouter extends Router {
       addProductToCart
     );
 
-    // TODO: validar ownership del carrito
     this.put(
       "/:cid",
       isAuthenticated,
@@ -55,7 +53,6 @@ class CartsRouter extends Router {
       updateProductsOfCart
     );
 
-    // TODO: validar ownership del carrito
     this.put(
       "/:cid/products/:pid",
       isAuthenticated,
@@ -66,7 +63,6 @@ class CartsRouter extends Router {
       updateProductOfCart
     );
 
-    // TODO: validar ownership del carrito
     this.delete(
       "/:cid",
       isAuthenticated,
@@ -75,7 +71,6 @@ class CartsRouter extends Router {
       deleteAllProducts
     );
 
-    // TODO: validar ownership del carrito
     this.delete(
       "/:cid/products/:pid",
       isAuthenticated,

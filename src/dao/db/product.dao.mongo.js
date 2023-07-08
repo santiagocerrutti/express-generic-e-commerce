@@ -57,7 +57,7 @@ export class ProductDaoMongo {
   }
 
   async getById(productId) {
-    return await ProductModel.findById(MUUID.from(productId)).lean();
+    return ProductModel.findById(MUUID.from(productId)).lean();
   }
 
   async getOneByFilter(filterQuery) {
@@ -78,10 +78,16 @@ export class ProductDaoMongo {
         { ...fieldsToUpdate }
       );
     } catch (error) {
-      const e = new Error(`Code ${fieldsToUpdate.code} duplicated`);
-      e.code = "DUPLICATED_KEY";
+      console.log(error);
 
-      throw e;
+      if (fieldsToUpdate.code) {
+        const e = new Error(`Code ${fieldsToUpdate.code} duplicated`);
+        e.code = "DUPLICATED_KEY";
+
+        throw e;
+      }
+
+      throw error;
     }
 
     if (result) {

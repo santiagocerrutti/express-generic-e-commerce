@@ -31,19 +31,22 @@ export class CartDaoMongo {
     const formattedFieldsToUpdate = fieldsToUpdate;
 
     if (fieldsToUpdate.products) {
-      formattedFieldsToUpdate.products = this._validateAndFormatProducts(
+      formattedFieldsToUpdate.products = await this._validateAndFormatProducts(
         fieldsToUpdate.products
       );
     }
 
     try {
-      result = CartModel.findOneAndUpdate(
+      result = await CartModel.findOneAndUpdate(
         {
           _id: MUUID.from(cartId),
         },
         { ...formattedFieldsToUpdate }
       );
     } catch (error) {
+      console.log("HERE");
+      console.log(error);
+
       if (error.code) {
         throw error;
       }

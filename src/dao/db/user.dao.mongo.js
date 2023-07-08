@@ -29,8 +29,29 @@ export class UserDaoMongo {
     await UserModel.create(user);
   }
 
-  async updateOne(objectId, fieldsToUpdate) {
-    throw new Error("Not implemented yet.");
+  async updateOne(userId, fieldsToUpdate) {
+    let result = null;
+    try {
+      result = await UserModel.findOneAndUpdate(
+        {
+          _id: MUUID.from(userId),
+        },
+        { ...fieldsToUpdate }
+      );
+    } catch (error) {
+      const e = new Error(`Code ${fieldsToUpdate.code} duplicated`);
+      e.code = "DUPLICATED_KEY";
+
+      throw e;
+    }
+
+    if (result) {
+      const updatedUser = await UserModel.findById(MUUID.from(userId));
+
+      return updatedUser;
+    }
+
+    return null;
   }
 
   async deleteOne(productId) {
