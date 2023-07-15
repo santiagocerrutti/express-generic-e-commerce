@@ -1,11 +1,16 @@
 import { env } from "../config/env.js";
 import { UserDto } from "../dto/user.dto.js";
-import { cookieConfig, createTokenFromUser } from "../utils.js";
+import {
+  CustomError,
+  ERROR_CODE,
+  cookieConfig,
+  createTokenFromUser,
+} from "../utils.js";
 
 class SessionsController {
   constructor() {}
 
-  register = async (req, res) => {
+  register = async (req, res, next) => {
     const { user } = req;
 
     if (user) {
@@ -14,10 +19,11 @@ class SessionsController {
       return;
     }
 
-    res.sendNotAutenticated("Invalid User");
+    const error = new CustomError("Invalid User", ERROR_CODE.NOT_AUTHENITCATED);
+    next(error);
   };
 
-  login = async (req, res) => {
+  login = async (req, res, next) => {
     const { user } = req;
 
     if (user) {
@@ -29,18 +35,18 @@ class SessionsController {
       return;
     }
 
-    res.sendNotAutenticated("Invalid User");
+    const error = new CustomError("Invalid User", ERROR_CODE.NOT_AUTHENITCATED);
+    next(error);
   };
 
-  logout = async (req, res) => {
+  logout = async (req, res, next) => {
     try {
       res.clearCookie(env.JWT_COOKIE_NAME);
       res.sendSuccess("Logout successfull.");
 
       return;
     } catch (error) {
-      console.log(error);
-      res.sendInternalServerError();
+      next(error);
     }
   };
 

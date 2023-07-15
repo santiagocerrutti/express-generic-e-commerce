@@ -63,3 +63,20 @@ export const program = new Command()
     ])
   )
   .parse();
+
+export const ERROR_CODE = {
+  NOT_FOUND: "NOT_FOUND",
+  NOT_IMPLEMENTED: "NOT_IMPLEMENTED",
+  DUPLICATED_KEY: "DUPLICATED_KEY",
+  INVALID_BODY: "INVALID_BODY",
+  NOT_AUTHORIZED: "NOT_AUTHORIZED",
+  NOT_AUTHENITCATED: "NOT_AUTHENITCATED",
+};
+
+export class CustomError extends Error {
+  constructor(message, code, errors = []) {
+    super(message);
+    this.code = code;
+    this.errors = errors;
+  }
+}

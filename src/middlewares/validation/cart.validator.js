@@ -1,5 +1,6 @@
 import Ajv from "ajv";
 import MUUID from "uuid-mongodb";
+import { CustomError, ERROR_CODE } from "../../utils.js";
 
 export function validateCartId(req, res, next) {
   const { cid } = req.params;
@@ -9,7 +10,11 @@ export function validateCartId(req, res, next) {
 
     return;
   } catch (error) {
-    res.sendBadRequest(`Invalid UUID: ${cid}`, null);
+    const err = new CustomError(
+      `Invalid UUID: ${cid}`,
+      ERROR_CODE.INVALID_BODY
+    );
+    next(err);
   }
 }
 
@@ -49,7 +54,12 @@ export function validateProductsOfCart(req, res, next) {
     return;
   }
 
-  res.sendBadRequest("Invalid products array.", validate.errors);
+  const error = new CustomError(
+    "Invalid products array.",
+    ERROR_CODE.INVALID_BODY,
+    validate.errors
+  );
+  next(error);
 }
 
 export function validateProductQuantity(req, res, next) {
@@ -73,5 +83,10 @@ export function validateProductQuantity(req, res, next) {
     return;
   }
 
-  res.sendBadRequest("Invalid product quantity.", validate.errors);
+  const error = new CustomError(
+    "Invalid products array.",
+    ERROR_CODE.INVALID_BODY,
+    validate.errors
+  );
+  next(error);
 }

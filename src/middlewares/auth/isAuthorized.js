@@ -1,3 +1,5 @@
+import { CustomError, ERROR_CODE } from "../../utils.js";
+
 // Los middlewares deben devolver funciones que respeten la firma (req, res, next)
 export function isAuthorized(...roles) {
   return async function (req, res, next) {
@@ -15,7 +17,7 @@ export function isAuthorized(...roles) {
       return;
     }
 
-    res.status(403).send({ status: "ERROR", error: "No permissions" });
+    throw new CustomError("No permissions", ERROR_CODE.NOT_AUTHORIZED);
   };
 }
 

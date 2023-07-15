@@ -46,7 +46,7 @@ class ProductsController {
     }${sort ? "&sort=" + sort : ""}`;
   }
 
-  getProductById = async (req, res) => {
+  getProductById = async (req, res, next) => {
     const { pid } = req.params;
 
     try {
@@ -56,17 +56,11 @@ class ProductsController {
         res.sendSuccess(foundProduct);
       }
     } catch (error) {
-      if (error.code === "NOT_FOUND") {
-        res.sendNotFound(error.message);
-
-        return;
-      }
-
-      res.sendInternalServerError();
+      next(error);
     }
   };
 
-  createProduct = async (req, res) => {
+  createProduct = async (req, res, next) => {
     try {
       const result = await addProduct(req.body);
 
@@ -74,17 +68,11 @@ class ProductsController {
 
       res.sendCreated(result);
     } catch (error) {
-      if (error.code === "DUPLICATED_KEY") {
-        res.sendConflict(error.message);
-
-        return;
-      }
-
-      res.sendInternalServerError();
+      next(error);
     }
   };
 
-  updateProduct = async (req, res) => {
+  updateProduct = async (req, res, next) => {
     try {
       const result = await updateProduct(req.params.pid, req.body);
 
@@ -92,21 +80,11 @@ class ProductsController {
 
       res.sendSuccess(result);
     } catch (error) {
-      if (error.code === "NOT_FOUND") {
-        res.sendNotFound(error.message);
-
-        return;
-      } else if (error.code === "DUPLICATED_KEY") {
-        res.sendConflict(error.message);
-
-        return;
-      }
-
-      res.sendInternalServerError();
+      next(error);
     }
   };
 
-  deleteProduct = async (req, res) => {
+  deleteProduct = async (req, res, next) => {
     try {
       const result = await deleteProduct(req.params.pid);
 
@@ -114,13 +92,7 @@ class ProductsController {
 
       res.sendSuccess(result);
     } catch (error) {
-      if (error.code === "NOT_FOUND") {
-        res.sendNotFound(error.message);
-
-        return;
-      }
-
-      res.sendInternalServerError();
+      next(error);
     }
   };
 

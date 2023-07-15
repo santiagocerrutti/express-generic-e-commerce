@@ -1,4 +1,5 @@
 import { productsService } from "../services/index.js";
+import { CustomError, ERROR_CODE } from "../utils.js";
 
 export async function getProducts(limit = null) {
   return productsService.getAll(limit);
@@ -20,10 +21,10 @@ export async function getProductById(productId) {
     return product;
   }
 
-  const error = new Error(`Product ${productId} not found.`);
-  error.code = "NOT_FOUND";
-
-  throw error;
+  throw new CustomError(
+    `Product ${productId} not found.`,
+    ERROR_CODE.NOT_FOUND
+  );
 }
 
 export async function addProduct(product) {
@@ -32,10 +33,10 @@ export async function addProduct(product) {
 
     return newProduct;
   } catch (error) {
-    const e = new Error(`Code ${product.code} duplicated`);
-    e.code = "DUPLICATED_KEY";
-
-    throw e;
+    throw new CustomError(
+      `Code ${product.code} duplicated`,
+      ERROR_CODE.DUPLICATED_KEY
+    );
   }
 }
 
@@ -44,20 +45,20 @@ export async function updateProduct(productId, fieldsToUpdate) {
   try {
     result = await productsService.updateOne(productId, fieldsToUpdate);
   } catch (error) {
-    const e = new Error(`Code ${fieldsToUpdate.code} duplicated`);
-    e.code = "DUPLICATED_KEY";
-
-    throw e;
+    throw new CustomError(
+      `Code ${fieldsToUpdate.code} duplicated`,
+      ERROR_CODE.DUPLICATED_KEY
+    );
   }
 
   if (result) {
     return result;
   }
 
-  const e = new Error(`Product ${productId} not found.`);
-  e.code = "NOT_FOUND";
-
-  throw e;
+  throw new CustomError(
+    `Product ${productId} not found.`,
+    ERROR_CODE.NOT_FOUND
+  );
 }
 
 export async function deleteProduct(productId) {
@@ -67,8 +68,8 @@ export async function deleteProduct(productId) {
     return result;
   }
 
-  const error = new Error(`Product ${productId} not found.`);
-  error.code = "NOT_FOUND";
-
-  throw error;
+  throw new CustomError(
+    `Product ${productId} not found.`,
+    ERROR_CODE.NOT_FOUND
+  );
 }

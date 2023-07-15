@@ -2,6 +2,7 @@
 import Ajv from "ajv";
 import fs from "node:fs";
 import { v4 as uuidv4 } from "uuid";
+import { CustomError, ERROR_CODE } from "../../utils.js";
 
 const PATH = "./data/products.json";
 export class ProductDaoFile {
@@ -66,7 +67,7 @@ export class ProductDaoFile {
   }
 
   async getAllPaginate(limit = 10, page = 1, query = {}, sort = undefined) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async getById(productId) {
@@ -77,14 +78,14 @@ export class ProductDaoFile {
       return product;
     }
 
-    const error = new Error(`Product ${productId} not found.`);
-    error.code = "NOT_FOUND";
-
-    throw error;
+    throw new CustomError(
+      `Product ${productId} not found.`,
+      ERROR_CODE.NOT_FOUND
+    );
   }
 
   async getOneByFilter(filterQuery) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async addOne(product) {
@@ -104,17 +105,21 @@ export class ProductDaoFile {
 
       return newProduct;
     } else if (!validateResult.valid) {
-      const error = new Error(`Invalid product: ${JSON.stringify(product)}.`);
-      error.code = "INVALID_BODY";
-      error.errors = validateResult.errors;
-
-      throw error;
+      throw new CustomError(
+        `Invalid product: ${JSON.stringify(product)}.`,
+        ERROR_CODE.INVALID_BODY,
+        validateResult.errors
+      );
     } else {
-      const error = new Error(`Code ${product.code} duplicated`);
-      error.code = "DUPLICATED_KEY";
-
-      throw error;
+      throw new CustomError(
+        `Code ${product.code} duplicated`,
+        ERROR_CODE.DUPLICATED_KEY
+      );
     }
+  }
+
+  async addMany(arrayOfObjects) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   _validateUpdateProduct(product) {
@@ -157,19 +162,17 @@ export class ProductDaoFile {
 
         return this.products[index];
       } else {
-        const error = new Error(`Code ${fieldsToUpdate.code} duplicated`);
-        error.code = "DUPLICATED_KEY";
-
-        throw error;
+        throw new CustomError(
+          `Code ${fieldsToUpdate.code} duplicated`,
+          ERROR_CODE.DUPLICATED_KEY
+        );
       }
     } else if (!validateResult.valid) {
-      const error = new Error(
-        `Fields to update not valid: ${JSON.stringify(fieldsToUpdate)}.`
+      throw new CustomError(
+        `Fields to update not valid: ${JSON.stringify(fieldsToUpdate)}.`,
+        ERROR_CODE.INVALID_BODY,
+        validateResult.errors
       );
-      error.code = "INVALID_BODY";
-      error.errors = validateResult.errors;
-
-      throw error;
     }
 
     return null;

@@ -1,4 +1,5 @@
 import passport from "passport";
+import { CustomError, ERROR_CODE } from "../utils.js";
 
 // Documentación? (TODO: buscar ejemplos)
 export function passportCall(strategy, options) {
@@ -17,10 +18,13 @@ export function passportCall(strategy, options) {
           req.user = user;
           next();
         } else {
-          res.status(401).send({
-            status: "ERROR",
-            error: info?.message || info?.toString(),
-          });
+          const error = new CustomError(
+            info?.message || "Invalid User",
+            ERROR_CODE.NOT_AUTHENITCATED
+          );
+          next(error);
+
+          return;
         }
       }
     );

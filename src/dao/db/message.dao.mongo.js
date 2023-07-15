@@ -1,24 +1,25 @@
 /* eslint-disable no-unused-vars */
 import MUUID from "uuid-mongodb";
 import { MessageModel } from "./models/message.model.js";
+import { CustomError, ERROR_CODE } from "../../utils.js";
 
 export class MessageDaoMongo {
   constructor() {}
 
   async getAll(limit = 0) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async getAllPaginate(limit = 10, page = 1, query = {}, sort = undefined) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async getById(objectId) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async getOneByFilter(filterQuery) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async addOne(message) {
@@ -32,10 +33,10 @@ export class MessageDaoMongo {
   }
 
   async updateOne(objectId, fieldsToUpdate) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async deleteOne(productId) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 }

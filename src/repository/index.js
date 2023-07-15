@@ -23,6 +23,10 @@ export class Repository {
     return this.dao.addOne(object);
   }
 
+  async addMany(arrayOfObjects) {
+    return this.dao.addMany(arrayOfObjects);
+  }
+
   async updateOne(objectId, fieldsToUpdate) {
     return this.dao.updateOne(objectId, fieldsToUpdate);
   }

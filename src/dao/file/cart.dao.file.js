@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import { v4 as uuidv4 } from "uuid";
 import { ProductDaoFile } from "./product.dao.file.js";
+import { CustomError, ERROR_CODE } from "../../utils.js";
 
 const PATH = "./data/carts.json";
 
@@ -41,13 +42,10 @@ export class CartDaoFile {
       return cart;
     }
 
-    const error = new Error(`Cart ${cartId} not found.`);
-    error.code = "NOT_FOUND";
-
-    throw error;
+    throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
   }
   async getOneByFilter(filterQuery) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async addOne(cart) {
@@ -83,11 +81,15 @@ export class CartDaoFile {
   //   return cartProduct;
   // }
 
+  async addMany(arrayOfObjects) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
+  }
+
   async updateOne(cartId, products) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async deleteOne(objectId) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 }

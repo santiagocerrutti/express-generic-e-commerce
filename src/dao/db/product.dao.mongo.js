@@ -1,7 +1,11 @@
 /* eslint-disable no-unused-vars */
 import MUUID from "uuid-mongodb";
 import { ProductModel } from "./models/product.model.js";
-import { deleteUndefinedProperties } from "../../utils.js";
+import {
+  CustomError,
+  ERROR_CODE,
+  deleteUndefinedProperties,
+} from "../../utils.js";
 
 export class ProductDaoMongo {
   constructor() {}
@@ -61,11 +65,15 @@ export class ProductDaoMongo {
   }
 
   async getOneByFilter(filterQuery) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async addOne(product) {
     return await ProductModel.create({ ...product });
+  }
+
+  async addMany(products) {
+    return await ProductModel.insertMany(products);
   }
 
   async updateOne(productId, fieldsToUpdate) {
@@ -81,10 +89,10 @@ export class ProductDaoMongo {
       console.log(error);
 
       if (fieldsToUpdate.code) {
-        const e = new Error(`Code ${fieldsToUpdate.code} duplicated`);
-        e.code = "DUPLICATED_KEY";
-
-        throw e;
+        throw new CustomError(
+          `Code ${fieldsToUpdate.code} duplicated`,
+          ERROR_CODE.DUPLICATED_KEY
+        );
       }
 
       throw error;

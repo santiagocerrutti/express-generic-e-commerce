@@ -5,6 +5,7 @@ import {
   ticketsService,
   usersService,
 } from "../services/index.js";
+import { CustomError, ERROR_CODE } from "../utils.js";
 
 export async function addCart(user) {
   const newCart = await cartsService.addOne({});
@@ -27,10 +28,7 @@ export async function getCartById(cartId) {
     return cart;
   }
 
-  const error = new Error(`Cart ${cartId} not found.`);
-  error.code = "NOT_FOUND";
-
-  throw error;
+  throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
 }
 
 export async function addProductToCart(cartId, productId, quantity) {
@@ -66,7 +64,6 @@ export async function addProductToCart(cartId, productId, quantity) {
       products: formatedProducts,
     });
   } catch (error) {
-    console.log("HERE IN USE CASE");
     console.log(error);
 
     throw error;
@@ -76,10 +73,7 @@ export async function addProductToCart(cartId, productId, quantity) {
     return result;
   }
 
-  const e = new Error(`Cart ${cartId} not found.`);
-  e.code = "NOT_FOUND";
-
-  throw e;
+  throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
 }
 
 export async function updateProductsOfCart(cartId, products) {
@@ -89,10 +83,7 @@ export async function updateProductsOfCart(cartId, products) {
     return result;
   }
 
-  const e = new Error(`Cart ${cartId} not found.`);
-  e.code = "NOT_FOUND";
-
-  throw e;
+  throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
 }
 
 export async function deleteProductsOfCart(cartId) {
@@ -102,10 +93,7 @@ export async function deleteProductsOfCart(cartId) {
     return result;
   }
 
-  const e = new Error(`Cart ${cartId} not found.`);
-  e.code = "NOT_FOUND";
-
-  throw e;
+  throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
 }
 
 export async function updateProductOfCart(cartId, productId, quantity) {
@@ -131,12 +119,10 @@ export async function updateProductOfCart(cartId, productId, quantity) {
       );
     }
   } else {
-    const error = new Error(
-      `Product ${productId} not included in cart ${cartId}.`
+    throw new CustomError(
+      `Product ${productId} not included in cart ${cartId}.`,
+      ERROR_CODE.NOT_FOUND
     );
-    error.code = "NOT_FOUND";
-
-    throw error;
   }
 
   const result = cartsService.updateOne(cartId, {
@@ -147,10 +133,7 @@ export async function updateProductOfCart(cartId, productId, quantity) {
     return result;
   }
 
-  const e = new Error(`Cart ${cartId} not found.`);
-  e.code = "NOT_FOUND";
-
-  throw e;
+  throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
 }
 
 export async function deleteProductOfCart(cartId, productId) {
@@ -172,12 +155,10 @@ export async function deleteProductOfCart(cartId, productId) {
       (p) => p.product.toString() !== productId.toString()
     );
   } else {
-    const error = new Error(
-      `Product ${productId} not included in cart ${cartId}.`
+    throw new CustomError(
+      `Product ${productId} not included in cart ${cartId}.`,
+      ERROR_CODE.NOT_FOUND
     );
-    error.code = "NOT_FOUND";
-
-    throw error;
   }
 
   const result = cartsService.updateOne(cartId, {
@@ -188,29 +169,26 @@ export async function deleteProductOfCart(cartId, productId) {
     return result;
   }
 
-  const e = new Error(`Product ${productId} not found.`);
-  e.code = "NOT_FOUND";
-
-  throw e;
+  throw new CustomError(
+    `Product ${productId} not found.`,
+    ERROR_CODE.NOT_FOUND
+  );
 }
 
 async function _getCartAndProductDocument(cartId, productId) {
   const cartDocument = await cartsService.getById(cartId);
 
   if (!cartDocument) {
-    const error = new Error(`Cart ${cartId} not found.`);
-    error.code = "NOT_FOUND";
-
-    throw error;
+    throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
   }
 
   const productDocument = await productsService.getById(productId);
 
   if (!productDocument) {
-    const error = new Error(`Product ${productId} not found.`);
-    error.code = "NOT_FOUND";
-
-    throw error;
+    throw new CustomError(
+      `Product ${productId} not found.`,
+      ERROR_CODE.NOT_FOUND
+    );
   }
 
   return {
@@ -233,46 +211,39 @@ export async function purchaseCart(cartId, user) {
     purchaser: email,
   };
 
-  try {
-    for (const product of cart.products) {
-      console.log(product);
-      const productObject = await productsService.getById(product.product._id);
+  for (const product of cart.products) {
+    const productObject = await productsService.getById(product.product._id);
 
-      if (productObject.stock >= product.quantity) {
-        ticket.amount += product.quantity * productObject.price;
+    if (productObject.stock >= product.quantity) {
+      ticket.amount += product.quantity * productObject.price;
+      ticket.products.push({
+        product: productObject._id,
+        quantity: product.quantity,
+      });
+
+      await productsService.updateOne(product.product._id, {
+        stock: productObject.stock - product.quantity,
+      });
+    } else {
+      updatedCart.products.push({
+        product: productObject._id,
+        quantity: product.quantity - productObject.stock,
+      });
+
+      if (productObject.stock) {
+        ticket.amount += productObject.stock * productObject.price;
         ticket.products.push({
           product: productObject._id,
-          quantity: product.quantity,
+          quantity: productObject.stock,
         });
-
-        await productsService.updateOne(product.product._id, {
-          stock: productObject.stock - product.quantity,
-        });
-      } else {
-        updatedCart.products.push({
-          product: productObject._id,
-          quantity: product.quantity - productObject.stock,
-        });
-
-        if (productObject.stock) {
-          ticket.amount += productObject.stock * productObject.price;
-          ticket.products.push({
-            product: productObject._id,
-            quantity: productObject.stock,
-          });
-        }
-
-        await productsService.updateOne(product.product._id, { stock: 0 });
       }
+
+      await productsService.updateOne(product.product._id, { stock: 0 });
     }
-
-    await cartsService.updateOne(cartId, updatedCart);
-    const createdTicket = await ticketsService.addOne(ticket);
-
-    return createdTicket;
-  } catch (error) {
-    console.log(error);
-
-    throw error;
   }
+
+  await cartsService.updateOne(cartId, updatedCart);
+  const createdTicket = await ticketsService.addOne(ticket);
+
+  return createdTicket;
 }

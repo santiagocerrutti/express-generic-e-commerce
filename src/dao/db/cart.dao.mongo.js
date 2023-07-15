@@ -2,6 +2,7 @@
 import MUUID from "uuid-mongodb";
 import { CartModel } from "./models/cart.model.js";
 import { ProductModel } from "./models/product.model.js";
+import { CustomError, ERROR_CODE } from "../../utils.js";
 
 export class CartDaoMongo {
   constructor() {}
@@ -17,7 +18,7 @@ export class CartDaoMongo {
   }
 
   async getOneByFilter(filterQuery) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async addOne(cart) {
@@ -44,17 +45,11 @@ export class CartDaoMongo {
         { ...formattedFieldsToUpdate }
       );
     } catch (error) {
-      console.log("HERE");
-      console.log(error);
-
       if (error.code) {
-        throw error;
+        throw new CustomError(error.message, error.code);
       }
 
-      const e = new Error(`error`);
-      e.code = "UNCAUGHT_EXCEPTION";
-
-      throw e;
+      throw new CustomError(error.message, ERROR_CODE.UNCAUGHT_EXCEPTION);
     }
 
     if (result) {
@@ -74,10 +69,10 @@ export class CartDaoMongo {
       const foundProduct = await ProductModel.findById(p.product);
 
       if (!foundProduct) {
-        const e = new Error(`Product ${p.product} not found.`);
-        e.code = "NOT_FOUND";
-
-        throw e;
+        throw new CustomError(
+          `Product ${p.product} not found.`,
+          ERROR_CODE.NOT_FOUND
+        );
       }
     }
 
@@ -85,6 +80,6 @@ export class CartDaoMongo {
   }
 
   async deleteOne(objectId) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 }

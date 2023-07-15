@@ -1,16 +1,17 @@
 /* eslint-disable no-unused-vars */
 import MUUID from "uuid-mongodb";
 import { UserModel } from "./models/user.model.js";
+import { CustomError, ERROR_CODE } from "../../utils.js";
 
 export class UserDaoMongo {
   constructor() {}
 
   async getAll(limit = 0) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async getAllPaginate(limit = 10, page = 1, query = {}, sort = undefined) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async getById(userId) {
@@ -39,10 +40,10 @@ export class UserDaoMongo {
         { ...fieldsToUpdate }
       );
     } catch (error) {
-      const e = new Error(`Code ${fieldsToUpdate.code} duplicated`);
-      e.code = "DUPLICATED_KEY";
-
-      throw e;
+      throw new CustomError(
+        `Code ${fieldsToUpdate.code} duplicated`,
+        ERROR_CODE.DUPLICATED_KEY
+      );
     }
 
     if (result) {
@@ -55,6 +56,6 @@ export class UserDaoMongo {
   }
 
   async deleteOne(productId) {
-    throw new Error("Not implemented yet.");
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 }

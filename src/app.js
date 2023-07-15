@@ -5,6 +5,7 @@ import passport from "passport";
 
 import { env } from "./config/env.js";
 import { initializePassport } from "./config/passport.config.js";
+import { errorHandler } from "./middlewares/error/error-handler.js";
 import router from "./routes/index.js";
 import { SocketServer } from "./sockets/socket-server.js";
 import { __dirname } from "./utils.js";
@@ -32,6 +33,9 @@ async function main() {
 
   /** Routes */
   app.use(router);
+
+  /** Error Middleware */
+  app.use(errorHandler);
 
   const server = app.listen(env.PORT, () => {
     console.log("Listening on port " + env.PORT);

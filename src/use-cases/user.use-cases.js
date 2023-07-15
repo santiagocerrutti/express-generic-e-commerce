@@ -1,4 +1,4 @@
-import { createHash } from "../utils.js";
+import { CustomError, ERROR_CODE, createHash } from "../utils.js";
 import { usersService } from "../services/index.js";
 
 export async function createUser(user) {
@@ -15,10 +15,11 @@ export async function createUser(user) {
     return usersService.getOneByFilter({ email: user.email });
   } catch (error) {
     console.log(error);
-    const e = new Error(`Email ${user.email} duplicated`);
-    e.code = "DUPLICATED_KEY";
 
-    throw e;
+    throw new CustomError(
+      `Email ${user.email} duplicated`,
+      ERROR_CODE.DUPLICATED_KEY
+    );
   }
 }
 

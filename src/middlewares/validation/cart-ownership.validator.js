@@ -1,4 +1,5 @@
 import { usersService } from "../../services/index.js";
+import { CustomError, ERROR_CODE } from "../../utils.js";
 import { ROLES } from "../auth/index.js";
 
 export async function validateCartOwnership(req, res, next) {
@@ -11,7 +12,9 @@ export async function validateCartOwnership(req, res, next) {
     return;
   }
 
-  res.sendNotAuthorized(
-    `User ${user._id} not authorized to modify cart: ${cid}`
+  const error = new CustomError(
+    `User ${user._id} not authorized to modify cart: ${cid}`,
+    ERROR_CODE.NOT_AUTHENITCATED
   );
+  next(error);
 }

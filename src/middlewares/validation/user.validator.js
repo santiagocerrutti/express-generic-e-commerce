@@ -1,6 +1,7 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { inspect } from "util";
+import { CustomError, ERROR_CODE } from "../../utils.js";
 
 export function validateRegister(req, res, next) {
   const schema = {
@@ -31,7 +32,12 @@ export function validateRegister(req, res, next) {
     return;
   }
 
-  res.sendBadRequest(`Invalid user: ${inspect(req.body)}.`, validate.errors);
+  const error = new CustomError(
+    `Invalid user: ${inspect(req.body)}.`,
+    ERROR_CODE.INVALID_BODY,
+    validate.errors
+  );
+  next(error);
 }
 
 export function validateLogin(req, res, next) {
@@ -53,8 +59,10 @@ export function validateLogin(req, res, next) {
     return;
   }
 
-  res.sendBadRequest(
+  const error = new CustomError(
     `Invalid login payload: ${inspect(req.body)}.`,
+    ERROR_CODE.INVALID_BODY,
     validate.errors
   );
+  next(error);
 }

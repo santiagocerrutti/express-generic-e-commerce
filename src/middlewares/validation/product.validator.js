@@ -1,6 +1,7 @@
 import Ajv from "ajv";
 import { inspect } from "util";
 import MUUID from "uuid-mongodb";
+import { CustomError, ERROR_CODE } from "../../utils.js";
 
 export function validateProductId(req, res, next) {
   const { pid } = req.params;
@@ -10,11 +11,17 @@ export function validateProductId(req, res, next) {
 
     return;
   } catch (error) {
-    res.sendBadRequest(`Invalid UUID: ${pid}`, null);
+    const err = new CustomError(
+      `Invalid UUID: ${pid}`,
+      ERROR_CODE.INVALID_BODY
+    );
+    next(err);
   }
 }
 
 export function validateGetProductsQuery(req, res, next) {
+  console.log("validateGetProductsQuery");
+  console.log(req);
   const schema = {
     type: "object",
     properties: {
@@ -35,10 +42,12 @@ export function validateGetProductsQuery(req, res, next) {
     return;
   }
 
-  res.sendBadRequest(
+  const error = new CustomError(
     `Invalid login payload: ${inspect(req.body)}.`,
+    ERROR_CODE.INVALID_BODY,
     validate.errors
   );
+  next(error);
 }
 
 export function validatePostProduct(req, res, next) {
@@ -74,7 +83,12 @@ export function validatePostProduct(req, res, next) {
     return;
   }
 
-  res.sendBadRequest(`Invalid product: ${inspect(req.body)}.`, validate.errors);
+  const error = new CustomError(
+    `Invalid product: ${inspect(req.body)}.`,
+    ERROR_CODE.INVALID_BODY,
+    validate.errors
+  );
+  next(error);
 }
 
 export function validatePutProduct(req, res, next) {
@@ -101,5 +115,10 @@ export function validatePutProduct(req, res, next) {
     return;
   }
 
-  res.sendBadRequest(`Invalid product: ${inspect(req.body)}.`, validate.errors);
+  const error = new CustomError(
+    `Invalid product: ${inspect(req.body)}.`,
+    ERROR_CODE.INVALID_BODY,
+    validate.errors
+  );
+  next(error);
 }
