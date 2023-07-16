@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { env } from "./env.js";
+import { logger } from "./logger.js";
 
 export class MongoConnection {
   static _instance = null;
@@ -9,9 +10,9 @@ export class MongoConnection {
   }
 
   async connect() {
-    console.log("conneting to mongo...");
+    logger.info("conneting to mongo...");
     await mongoose.connect(env.MONGO_URL);
-    console.log("conneted to mongo!");
+    logger.info("conneted to mongo!");
   }
 
   static getInstance() {

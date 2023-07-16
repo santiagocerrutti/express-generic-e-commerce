@@ -20,8 +20,6 @@ export function validateProductId(req, res, next) {
 }
 
 export function validateGetProductsQuery(req, res, next) {
-  console.log("validateGetProductsQuery");
-  console.log(req);
   const schema = {
     type: "object",
     properties: {

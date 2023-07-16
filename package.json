@@ -50,7 +50,8 @@
     "qs": "^6.11.1",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
-    "uuid-mongodb": "^2.5.4"
+    "uuid-mongodb": "^2.5.4",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "eslint": "^8.38.0",

@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import { registerChatHandlers } from "./chat-handlers.js";
+import { logger } from "../config/logger.js";
 
 export class SocketServer {
   static _instance = null;
@@ -16,10 +17,10 @@ export class SocketServer {
     SocketServer._instance = new Server(expressApplication);
 
     SocketServer._instance.on("connection", async (socket) => {
-      console.log(`Socket Connected: ${socket.id}`);
+      logger.info(`Socket Connected: ${socket.id}`);
 
       socket.on("disconnect", (reason) => {
-        console.log(`Socket Disonnected: ${socket.id}; ${reason}`);
+        logger.info(`Socket Disonnected: ${socket.id}; ${reason}`);
       });
 
       registerChatHandlers(SocketServer._instance, socket);

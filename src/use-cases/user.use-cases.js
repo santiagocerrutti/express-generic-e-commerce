@@ -14,8 +14,6 @@ export async function createUser(user) {
 
     return usersService.getOneByFilter({ email: user.email });
   } catch (error) {
-    console.log(error);
-
     throw new CustomError(
       `Email ${user.email} duplicated`,
       ERROR_CODE.DUPLICATED_KEY

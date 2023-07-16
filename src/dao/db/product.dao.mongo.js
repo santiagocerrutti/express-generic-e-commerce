@@ -86,8 +86,6 @@ export class ProductDaoMongo {
         { ...fieldsToUpdate }
       );
     } catch (error) {
-      console.log(error);
-
       if (fieldsToUpdate.code) {
         throw new CustomError(
           `Code ${fieldsToUpdate.code} duplicated`,

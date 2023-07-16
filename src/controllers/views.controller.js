@@ -133,7 +133,7 @@ export class ViewsController {
 
       return;
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       res.render("login", {
         user: null,
         message: {

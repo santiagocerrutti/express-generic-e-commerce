@@ -1,4 +1,5 @@
 import { env } from "../config/env.js";
+import { logger } from "../config/logger.js";
 import { MongoConnection } from "../config/mongo.connection.js";
 import {
   CartDaoMongo,
@@ -31,7 +32,7 @@ switch (env.PERSISTENCE) {
     TicketDao = TicketDaoMongo;
     break;
   case "FILE":
-    console.log("Using File Persistence");
+    logger.info("Using File Persistence");
     ProductDao = ProductDaoFile;
     UserDao = UserDaoFile;
     MessageDao = MessageDaoFile;

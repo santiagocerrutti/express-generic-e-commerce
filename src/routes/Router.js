@@ -58,6 +58,8 @@ export class Router {
   // esta función setea un atributo por cada tipo de respuesta, que apunta a una función que se llamará dentro de los controllers
   generateCustomResponse(req, res, next) {
     res.sendSuccess = function (payload) {
+      req.logger.http(`Response 200 to: ${req.method}: ${req.path}`);
+
       res.status(200).send({
         status: "SUCCESS",
         payload: payload,
@@ -65,6 +67,8 @@ export class Router {
     };
 
     res.sendCreated = function (payload) {
+      req.logger.http(`Response 201 to: ${req.method}: ${req.path}`);
+
       res.status(201).send({
         status: "CREATED",
         payload: payload,
@@ -72,6 +76,8 @@ export class Router {
     };
 
     res.sendBadRequest = function (error, errors) {
+      req.logger.http(`Response 400 to: ${req.method}: ${req.path}`);
+
       res.status(400).send({
         status: "ERROR",
         error: error,
@@ -80,6 +86,8 @@ export class Router {
     };
 
     res.sendNotAuthenticated = function (error) {
+      req.logger.http(`Response 401 to: ${req.method}: ${req.path}`);
+
       res.status(401).send({
         status: "ERROR",
         error: error,
@@ -87,6 +95,8 @@ export class Router {
     };
 
     res.sendNotAuthorized = function (error) {
+      req.logger.http(`Response 403 to: ${req.method}: ${req.path}`);
+
       res.status(403).send({
         status: "ERROR",
         error: error,
@@ -94,6 +104,8 @@ export class Router {
     };
 
     res.sendNotFound = function (error) {
+      req.logger.http(`Response 404 to: ${req.method}: ${req.path}`);
+
       res.status(404).send({
         status: "ERROR",
         error: error,
@@ -101,6 +113,8 @@ export class Router {
     };
 
     res.sendConflict = function (error) {
+      req.logger.http(`Response 409 to: ${req.method}: ${req.path}`);
+
       res.status(409).send({
         status: "ERROR",
         error: error,
@@ -108,6 +122,8 @@ export class Router {
     };
 
     res.sendInternalServerError = function () {
+      req.logger.http(`Response 500 to: ${req.method}: ${req.path}`);
+
       res.status(500).send({
         status: "ERROR",
         error: "Internal Server Error",

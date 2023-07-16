@@ -6,9 +6,11 @@ import passport from "passport";
 import { env } from "./config/env.js";
 import { initializePassport } from "./config/passport.config.js";
 import { errorHandler } from "./middlewares/error/error-handler.js";
+import { addLogger } from "./middlewares/logger/index.js";
 import router from "./routes/index.js";
 import { SocketServer } from "./sockets/socket-server.js";
 import { __dirname } from "./utils.js";
+import { logger } from "./config/logger.js";
 
 async function main() {
   const app = express();
@@ -31,6 +33,9 @@ async function main() {
   initializePassport();
   app.use(passport.initialize());
 
+  /** Logger middleware */
+  app.use(addLogger);
+
   /** Routes */
   app.use(router);
 
@@ -38,7 +43,7 @@ async function main() {
   app.use(errorHandler);
 
   const server = app.listen(env.PORT, () => {
-    console.log("Listening on port " + env.PORT);
+    logger.info("Listening on port " + env.PORT);
   });
 
   SocketServer.createSocketServer(server);

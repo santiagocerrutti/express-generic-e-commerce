@@ -45,8 +45,6 @@ export async function addProductToCart(cartId, productId, quantity) {
     (p) => p.product.toString() === productId.toString()
   );
 
-  console.log(cartProduct);
-
   if (cartProduct) {
     cartProduct.quantity += quantity;
   } else {
@@ -58,16 +56,9 @@ export async function addProductToCart(cartId, productId, quantity) {
 
   let result = null;
 
-  try {
-    console.log(cartDocument.products);
-    result = await cartsService.updateOne(cartId, {
-      products: formatedProducts,
-    });
-  } catch (error) {
-    console.log(error);
-
-    throw error;
-  }
+  result = await cartsService.updateOne(cartId, {
+    products: formatedProducts,
+  });
 
   if (result) {
     return result;
