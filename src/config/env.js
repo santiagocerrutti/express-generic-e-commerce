@@ -38,4 +38,8 @@ export const env = {
     "http://localhost:8080/sessions/github-callback",
   JWT_SECRET: process.env.JWT_SECRET || "sha-256_hash_here",
   JWT_COOKIE_NAME: process.env.JWT_COOKIE_NAME || "AuthJwt",
+  EMAIL_SERVICE: process.env.EMAIL_SERVICE || "gmail",
+  EMAIL_PORT: parseInt(process.env.EMAIL_PORT) || 587,
+  EMAIL_ADDRESS: process.env.EMAIL_ADDRESS || "user@gmail.com",
+  EMAIL_PASSWORD: process.env.EMAIL_PASSWORD || "abcdefghijklmno",
 };

@@ -41,6 +41,10 @@ const envTransport = {
     }),
   ],
   [ENV_OPTION.STAGE]: [
+    new Console({
+      level: "debug",
+      format: combine(colorize(levelOptions.colors), simple()),
+    }),
     new File({
       filename: "./errors.log",
       level: "info",
@@ -48,6 +52,10 @@ const envTransport = {
     }),
   ],
   [ENV_OPTION.PROD]: [
+    new Console({
+      level: "debug",
+      format: combine(colorize(levelOptions.colors), simple()),
+    }),
     new File({
       filename: "./errors.log",
       level: "info",

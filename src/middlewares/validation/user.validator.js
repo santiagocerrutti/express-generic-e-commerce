@@ -44,11 +44,70 @@ export function validateLogin(req, res, next) {
   const schema = {
     type: "object",
     properties: {
-      email: { type: "string" },
+      email: {
+        type: "string",
+        format: "email",
+      },
       password: { type: "string" },
     },
     required: ["email", "password"],
     additionalProperties: false,
+  };
+  const ajv = new Ajv();
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+
+  if (validate(req.body)) {
+    next();
+
+    return;
+  }
+
+  const error = new CustomError(
+    `Invalid login payload: ${inspect(req.body)}.`,
+    ERROR_CODE.INVALID_BODY,
+    validate.errors
+  );
+  next(error);
+}
+
+export function validateEmail(req, res, next) {
+  const schema = {
+    type: "object",
+    properties: {
+      email: {
+        type: "string",
+        format: "email",
+      },
+    },
+    required: ["email"],
+    additionalProperties: false,
+  };
+  const ajv = new Ajv();
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+
+  if (validate(req.body)) {
+    next();
+
+    return;
+  }
+
+  const error = new CustomError(
+    `Invalid reset password payload: ${inspect(req.body)}.`,
+    ERROR_CODE.INVALID_BODY,
+    validate.errors
+  );
+  next(error);
+}
+
+export function validatePassword(req, res, next) {
+  const schema = {
+    type: "object",
+    properties: {
+      password: { type: "string" },
+    },
+    required: ["password"],
   };
   const ajv = new Ajv();
   const validate = ajv.compile(schema);
@@ -60,7 +119,7 @@ export function validateLogin(req, res, next) {
   }
 
   const error = new CustomError(
-    `Invalid login payload: ${inspect(req.body)}.`,
+    `Invalid new password payload: ${inspect(req.body)}.`,
     ERROR_CODE.INVALID_BODY,
     validate.errors
   );

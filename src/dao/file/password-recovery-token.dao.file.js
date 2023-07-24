@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
-import MUUID from "uuid-mongodb";
-import { TicketModel } from "./models/ticket.model.js";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
-export class TicketDaoMongo {
+export class PasswordRecoveryTokenDaoFile {
   constructor() {}
   async getAll(limit = 0) {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
@@ -13,25 +11,23 @@ export class TicketDaoMongo {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
-  async getById(ticketId) {
-    const foundTicket = await TicketModel.findById(MUUID.from(ticketId)).lean();
-
-    return foundTicket;
+  async getById(tokenId) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async getOneByFilter(filterQuery) {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
-  async addOne(ticket) {
-    return TicketModel.create(ticket);
+  async addOne(token) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async updateOne(objectId, fieldsToUpdate) {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
-  async deleteOne(objectId) {
+  async deleteOne(tokenId) {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 }

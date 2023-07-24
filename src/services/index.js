@@ -5,6 +5,7 @@ import {
   ProductDao,
   TicketDao,
   UserDao,
+  PasswordRecoveryTokenDao,
 } from "../dao/factory.js";
 import { Repository } from "../repository/index.js";
 
@@ -17,3 +18,7 @@ export const productsService = new Repository(new ProductDao());
 export const usersService = new Repository(new UserDao());
 
 export const ticketsService = new Repository(new TicketDao());
+
+export const passwordRecoveryTokenService = new Repository(
+  new PasswordRecoveryTokenDao()
+);

@@ -30,16 +30,16 @@ export function initializePassport() {
       },
       async (req, username, password, done) => {
         try {
-          const cart = await addCart();
           const role = username === env.ADMIN_EMAIL ? "admin" : "user";
 
           const result = await createUser({
             ...req.body,
             email: username,
             password,
-            cart: cart._id,
             role,
           });
+
+          await addCart(result);
 
           return done(null, result);
         } catch (error) {

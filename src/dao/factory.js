@@ -7,13 +7,16 @@ import {
   ProductDaoMongo,
   TicketDaoMongo,
   UserDaoMongo,
+  PasswordRecoveryTokenDaoMongo,
 } from "./db/index.js";
+
 import {
   CartDaoFile,
   MessageDaoFile,
   ProductDaoFile,
   TicketDaoFile,
   UserDaoFile,
+  PasswordRecoveryTokenDaoFile,
 } from "./file/index.js";
 
 let ProductDao;
@@ -21,6 +24,7 @@ let UserDao;
 let MessageDao;
 let CartDao;
 let TicketDao;
+let PasswordRecoveryTokenDao;
 
 switch (env.PERSISTENCE) {
   case "MONGO":
@@ -30,6 +34,7 @@ switch (env.PERSISTENCE) {
     MessageDao = MessageDaoMongo;
     CartDao = CartDaoMongo;
     TicketDao = TicketDaoMongo;
+    PasswordRecoveryTokenDao = PasswordRecoveryTokenDaoMongo;
     break;
   case "FILE":
     logger.info("Using File Persistence");
@@ -38,9 +43,17 @@ switch (env.PERSISTENCE) {
     MessageDao = MessageDaoFile;
     CartDao = CartDaoFile;
     TicketDao = TicketDaoFile;
+    PasswordRecoveryTokenDao = PasswordRecoveryTokenDaoFile;
     break;
   default:
     break;
 }
 
-export { ProductDao, UserDao, MessageDao, CartDao, TicketDao };
+export {
+  ProductDao,
+  UserDao,
+  MessageDao,
+  CartDao,
+  TicketDao,
+  PasswordRecoveryTokenDao,
+};

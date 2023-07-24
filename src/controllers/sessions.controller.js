@@ -1,6 +1,10 @@
 import { env } from "../config/env.js";
 import { UserDto } from "../dto/user.dto.js";
 import {
+  sendResetPasswordEmail,
+  updateUserPassword,
+} from "../use-cases/user.use-cases.js";
+import {
   CustomError,
   ERROR_CODE,
   cookieConfig,
@@ -53,6 +57,31 @@ class SessionsController {
   getCurrent = async (req, res) => {
     const user = new UserDto(req.user.user);
     res.sendSuccess({ user });
+  };
+
+  resetPasswordRequest = async (req, res, next) => {
+    try {
+      const { email } = req.body;
+
+      const result = await sendResetPasswordEmail(email);
+
+      res.sendSuccess(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  newUserPassword = async (req, res, next) => {
+    try {
+      const { token } = req.params;
+      const { password } = req.body;
+
+      const result = await updateUserPassword(token, password);
+
+      res.sendSuccess(result);
+    } catch (error) {
+      next(error);
+    }
   };
 }
 

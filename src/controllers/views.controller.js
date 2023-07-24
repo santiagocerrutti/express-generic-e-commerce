@@ -165,6 +165,64 @@ export class ViewsController {
       },
     });
   };
+
+  getResetPasswordView = async (req, res) => {
+    try {
+      res.render("reset-password");
+
+      return;
+    } catch (error) {
+      req.logger.error(error);
+      res.render("reset-password", {
+        user: null,
+        message: {
+          type: "error",
+          text: "Internal Server Error. Try again later.",
+        },
+      });
+    }
+  };
+
+  getNewPasswordView = async (req, res) => {
+    try {
+      res.render("new-password", {
+        token: req.params.token,
+      });
+
+      return;
+    } catch (error) {
+      req.logger.error(error);
+      res.render("new-password", {
+        user: null,
+        message: {
+          type: "error",
+          text: "Internal Server Error. Try again later.",
+        },
+      });
+    }
+  };
+
+  getNewPasswordSuccessView = async (req, res) => {
+    try {
+      res.render("login", {
+        message: {
+          type: "success",
+          text: "Pasword updated successfully.",
+        },
+      });
+
+      return;
+    } catch (error) {
+      req.logger.error(error);
+      res.render("login", {
+        user: null,
+        message: {
+          type: "error",
+          text: "Internal Server Error. Try again later.",
+        },
+      });
+    }
+  };
 }
 
 export const viewsController = new ViewsController();

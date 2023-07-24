@@ -14,6 +14,10 @@ export async function errorHandler(err, req, res, next) {
     res.sendNotFound(err.message);
 
     return;
+  } else if (err.code === ERROR_CODE.BUSSINES_LOGIC_ERROR) {
+    res.sendConflict(err.message);
+
+    return;
   } else if (err.code === ERROR_CODE.DUPLICATED_KEY) {
     res.sendConflict(err.message);
 

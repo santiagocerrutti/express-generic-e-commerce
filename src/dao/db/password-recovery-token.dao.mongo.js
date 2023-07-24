@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import MUUID from "uuid-mongodb";
-import { TicketModel } from "./models/ticket.model.js";
 import { CustomError, ERROR_CODE } from "../../utils.js";
+import { PasswordRecoveryTokenModel } from "./models/password-recovery-token.model.js";
 
-export class TicketDaoMongo {
+export class PasswordRecoveryTokenDaoMongo {
   constructor() {}
   async getAll(limit = 0) {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
@@ -13,25 +13,31 @@ export class TicketDaoMongo {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
-  async getById(ticketId) {
-    const foundTicket = await TicketModel.findById(MUUID.from(ticketId)).lean();
+  async getById(tokenId) {
+    const foundToken = await PasswordRecoveryTokenModel.findById(
+      MUUID.from(tokenId)
+    )
+      .populate("user")
+      .lean();
 
-    return foundTicket;
+    return foundToken;
   }
 
   async getOneByFilter(filterQuery) {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
-  async addOne(ticket) {
-    return TicketModel.create(ticket);
+  async addOne(token) {
+    return PasswordRecoveryTokenModel.create(token);
   }
 
   async updateOne(objectId, fieldsToUpdate) {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
-  async deleteOne(objectId) {
-    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
+  async deleteOne(tokenId) {
+    return PasswordRecoveryTokenModel.findOneAndDelete({
+      _id: MUUID.from(tokenId),
+    });
   }
 }

@@ -20,6 +20,9 @@ const {
   getRealTimeProductsView,
   getRegisterFailView,
   getRegisterView,
+  getResetPasswordView,
+  getNewPasswordView,
+  getNewPasswordSuccessView,
 } = viewsController;
 class ViewsRouter extends Router {
   init() {
@@ -68,6 +71,12 @@ class ViewsRouter extends Router {
     );
 
     this.get("/logout", getLogoutView);
+
+    this.get("/reset-password", getResetPasswordView);
+
+    this.get("/new-password/:token", getNewPasswordView);
+
+    this.get("/new-password-success", getNewPasswordSuccessView);
   }
 }
 
