@@ -4,6 +4,7 @@ import {
   isAuthenticated,
   isAuthorized,
 } from "../middlewares/auth/index.js";
+import { validateProductOwnership } from "../middlewares/validation/product-ownership.validator.js";
 import {
   validateGetProductsQuery,
   validatePostProduct,
@@ -29,7 +30,7 @@ class ProductsRouter extends Router {
     this.post(
       "/",
       isAuthenticated,
-      isAuthorized(ROLES.ADMIN),
+      isAuthorized(ROLES.ADMIN, ROLES.PREMIUM),
       validatePostProduct,
       createProduct
     );
@@ -37,16 +38,18 @@ class ProductsRouter extends Router {
     this.put(
       "/:pid",
       isAuthenticated,
-      isAuthorized(ROLES.ADMIN),
+      isAuthorized(ROLES.ADMIN, ROLES.PREMIUM),
       validateProductId,
       validatePutProduct,
+      validateProductOwnership,
       updateProduct
     );
 
     this.delete(
       "/:pid",
       isAuthenticated,
-      isAuthorized(ROLES.ADMIN),
+      isAuthorized(ROLES.ADMIN, ROLES.PREMIUM),
+      validateProductOwnership,
       deleteProduct
     );
   }

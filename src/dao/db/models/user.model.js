@@ -1,7 +1,7 @@
 import MUUID from "uuid-mongodb";
 import { Schema, model } from "mongoose";
 
-import { cartCollection } from "./cart.model.js";
+// import { cartCollection } from "./cart.model.js";
 
 export const userCollection = "users";
 
@@ -16,7 +16,8 @@ export const userSchema = new Schema(
     cart: {
       type: "object",
       value: { type: "Buffer" },
-      ref: cartCollection,
+      // ref: cartCollection,
+      ref: "carts",
       required: false,
     },
     role: { type: String },

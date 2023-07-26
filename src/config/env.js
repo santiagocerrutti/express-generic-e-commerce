@@ -18,8 +18,6 @@ dotenv.config({
 });
 
 export const env = {
-  //TODO: sería bueno que las base de datos de aplicación y de sesión sean distintas
-  // Revisar cómo hacer para conectarnos a otra BD desde los manager.
   NODE_ENV: mode,
   PERSISTENCE: process.env.PERSISTENCE || "MONGO",
   MONGO_URL:

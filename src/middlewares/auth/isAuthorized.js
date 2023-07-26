@@ -23,6 +23,7 @@ export function isAuthorized(...roles) {
 
 export const ROLES = {
   PUBLIC: "public",
+  PREMIUM: "premium",
   ADMIN: "admin",
   USER: "user",
 };

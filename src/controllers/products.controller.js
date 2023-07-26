@@ -62,7 +62,10 @@ class ProductsController {
 
   createProduct = async (req, res, next) => {
     try {
-      const result = await addProduct(req.body);
+      const result = await addProduct({
+        ...req.body,
+        owner: req.user.user._id,
+      });
 
       await this._emitProductsUpdate();
 

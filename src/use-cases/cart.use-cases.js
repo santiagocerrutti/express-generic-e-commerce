@@ -31,8 +31,21 @@ export async function getCartById(cartId) {
   throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
 }
 
-export async function addProductToCart(cartId, productId, quantity) {
+async function _validateProductOwnership(productId, userId) {
+  const product = await productsService.getById(productId);
+
+  if (product.owner === userId) {
+    throw new CustomError(
+      "User cant add its own product",
+      ERROR_CODE.BUSSINES_LOGIC_ERROR
+    );
+  }
+}
+
+export async function addProductToCart(cartId, productId, quantity, userId) {
   const { cartDocument } = await _getCartAndProductDocument(cartId, productId);
+
+  await _validateProductOwnership(productId, userId);
 
   const formatedProducts = cartDocument.products.map((p) => {
     return {
@@ -67,7 +80,11 @@ export async function addProductToCart(cartId, productId, quantity) {
   throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
 }
 
-export async function updateProductsOfCart(cartId, products) {
+export async function updateProductsOfCart(cartId, products, userId) {
+  for (const detail of products) {
+    await _validateProductOwnership(detail.product, userId);
+  }
+
   const result = await cartsService.updateOne(cartId, { products });
 
   if (result) {
@@ -87,8 +104,10 @@ export async function deleteProductsOfCart(cartId) {
   throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
 }
 
-export async function updateProductOfCart(cartId, productId, quantity) {
+export async function updateProductOfCart(cartId, productId, quantity, userId) {
   const { cartDocument } = await _getCartAndProductDocument(cartId, productId);
+
+  await _validateProductOwnership(productId, userId);
 
   const formatedProducts = cartDocument.products.map((p) => {
     return {
@@ -127,8 +146,10 @@ export async function updateProductOfCart(cartId, productId, quantity) {
   throw new CustomError(`Cart ${cartId} not found.`, ERROR_CODE.NOT_FOUND);
 }
 
-export async function deleteProductOfCart(cartId, productId) {
+export async function deleteProductOfCart(cartId, productId, userId) {
   const { cartDocument } = await _getCartAndProductDocument(cartId, productId);
+
+  await _validateProductOwnership(productId, userId);
 
   let formatedProducts = cartDocument.products.map((p) => {
     return {

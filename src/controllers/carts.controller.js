@@ -44,8 +44,9 @@ class CartsController {
 
   addProductToCart = async (req, res, next) => {
     const { cid, pid } = req.params;
+    const { user } = req.user;
     try {
-      const cart = await addProductToCart(cid, pid, 1);
+      const cart = await addProductToCart(cid, pid, 1, user._id);
 
       res.sendSuccess(cart);
     } catch (error) {
@@ -56,8 +57,9 @@ class CartsController {
   updateProductsOfCart = async (req, res, next) => {
     const { cid } = req.params;
     const { products } = req.body;
+    const { user } = req.user;
     try {
-      const cart = await updateProductsOfCart(cid, products);
+      const cart = await updateProductsOfCart(cid, products, user._id);
       res.sendSuccess(cart);
     } catch (error) {
       next(error);
@@ -67,8 +69,9 @@ class CartsController {
   updateProductOfCart = async (req, res, next) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
+    const { user } = req.user;
     try {
-      const cart = await updateProductOfCart(cid, pid, quantity);
+      const cart = await updateProductOfCart(cid, pid, quantity, user._id);
       res.sendSuccess(cart);
     } catch (error) {
       next(error);
@@ -87,8 +90,9 @@ class CartsController {
 
   deleteProductOfCart = async (req, res, next) => {
     const { cid, pid } = req.params;
+    const { user } = req.user;
     try {
-      const cart = await deleteProductOfCart(cid, pid);
+      const cart = await deleteProductOfCart(cid, pid, user._id);
       res.sendSuccess(cart);
     } catch (error) {
       next(error);

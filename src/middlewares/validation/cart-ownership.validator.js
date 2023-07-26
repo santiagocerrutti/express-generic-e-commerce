@@ -3,6 +3,8 @@ import { CustomError, ERROR_CODE } from "../../utils.js";
 import { ROLES } from "../auth/index.js";
 
 export async function validateCartOwnership(req, res, next) {
+  console.log(req.user);
+  // ¿el USER del TOKEN no tiene los Roles?
   const user = await usersService.getById(req.user.user._id);
   const { cid } = req.params;
 
