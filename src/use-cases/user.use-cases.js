@@ -12,6 +12,7 @@ import {
   createHash,
   isValidPassword,
 } from "../utils.js";
+import { ROLES } from "../middlewares/auth/isAuthorized.js";
 
 export async function createUser(user) {
   try {
@@ -106,4 +107,26 @@ export async function sendResetPasswordEmail(emailAddress) {
   }
 
   throw new CustomError(`User ${emailAddress} not found`, ERROR_CODE.NOT_FOUND);
+}
+
+export async function switchUserToPremium(uid) {
+  const user = await usersService.getById(uid);
+
+  if (user?.role === ROLES.PREMIUM) {
+    const result = await usersService.updateOne(uid, {
+      role: ROLES.USER,
+    });
+
+    return result;
+  }
+
+  if (user?.role === ROLES.USER) {
+    const result = await usersService.updateOne(uid, {
+      role: ROLES.PREMIUM,
+    });
+
+    return result;
+  }
+
+  return user;
 }
