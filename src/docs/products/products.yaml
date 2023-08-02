@@ -1,0 +1,256 @@
+paths:
+  /api/products:
+    get:
+      summary: Get all
+      tags:
+        - Products
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Products successfully retreived
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ProductListResponse"
+    post:
+      summary: Create
+      tags:
+        - Products
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/CreateProduct"
+      responses:
+        "201":
+          description: Product successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ProductSingleResponse"
+  /api/products/{pid}:
+    get:
+      summary: Get by id
+      tags:
+        - Products
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: product id
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product successfully retreived
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ProductSingleResponse"
+    put:
+      summary: Update
+      tags:
+        - Products
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: product id
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateProduct"
+      responses:
+        "200":
+          description: Product successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ProductSingleResponse"
+    delete:
+      summary: Delete by Id
+      tags:
+        - Products
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: product id
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ProductSingleResponse"
+
+components:
+  schemas:
+    ProductSingleResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: SUCCESS
+        payload:
+          $ref: "#components/schemas/Product"
+    ProductListResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: SUCCESS
+        payload:
+          type: array
+          items:
+            $ref: "#components/schemas/Product"
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 640ef7ca-01c6-4931-b3c0-900fc2e657b1
+        title:
+          type: string
+          example: Park Is Mine The
+        description:
+          type: string
+          example: est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl
+        code:
+          type: string
+          example: 129905510-9
+        price:
+          type: number
+          example: 72.09
+        status:
+          type: boolean
+        stock:
+          type: number
+          example: 52
+        category:
+          type: string
+          example: Action|Drama|Thriller
+        thumbnails:
+          type: array
+          items:
+            type: string
+            example: https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80
+      example:
+        _id: "640ef7ca-01c6-4931-b3c0-900fc2e657b1"
+        title: "Park Is Mine, The"
+        description: "est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl"
+        code: "129905510-9"
+        price: 72.09
+        status: true
+        stock: 52
+        category: "Action|Drama|Thriller"
+        thumbnails:
+          [
+            "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80",
+          ]
+  requestBodies:
+    CreateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Park Is Mine The
+          required: true
+        description:
+          type: string
+          example: est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl
+          required: true
+        code:
+          type: string
+          example: 129905510-9
+          required: true
+        price:
+          type: number
+          example: 72.09
+          required: true
+        status:
+          type: boolean
+          required: true
+        stock:
+          type: number
+          example: 52
+          required: true
+        category:
+          type: string
+          example: Action|Drama|Thriller
+          required: true
+        thumbnails:
+          type: array
+          items:
+            type: string
+            example: https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80
+      example:
+        _id: "640ef7ca-01c6-4931-b3c0-900fc2e657b1"
+        title: "Park Is Mine, The"
+        description: "est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl"
+        code: "129905510-9"
+        price: 72.09
+        status: true
+        stock: 52
+        category: "Action|Drama|Thriller"
+        thumbnails:
+          [
+            "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80",
+          ]
+    UpdateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Park Is Mine The
+        description:
+          type: string
+          example: est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl
+        code:
+          type: string
+          example: 129905510-9
+        price:
+          type: number
+          example: 72.09
+        status:
+          type: boolean
+        stock:
+          type: number
+          example: 52
+        category:
+          type: string
+          example: Action|Drama|Thriller
+        thumbnails:
+          type: array
+          items:
+            type: string
+            example: https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80
+      example:
+        _id: "640ef7ca-01c6-4931-b3c0-900fc2e657b1"
+        title: "Park Is Mine, The"
+        description: "est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl"
+        code: "129905510-9"
+        price: 72.09
+        status: true
+        stock: 52
+        category: "Action|Drama|Thriller"
+        thumbnails:
+          [
+            "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=856&q=80",
+          ]

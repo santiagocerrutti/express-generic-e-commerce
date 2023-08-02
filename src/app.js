@@ -11,6 +11,9 @@ import router from "./routes/index.js";
 import { SocketServer } from "./sockets/socket-server.js";
 import { __dirname } from "./utils.js";
 import { logger } from "./config/logger.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+import { swaggerOptions } from "./docs/config.js";
 
 async function main() {
   const app = express();
@@ -41,6 +44,9 @@ async function main() {
 
   /** Error Middleware */
   app.use(errorHandler);
+
+  const specs = swaggerJSDoc(swaggerOptions);
+  app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
   const server = app.listen(env.PORT, () => {
     logger.info("Listening on port " + env.PORT);

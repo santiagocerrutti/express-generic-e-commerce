@@ -1,0 +1,302 @@
+paths:
+  /api/carts:
+    get:
+      summary: Get all
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Carts successfully retreived
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartListResponse"
+    post:
+      summary: Create empty cart
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      responses:
+        "201":
+          description: Cart successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartSingleResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+  /api/carts/{cid}:
+    get:
+      summary: Get by id
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Cart successfully retreived
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartSingleResponse"
+    put:
+      summary: Update products of cart
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateProductsOfCart"
+      responses:
+        "200":
+          description: Cart successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartSingleResponse"
+    delete:
+      summary: Delete all products of cart
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Cart successfully emptied
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartSingleResponse"
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Add product to cart
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: product id
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product successfully added
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartSingleResponse"
+    put:
+      summary: Update product of cart
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: product id
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateProductOfCart"
+      responses:
+        "200":
+          description: Product successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartSingleResponse"
+    delete:
+      summary: Delete product of cart
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: product id
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product successfully deleted from cart
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartSingleResponse"
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Purchase cart
+      tags:
+        - Carts
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Cart purchased successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/PurchaseCartSingleResponse"
+
+components:
+  schemas:
+    PurchaseCartSingleResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: SUCCESS
+        payload:
+          $ref: "#components/schemas/PurchaseCart"
+    CartSingleResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: SUCCESS
+        payload:
+          $ref: "#components/schemas/Cart"
+    CartListResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: SUCCESS
+        payload:
+          type: array
+          items:
+            $ref: "#components/schemas/Cart"
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: b19df4f6-5d31-4447-82e9-cf192c881972
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              quantity:
+                type: number
+                example: 2
+              product:
+                $ref: "#components/schemas/Product"
+    PurchaseCart:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 15bf8622-b512-4567-bd55-e50e4c675a48
+        code:
+          type: string
+          example: 1c86fd48-6b10-45c5-86a8-b5a3172556ff
+        amount:
+          type: number
+          example: 39.89
+        purchaser:
+          type: string
+          example: sperez@yahoo.com
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              quantity:
+                type: number
+                example: 1
+              product:
+                type: string
+                example: 12dbac51-c1fe-4847-8899-947c493ffd68
+        purchase_date:
+          type: string
+          format: date-time
+          example: 2023-07-08T19:39:58.661Z
+        __v:
+          type: number
+          example: 0
+  requestBodies:
+    UpdateProductsOfCart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                example: 640ef7ca-01c6-4931-b3c0-900fc2e657b1
+              quantity:
+                type: number
+                example: 2
+    UpdateProductOfCart:
+      type: object
+      properties:
+        quantity:
+          type: number
+          example: 2

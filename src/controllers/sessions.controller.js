@@ -34,7 +34,7 @@ class SessionsController {
       const token = createTokenFromUser(user);
 
       res.cookie(env.JWT_COOKIE_NAME, token, cookieConfig);
-      res.sendSuccess("Login successfull");
+      res.sendSuccess(token);
 
       return;
     }
