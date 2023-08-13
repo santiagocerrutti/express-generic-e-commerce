@@ -36,7 +36,7 @@ class CartsController {
     try {
       const cart = await addCart(req.user.user);
 
-      res.sendSuccess(cart);
+      res.sendCreated(cart);
     } catch (error) {
       next(error);
     }

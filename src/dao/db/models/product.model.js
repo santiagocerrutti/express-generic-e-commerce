@@ -9,7 +9,7 @@ MUUID.mode("relaxed");
 export const productCollection = "products";
 
 export const productSchema = new Schema({
-  _id: { type: "object", value: { type: "Buffer" }, default: MUUID.v4() },
+  _id: { type: "object", value: { type: "Buffer" }, default: () => MUUID.v4() },
   title: { type: String, required: true },
   description: { type: String, required: true },
   code: { type: String, required: true, unique: true },

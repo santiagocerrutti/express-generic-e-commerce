@@ -2,10 +2,12 @@ import { Schema, model } from "mongoose";
 import MUUID from "uuid-mongodb";
 import { productCollection } from "./product.model.js";
 
+MUUID.mode("relaxed");
+
 export const cartCollection = "carts";
 
 export const cartSchema = new Schema({
-  _id: { type: "object", value: { type: "Buffer" }, default: MUUID.v4() },
+  _id: { type: "object", value: { type: "Buffer" }, default: () => MUUID.v4() },
   products: [
     {
       _id: false,

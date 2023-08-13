@@ -22,7 +22,7 @@ export class CartDaoMongo {
   }
 
   async addOne(cart) {
-    const newCart = await CartModel.create(cart);
+    const newCart = await CartModel.create({ ...cart });
 
     return newCart;
   }

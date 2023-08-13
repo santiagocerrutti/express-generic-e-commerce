@@ -55,7 +55,9 @@ export class UserDaoMongo {
     return null;
   }
 
-  async deleteOne(productId) {
-    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
+  async deleteOne(userId) {
+    return UserModel.findOneAndDelete({
+      _id: MUUID.from(userId),
+    });
   }
 }
