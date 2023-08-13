@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import chai from "chai";
 import { after, before, describe, it } from "mocha";
 import mongoose from "mongoose";
@@ -16,9 +17,7 @@ describe("ecommerce", function () {
 
   before(async function () {
     const connection = await mongoose
-      .createConnection(
-        "mongodb+srv://coder-ecommerce-backend:01HNA3rnBPWOfngg@coderhousecluster.q3o8n6f.mongodb.net/ecommerce?retryWrites=true&w=majority"
-      )
+      .createConnection(process.env.MONGO_URL)
       .asPromise();
 
     const productsCollection = connection.collection("products");
@@ -28,6 +27,7 @@ describe("ecommerce", function () {
       _id: product._id.toString(),
     };
 
+    // This user should be created with role user
     const loginResult = await requester.post("/api/sessions/login").send({
       email: "usuario@de-prueba.com",
       password: "P4S5W0RD",
@@ -42,9 +42,7 @@ describe("ecommerce", function () {
 
   after(async function () {
     const connection = await mongoose
-      .createConnection(
-        "mongodb+srv://coder-ecommerce-backend:01HNA3rnBPWOfngg@coderhousecluster.q3o8n6f.mongodb.net/ecommerce?retryWrites=true&w=majority"
-      )
+      .createConnection(process.env.MONGO_URL)
       .asPromise();
 
     const cartsCollection = connection.collection("carts");

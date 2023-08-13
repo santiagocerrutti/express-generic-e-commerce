@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import chai from "chai";
 import { after, before, describe, it } from "mocha";
 import supertest from "supertest";
@@ -12,6 +13,7 @@ describe("ecommerce", function () {
   let cookie = {};
 
   before(async function () {
+    // This user should be created with role premium
     const loginResult = await requester.post("/api/sessions/login").send({
       email: "usuario@premium.com",
       password: "P4S5W0RD",
@@ -26,9 +28,7 @@ describe("ecommerce", function () {
 
   after(async function () {
     const connection = await mongoose
-      .createConnection(
-        "mongodb+srv://coder-ecommerce-backend:01HNA3rnBPWOfngg@coderhousecluster.q3o8n6f.mongodb.net/ecommerce?retryWrites=true&w=majority"
-      )
+      .createConnection(process.env.MONGO_URL)
       .asPromise();
 
     const productsCollection = connection.collection("products");

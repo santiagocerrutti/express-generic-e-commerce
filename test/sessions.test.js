@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import chai from "chai";
 import { after, describe, it } from "mocha";
 import mongoose from "mongoose";
@@ -13,9 +14,7 @@ describe("ecommerce", function () {
 
   after(async function () {
     const connection = await mongoose
-      .createConnection(
-        "mongodb+srv://coder-ecommerce-backend:01HNA3rnBPWOfngg@coderhousecluster.q3o8n6f.mongodb.net/ecommerce?retryWrites=true&w=majority"
-      )
+      .createConnection(process.env.MONGO_URL)
       .asPromise();
 
     const usersCollection = connection.collection("users");
