@@ -1,6 +1,7 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { inspect } from "util";
+import MUUID from "uuid-mongodb";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
 export function validateRegister(req, res, next) {
@@ -124,4 +125,56 @@ export function validatePassword(req, res, next) {
     validate.errors
   );
   next(error);
+}
+
+export function validateUserId(req, res, next) {
+  const { uid } = req.params;
+  try {
+    MUUID.from(uid);
+    next();
+
+    return;
+  } catch (error) {
+    const err = new CustomError(
+      `Invalid UUID: ${uid}`,
+      ERROR_CODE.INVALID_BODY
+    );
+    next(err);
+  }
+}
+
+/** This is not a middleware */
+export function validateUserDocumentPayload(req) {
+  const schema = {
+    type: "object",
+    properties: {
+      name: { type: "string" },
+      document_type: {
+        enum: ["identification", "account_statement", "proof_of_address"],
+      },
+    },
+    required: ["document_type"],
+  };
+  const ajv = new Ajv();
+  const validate = ajv.compile(schema);
+
+  if (validate(req.body)) {
+    return;
+  }
+
+  throw new CustomError(
+    `Invalid document payload: ${inspect(req.body)}.`,
+    ERROR_CODE.INVALID_BODY,
+    validate.errors
+  );
+}
+
+export function validateUserDocumentFile(req, res, next) {
+  if (req.file) {
+    next();
+
+    return;
+  }
+
+  next(new CustomError(`Invalid document file`, ERROR_CODE.INVALID_BODY));
 }

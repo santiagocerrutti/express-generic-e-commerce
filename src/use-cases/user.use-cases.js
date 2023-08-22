@@ -109,6 +109,27 @@ export async function sendResetPasswordEmail(emailAddress) {
   throw new CustomError(`User ${emailAddress} not found`, ERROR_CODE.NOT_FOUND);
 }
 
+function validateUploadedDocuments(user) {
+  if (user.documents && user.documents.length) {
+    const documentsTypes = user.documents.map((doc) => doc.document_type);
+
+    console.log(documentsTypes);
+
+    if (
+      documentsTypes.includes("identification") &&
+      documentsTypes.includes("account_statement") &&
+      documentsTypes.includes("proof_of_address")
+    ) {
+      return;
+    }
+  }
+
+  throw new CustomError(
+    `User has not uploaded required documents`,
+    ERROR_CODE.BUSSINES_LOGIC_ERROR
+  );
+}
+
 export async function switchUserToPremium(uid) {
   const user = await usersService.getById(uid);
 
@@ -121,6 +142,7 @@ export async function switchUserToPremium(uid) {
   }
 
   if (user?.role === ROLES.USER) {
+    validateUploadedDocuments(user);
     const result = await usersService.updateOne(uid, {
       role: ROLES.PREMIUM,
     });
@@ -129,4 +151,38 @@ export async function switchUserToPremium(uid) {
   }
 
   return user;
+}
+
+export async function getUserById(userId) {
+  const user = await usersService.getById(userId);
+
+  if (user) {
+    return user;
+  }
+
+  throw new CustomError(`User ${userId} not found.`, ERROR_CODE.NOT_FOUND);
+}
+
+export async function updateLastConnection(userId) {
+  try {
+    const result = await usersService.updateOne(userId, {
+      last_connection: new Date(),
+    });
+
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function uploadDocument(userId, newDocument) {
+  const user = await usersService.getById(userId);
+
+  const result = await usersService.updateOne(userId, {
+    documents: user.documents
+      ? [...user.documents, newDocument]
+      : [newDocument],
+  });
+
+  return result;
 }

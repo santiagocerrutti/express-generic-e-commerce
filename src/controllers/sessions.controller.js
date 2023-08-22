@@ -2,6 +2,7 @@ import { env } from "../config/env.js";
 import { UserDto } from "../dto/user.dto.js";
 import {
   sendResetPasswordEmail,
+  updateLastConnection,
   updateUserPassword,
 } from "../use-cases/user.use-cases.js";
 import {
@@ -33,6 +34,8 @@ class SessionsController {
     if (user) {
       const token = createTokenFromUser(user);
 
+      await updateLastConnection(user._id);
+
       res.cookie(env.JWT_COOKIE_NAME, token, cookieConfig);
       res.sendSuccess(token);
 
@@ -45,6 +48,8 @@ class SessionsController {
 
   logout = async (req, res, next) => {
     try {
+      await updateLastConnection(req.user.user._id);
+
       res.clearCookie(env.JWT_COOKIE_NAME);
       res.sendSuccess("Logout successfull.");
 

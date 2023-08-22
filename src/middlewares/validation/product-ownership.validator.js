@@ -3,7 +3,6 @@ import { CustomError, ERROR_CODE } from "../../utils.js";
 import { ROLES } from "../auth/index.js";
 
 export async function validateProductOwnership(req, res, next) {
-  console.log(req.user.user);
   const user = await usersService.getById(req.user.user._id);
 
   if (user.role === ROLES.ADMIN) {
@@ -15,8 +14,6 @@ export async function validateProductOwnership(req, res, next) {
   const { pid } = req.params;
   const product = await productsService.getById(pid);
 
-  console.log(product);
-
   if (String(user._id) === product.owner) {
     next();
 
@@ -27,5 +24,6 @@ export async function validateProductOwnership(req, res, next) {
     `User ${user._id} not authorized to modify product: ${pid}`,
     ERROR_CODE.NOT_AUTHENITCATED
   );
+
   next(error);
 }

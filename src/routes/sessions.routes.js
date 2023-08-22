@@ -35,7 +35,7 @@ class SessionsRouter extends Router {
 
     this.get("/current", isAuthenticated, getCurrent);
 
-    this.post("/logout", logout);
+    this.post("/logout", isAuthenticated, logout);
 
     this.post("/reset-password-request", validateEmail, resetPasswordRequest);
 

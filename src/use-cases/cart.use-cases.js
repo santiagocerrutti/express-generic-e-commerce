@@ -10,9 +10,11 @@ import { CustomError, ERROR_CODE } from "../utils.js";
 export async function addCart(user) {
   const newCart = await cartsService.addOne({});
 
-  await usersService.updateOne(user._id, {
-    cart: newCart._id,
-  });
+  if (user) {
+    await usersService.updateOne(user._id, {
+      cart: newCart._id,
+    });
+  }
 
   return newCart;
 }

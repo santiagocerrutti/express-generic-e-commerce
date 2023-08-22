@@ -26,7 +26,9 @@ export const userSchema = new Schema(
       ref: "carts",
       required: false,
     },
-    role: { type: String },
+    role: { type: String, required: true },
+    documents: { type: Array },
+    last_connection: { type: Date },
   },
   {
     timestamps: true,
