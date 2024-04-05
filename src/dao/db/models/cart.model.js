@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+/** @see https://www.npmjs.com/package/uuid-mongodb */
 import MUUID from "uuid-mongodb";
 import { productCollection } from "./product.model.js";
 

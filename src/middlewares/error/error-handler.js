@@ -1,11 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { ERROR_CODE } from "../../utils.js";
 
-// Para que express lo interprete como un error handler, debe contar con 4 argumentos
-// Para llamarlo, todos los middleware anteriores deben llamar next() con un argumento.
+//* Para que express lo interprete como un error handler, debe contar con 4 argumentos
+//* Para llamarlo, todos los middleware anteriores deben llamar next() con un argumento.
+/**
+ * Finish request process sending the appropriated error response
+ * Logs the occurring error
+ */
 export async function errorHandler(err, req, res, next) {
   req.logger.error(err.message || err);
 
+  // TODO: cambiar esto a switch-case
   if (err.code === ERROR_CODE.INVALID_BODY) {
     res.sendBadRequest(err.message, err.errors);
 
@@ -14,7 +19,7 @@ export async function errorHandler(err, req, res, next) {
     res.sendNotFound(err.message);
 
     return;
-  } else if (err.code === ERROR_CODE.BUSSINES_LOGIC_ERROR) {
+  } else if (err.code === ERROR_CODE.BUSINESS_LOGIC_ERROR) {
     res.sendConflict(err.message);
 
     return;
@@ -22,7 +27,7 @@ export async function errorHandler(err, req, res, next) {
     res.sendConflict(err.message);
 
     return;
-  } else if (err.code === ERROR_CODE.NOT_AUTHENITCATED) {
+  } else if (err.code === ERROR_CODE.NOT_AUTHENTICATED) {
     res.sendNotAuthenticated(err.message);
 
     return;

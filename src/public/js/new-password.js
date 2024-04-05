@@ -27,6 +27,20 @@ const inputPassword2 = document.getElementById("password_input_2");
 const token = document.getElementById("token")?.getAttribute("value");
 
 if (inputPassword1 && inputPassword2 && newPasswordForm && token) {
+  /**
+   * This function is an event listener for the submit event of the newPasswordForm element.
+   * It prevents the default form submission behavior and performs the following actions:
+   * 1. Checks if the values of inputPassword1 and inputPassword2 match.
+   * 2. If the passwords match, it creates a form object from the data in newPasswordForm.
+   * 3. Sends a POST request to the /api/sessions/new-password/{token} endpoint with the formObject as the request body.
+   * 4. If the request is successful (status code 200), it redirects the user to "/new-password-success".
+   * 5. If the request fails, it displays an error message using the Toast.fire function.
+   * 6. If there is an error during the request or response handling, it logs the error to the console and displays an error message using the Toast.fire function.
+   * 7. If the passwords do not match, it displays an error message using the Toast.fire function.
+   *
+   * @param {Event} event - The submit event object.
+   * @returns {void}
+   */
   newPasswordForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 

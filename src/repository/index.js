@@ -1,3 +1,9 @@
+/**
+ * El Patron Repository sirve para abstraer el acceso a un conjunto de objetos a nivel de dominio.
+ * Puede utilizarse con uno o más DAOs, pero no debería ser una interface como está definido aquí
+ * @see https://www.baeldung.com/java-dao-vs-repository#DAOvsRepository
+ * @see https://www.arquitecturajava.com/dao-vs-repository-y-sus-diferencias/
+ */
 export class Repository {
   constructor(dao) {
     this.dao = dao;

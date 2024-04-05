@@ -4,6 +4,11 @@ import { inspect } from "util";
 import MUUID from "uuid-mongodb";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
+// TODO: Documentar mejor
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validateRegister(req, res, next) {
   const schema = {
     type: "object",
@@ -41,6 +46,11 @@ export function validateRegister(req, res, next) {
   next(error);
 }
 
+// TODO: Documentar mejor
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validateLogin(req, res, next) {
   const schema = {
     type: "object",
@@ -72,6 +82,10 @@ export function validateLogin(req, res, next) {
   next(error);
 }
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validateEmail(req, res, next) {
   const schema = {
     type: "object",
@@ -102,6 +116,10 @@ export function validateEmail(req, res, next) {
   next(error);
 }
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validatePassword(req, res, next) {
   const schema = {
     type: "object",
@@ -127,6 +145,10 @@ export function validatePassword(req, res, next) {
   next(error);
 }
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validateUserId(req, res, next) {
   const { uid } = req.params;
   try {

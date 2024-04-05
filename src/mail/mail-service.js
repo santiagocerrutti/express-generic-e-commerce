@@ -10,6 +10,14 @@ const transport = createTransport({
   },
 });
 
+/**
+ * Sends an email using the configured email service.
+ *
+ * @param {string} destinationEmail - The email address of the recipient.
+ * @param {string} subject - The subject of the email.
+ * @param {string} htmlBody - The HTML content of the email body.
+ * @returns {Promise} - A promise that resolves when the email is sent successfully.
+ */
 export const sendEmail = async (destinationEmail, subject, htmlBody) => {
   return await transport.sendMail({
     from: `Email services <${env.EMAIL_ADDRESS}>`,

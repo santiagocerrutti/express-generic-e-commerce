@@ -14,6 +14,13 @@ function buildProductCard(product) {
   `;
 }
 
+/**
+ * This function is an event listener for the "products-updated" event.
+ * It updates the products container in the HTML with the updated products.
+ *
+ * @param {Array} products - An array of product objects.
+ * @returns {void}
+ */
 socket.on("products-updated", (products) => {
   const productsContainer = document.getElementById("products-container");
   productsContainer.innerHTML = "";

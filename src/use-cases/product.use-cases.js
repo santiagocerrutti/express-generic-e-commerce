@@ -1,10 +1,25 @@
 import { productsService } from "../services/index.js";
 import { CustomError, ERROR_CODE } from "../utils.js";
 
+/**
+ * Retrieves a list of products.
+ *
+ * @param {number} [limit=null] - The maximum number of products to retrieve.
+ * @returns {Promise<Array>} - A promise that resolves to an array of products.
+ */
 export async function getProducts(limit = null) {
   return productsService.getAll(limit);
 }
 
+/**
+ * Retrieves a paginated list of products.
+ *
+ * @param {number} [limit=10] - The maximum number of products to retrieve per page.
+ * @param {number} [page=1] - The page number to retrieve.
+ * @param {object} [query={}] - The query object to filter the products.
+ * @param {string} [sort=undefined] - The field to sort the products by.
+ * @returns {Promise<Array>} - A promise that resolves to an array of products.
+ */
 export async function getProductsPaginate(
   limit = 10,
   page = 1,
@@ -14,6 +29,13 @@ export async function getProductsPaginate(
   return productsService.getAllPaginate(limit, page, query, sort);
 }
 
+/**
+ * Retrieves a product by its ID.
+ *
+ * @param {string} productId - The ID of the product to retrieve.
+ * @returns {Promise<Object>} - A promise that resolves to the retrieved product.
+ * @throws {CustomError} - If the product with the specified ID is not found.
+ */
 export async function getProductById(productId) {
   const product = await productsService.getById(productId);
 
@@ -27,6 +49,13 @@ export async function getProductById(productId) {
   );
 }
 
+/**
+ * Adds a new product.
+ *
+ * @param {Object} product - The product to be added.
+ * @returns {Promise<Object>} - The newly added product.
+ * @throws {CustomError} - If the product code is duplicated.
+ */
 export async function addProduct(product) {
   try {
     const newProduct = await productsService.addOne({ ...product });
@@ -40,6 +69,15 @@ export async function addProduct(product) {
   }
 }
 
+/**
+ * Updates a product with the specified productId and fieldsToUpdate.
+ *
+ * @param {string} productId - The ID of the product to update.
+ * @param {object} fieldsToUpdate - The fields to update in the product.
+ * @returns {Promise<object>} - A promise that resolves to the updated product.
+ * @throws {CustomError} - If the fieldsToUpdate.code is duplicated, throws a CustomError with code DUPLICATED_KEY.
+ * @throws {CustomError} - If the product with the specified productId is not found, throws a CustomError with code NOT_FOUND.
+ */
 export async function updateProduct(productId, fieldsToUpdate) {
   let result = null;
   try {
@@ -61,6 +99,13 @@ export async function updateProduct(productId, fieldsToUpdate) {
   );
 }
 
+/**
+ * Deletes a product with the given productId.
+ *
+ * @param {string} productId - The ID of the product to be deleted.
+ * @returns {Promise} - A promise that resolves to the result of the deletion.
+ * @throws {CustomError} - If the product with the given productId is not found.
+ */
 export async function deleteProduct(productId) {
   const result = await productsService.deleteOne(productId);
 

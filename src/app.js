@@ -2,18 +2,19 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import handlebars from "express-handlebars";
 import passport from "passport";
+import actuator from "express-actuator";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 
 import { env } from "./config/env.js";
+import { logger } from "./config/logger.js";
 import { initializePassport } from "./config/passport.config.js";
+import { swaggerOptions } from "./docs/config.js";
 import { errorHandler } from "./middlewares/error/error-handler.js";
 import { addLogger } from "./middlewares/logger/index.js";
 import router from "./routes/index.js";
 import { SocketServer } from "./sockets/socket-server.js";
 import { __dirname } from "./utils.js";
-import { logger } from "./config/logger.js";
-import swaggerJSDoc from "swagger-jsdoc";
-import swaggerUiExpress from "swagger-ui-express";
-import { swaggerOptions } from "./docs/config.js";
 
 async function main() {
   const app = express();
@@ -44,6 +45,13 @@ async function main() {
 
   /** Error Middleware */
   app.use(errorHandler);
+
+  /** Health-check tool */
+  const options = {
+    basePath: "/health-check",
+    infoGitMode: "simple",
+  };
+  app.use(actuator(options));
 
   const specs = swaggerJSDoc(swaggerOptions);
   app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));

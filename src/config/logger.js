@@ -6,6 +6,9 @@ const { combine, timestamp, colorize, simple, json } = format;
 
 const { mode } = program.opts();
 
+/**
+ * @see https://www.npmjs.com/package/winston#logging-levels
+ */
 const levelOptions = {
   levels: {
     fatal: 0,
@@ -27,6 +30,11 @@ const levelOptions = {
 
 winston.addColors(levelOptions.colors);
 
+/**
+ * This is to configure different logger output.
+ * Log level and format, among other properties can be configured
+ * @see https://www.npmjs.com/package/winston#transports
+ */
 const envTransport = {
   [ENV_OPTION.LOCAL]: [
     new Console({
@@ -64,6 +72,9 @@ const envTransport = {
   ],
 };
 
+/**
+ * @see https://www.npmjs.com/package/winston#logging
+ */
 export const logger = winston.createLogger({
   levels: levelOptions.levels,
   transports: envTransport[mode],

@@ -1,3 +1,4 @@
+/** @see https://www.npmjs.com/package/uuid-mongodb */
 import MUUID from "uuid-mongodb";
 import { Schema, model } from "mongoose";
 

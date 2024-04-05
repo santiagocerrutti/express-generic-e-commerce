@@ -24,7 +24,7 @@ class SessionsController {
       return;
     }
 
-    const error = new CustomError("Invalid User", ERROR_CODE.NOT_AUTHENITCATED);
+    const error = new CustomError("Invalid User", ERROR_CODE.NOT_AUTHENTICATED);
     next(error);
   };
 
@@ -42,7 +42,7 @@ class SessionsController {
       return;
     }
 
-    const error = new CustomError("Invalid User", ERROR_CODE.NOT_AUTHENITCATED);
+    const error = new CustomError("Invalid User", ERROR_CODE.NOT_AUTHENTICATED);
     next(error);
   };
 
@@ -50,6 +50,11 @@ class SessionsController {
     try {
       await updateLastConnection(req.user.user._id);
 
+      /**
+       * Esto limpia la Cookie en el Cliente (es lo único que se puede hacer cuando se usa JWT).
+       * @see https://stackoverflow.com/questions/37959945/how-to-destroy-jwt-tokens-on-logout
+       * TODO: Se podría probar de copiar el JWT y crear una cookie nueva para hacer una nueva petición luego de hacer el Logout
+       */
       res.clearCookie(env.JWT_COOKIE_NAME);
       res.sendSuccess("Logout successfull.");
 
@@ -64,7 +69,7 @@ class SessionsController {
     res.sendSuccess({ user });
   };
 
-  resetPasswordRequest = async (req, res, next) => {
+  requestNewPassword = async (req, res, next) => {
     try {
       const { email } = req.body;
 
@@ -76,7 +81,7 @@ class SessionsController {
     }
   };
 
-  newUserPassword = async (req, res, next) => {
+  updatePassword = async (req, res, next) => {
     try {
       const { token } = req.params;
       const { password } = req.body;

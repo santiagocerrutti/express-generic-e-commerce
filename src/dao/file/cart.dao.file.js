@@ -60,26 +60,26 @@ export class CartDaoFile {
     return newCart;
   }
 
-  // async addProductToCart(cartId, productId, quantity) {
-  //   const cart = await this.getCartById(cartId);
-  //   const productManager = new ProductDaoFile();
-  //   await productManager.getProductById(productId);
+  // // async addProductToCart(cartId, productId, quantity) {
+  // //   const cart = await this.getCartById(cartId);
+  // //   const productManager = new ProductDaoFile();
+  // //   await productManager.getProductById(productId);
 
-  //   const cartProduct = cart.products.find((p) => p.product === productId);
+  // //   const cartProduct = cart.products.find((p) => p.product === productId);
 
-  //   if (cartProduct) {
-  //     cartProduct.quantity += quantity;
-  //   } else {
-  //     cart.products.push({
-  //       product: productId,
-  //       quantity,
-  //     });
-  //   }
+  // //   if (cartProduct) {
+  // //     cartProduct.quantity += quantity;
+  // //   } else {
+  // //     cart.products.push({
+  // //       product: productId,
+  // //       quantity,
+  // //     });
+  // //   }
 
-  //   await this._saveCarts(this.carts);
+  // //   await this._saveCarts(this.carts);
 
-  //   return cartProduct;
-  // }
+  // //   return cartProduct;
+  // // }
 
   async addMany(arrayOfObjects) {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);

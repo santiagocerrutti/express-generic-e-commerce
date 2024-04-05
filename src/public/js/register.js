@@ -24,6 +24,17 @@ if (type && text) {
 const registerForm = document.getElementById("register_form");
 
 if (registerForm) {
+  /**
+   * Event listener for the submit event on the register form.
+   * It prevents the default form submission behavior, retrieves the form data,
+   * converts it into an object, and sends it to the server using a POST request.
+   * If the request is successful (status code 200), it redirects the user to the login page.
+   * Otherwise, it redirects the user to the register-fail page.
+   * If an error occurs during the request, it logs the error to the console and redirects the user to the register-fail page.
+   *
+   * @param {Event} event - The submit event object.
+   * @returns {void}
+   */
   registerForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 

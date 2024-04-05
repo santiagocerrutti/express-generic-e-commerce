@@ -18,7 +18,8 @@ dotenv.config({
 });
 
 export const env = {
-  NODE_ENV: mode,
+  NODE_ENV: process.env.NODE_ENV || "development",
+  ENV_MODE: mode,
   PERSISTENCE: process.env.PERSISTENCE || "MONGO",
   MONGO_URL:
     process.env.MONGO_URL ||

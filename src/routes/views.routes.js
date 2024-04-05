@@ -1,4 +1,4 @@
-import { passportCall } from "../config/passportCall.js";
+import { passportAuthenticate } from "../config/passportAuthenticate.js";
 import { viewsController } from "../controllers/views.controller.js";
 import {
   ROLES,
@@ -58,12 +58,12 @@ class ViewsRouter extends Router {
 
     this.get(
       "/sessions/login-github",
-      passportCall("github", { session: false, scope: ["user:email"] })
+      passportAuthenticate("github", { session: false, scope: ["user:email"] })
     );
 
     this.get(
       "/sessions/github-callback",
-      passportCall("github", {
+      passportAuthenticate("github", {
         session: false,
         failureRedirect: "/login-fail",
       }),

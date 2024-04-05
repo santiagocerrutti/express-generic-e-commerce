@@ -15,6 +15,7 @@ class ProductsController {
 
   getProducts = async (req, res) => {
     const { limit, page, query, sort } = req.query;
+    // TODO: este llamado a librería QueryString se podría encapsular en un utils además para reutilizarse en todas las request que requieran paginado.
     const queryObject = query
       ? QueryString.parse(query, { delimiter: /[;,]/ })
       : {};
@@ -22,6 +23,8 @@ class ProductsController {
     const { docs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } =
       await getProductsPaginate(limit, page, queryObject, sort);
 
+    //* La lógica del build link se podría encapsular en un utils
+    //? ¿Hay librerías que resuelvan la respuesta del paginado?
     const prevLink = hasPrevPage ? this._buildLink(req.query, prevPage) : null;
     const nextLink = hasNextPage ? this._buildLink(req.query, nextPage) : null;
 
@@ -99,6 +102,7 @@ class ProductsController {
     }
   };
 
+  // TODO: Esto podría formar parte de un Service con todos los emits() para no hacer uso de SocketServer en el Controller
   async _emitProductsUpdate() {
     const products = await getProducts();
 

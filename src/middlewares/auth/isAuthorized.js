@@ -1,14 +1,22 @@
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
-// Los middlewares deben devolver funciones que respeten la firma (req, res, next)
+/**
+ * Middleware
+ * Validates if logged user has roles
+ * @param  {ROLES[]} roles array of roles to check.
+ * @returns
+ */
 export function isAuthorized(...roles) {
+  //* Los middlewares deben ser funciones que respeten la firma middleware(req, res, next)
+  //* O devolver funciones que respeten dicha firma (en caso de que reciban parametros)
   return async function (req, res, next) {
     try {
-      if (roles.includes(ROLES.PUBLIC)) {
-        next();
+      // TODO: Revisar por qué se implementó el Role Public ¿Es necesario? ¿Es una buena práctica?
+      // // if (roles.includes(ROLES.PUBLIC)) {
+      // //   next();
 
-        return;
-      }
+      // //   return;
+      // // }
 
       const { user } = req.user;
 
@@ -26,7 +34,7 @@ export function isAuthorized(...roles) {
 }
 
 export const ROLES = {
-  PUBLIC: "public",
+  // // PUBLIC: "public",
   PREMIUM: "premium",
   ADMIN: "admin",
   USER: "user",

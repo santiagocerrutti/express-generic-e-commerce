@@ -1,4 +1,4 @@
-import { passportCall } from "../config/passportCall.js";
+import { passportAuthenticate } from "../config/passportAuthenticate.js";
 import { sessionsController } from "../controllers/sessions.controller.js";
 import { isAuthenticated } from "../middlewares/auth/index.js";
 import {
@@ -14,22 +14,22 @@ const {
   login,
   logout,
   register,
-  resetPasswordRequest,
-  newUserPassword,
+  requestNewPassword,
+  updatePassword,
 } = sessionsController;
 class SessionsRouter extends Router {
   init() {
     this.post(
       "/register",
       validateRegister,
-      passportCall("register", { session: false }),
+      passportAuthenticate("register", { session: false }),
       register
     );
 
     this.post(
       "/login",
       validateLogin,
-      passportCall("login", { session: false }),
+      passportAuthenticate("login", { session: false }),
       login
     );
 
@@ -37,9 +37,9 @@ class SessionsRouter extends Router {
 
     this.post("/logout", isAuthenticated, logout);
 
-    this.post("/reset-password-request", validateEmail, resetPasswordRequest);
+    this.post("/reset-password-request", validateEmail, requestNewPassword);
 
-    this.post("/new-password/:token", validatePassword, newUserPassword);
+    this.post("/new-password/:token", validatePassword, updatePassword);
   }
 }
 

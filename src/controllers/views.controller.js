@@ -18,7 +18,7 @@ export class ViewsController {
     });
   };
 
-  // https://stackoverflow.com/questions/71094583/cannot-read-properties-of-undefined-javascript-class
+  //* https://stackoverflow.com/questions/71094583/cannot-read-properties-of-undefined-javascript-class
   getProductsPaginateView = async (req, res) => {
     const { page, limit } = req.query;
 

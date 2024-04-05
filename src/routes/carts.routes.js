@@ -1,5 +1,9 @@
 import { cartController } from "../controllers/carts.controller.js";
-import { isAuthenticated } from "../middlewares/auth/index.js";
+import {
+  ROLES,
+  isAuthenticated,
+  isAuthorized,
+} from "../middlewares/auth/index.js";
 import { validateCartOwnership } from "../middlewares/validation/cart-ownership.validator.js";
 import {
   validateCartId,
@@ -12,7 +16,7 @@ import { Router } from "./Router.js";
 const {
   addProductToCart,
   createCart,
-  deleteAllProducts,
+  deleteAllProductsOfCart,
   deleteProductOfCart,
   getCartById,
   getCarts,
@@ -23,7 +27,7 @@ const {
 
 class CartsRouter extends Router {
   init() {
-    this.get("/", isAuthenticated, getCarts);
+    this.get("/", isAuthenticated, isAuthorized(ROLES.ADMIN), getCarts);
 
     this.get(
       "/:cid",
@@ -68,7 +72,7 @@ class CartsRouter extends Router {
       isAuthenticated,
       validateCartId,
       validateCartOwnership,
-      deleteAllProducts
+      deleteAllProductsOfCart
     );
 
     this.delete(

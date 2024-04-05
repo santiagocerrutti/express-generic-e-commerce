@@ -3,6 +3,10 @@ import { inspect } from "util";
 import MUUID from "uuid-mongodb";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validateProductId(req, res, next) {
   const { pid } = req.params;
   try {
@@ -19,6 +23,10 @@ export function validateProductId(req, res, next) {
   }
 }
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validateGetProductsQuery(req, res, next) {
   const schema = {
     type: "object",
@@ -48,6 +56,10 @@ export function validateGetProductsQuery(req, res, next) {
   next(error);
 }
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validatePostProduct(req, res, next) {
   const schema = {
     type: "object",
@@ -89,6 +101,10 @@ export function validatePostProduct(req, res, next) {
   next(error);
 }
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validatePutProduct(req, res, next) {
   const schema = {
     type: "object",

@@ -1,5 +1,9 @@
 import { Router as ExpressRouter } from "express";
 
+/**
+ * Abstract Router
+ * Handles HTTP Request and provide custom response functions
+ */
 export class Router {
   constructor() {
     this.router = ExpressRouter();
@@ -7,39 +11,19 @@ export class Router {
     this.init();
   }
 
+  /**
+   * This functions is called on constructor
+   * Allows children to create new routes
+   */
   init() {}
 
   getRouter() {
     return this.router;
   }
 
-  // Documentación? (TODO: buscar ejemplos)
-  // async applyMiddlewares(middlewares) {
-  //   /// ????
-  //   // for(const middleware of middlewares){
-  //   //   async (...params) => {
-  //   //     await middleware.apply(this, params)
-  //   //   }
-  //   // }
-  //   return middlewares.map((middleware) => {
-  //     return async (...params) => {
-  //       try {
-  //         await middleware.apply(this, params);
-  //       } catch (error) {
-  //         console.log(error);
-  //         params[1]
-  //           .status(500)
-  //           .send({ status: "ERROR", error: "Internal Server Error" });
-  //       }
-  //     };
-  //   });
-  // }
-
-  // Callbacks or callback function or handler functions generally mean a function that is run after an asynchronous function have been completed
-
-  // El opreador Spread en la firma ... hace que todos los parametros siguientes se reciban en un array
+  //* El opreador Spread en la firma ... hace que todos los parametros siguientes se reciban en un array
   get(path, ...middlewares) {
-    // al hacer la desestructuración al llamar, se reciben uno por uno (separados por comas)
+    //* al hacer la desestructuración al llamar, se reciben uno por uno (separados por comas)
     this.router.get(path, ...middlewares);
   }
 
@@ -55,7 +39,14 @@ export class Router {
     this.router.delete(path, ...middlewares);
   }
 
-  // esta función setea un atributo por cada tipo de respuesta, que apunta a una función que se llamará dentro de los controllers
+  /**
+   * Middleware.
+   * Provides standard response payload to Req object.
+   * Logs every response with req.logger
+   * @param req express request object
+   * @param res express response object
+   * @param next callback function: "a function that is run after an asynchronous function have been completed".
+   */
   generateCustomResponse(req, res, next) {
     res.sendSuccess = function (payload) {
       req.logger.http(`Response 200 to: ${req.method}: ${req.path}`);

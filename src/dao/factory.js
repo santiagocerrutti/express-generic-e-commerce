@@ -19,6 +19,8 @@ import {
   PasswordRecoveryTokenDaoFile,
 } from "./file/index.js";
 
+//* DAO is a pattern to encapsulate access logic to a table or collection
+//* It's a pattern that has limitations vs Repository pattern
 let ProductDao;
 let UserDao;
 let MessageDao;
@@ -26,6 +28,7 @@ let CartDao;
 let TicketDao;
 let PasswordRecoveryTokenDao;
 
+//* This factory is used to switch persistence mechanism from envvars
 switch (env.PERSISTENCE) {
   case "MONGO":
     MongoConnection.getInstance();

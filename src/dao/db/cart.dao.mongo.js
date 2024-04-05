@@ -66,6 +66,7 @@ export class CartDaoMongo {
       return { ...p, product: MUUID.from(p.product) };
     });
     for (const p of formattedProducts) {
+      // TODO: Habrá alguna forma mas eficiente de verificar si los ids existen en BD?
       const foundProduct = await ProductModel.findById(p.product);
 
       if (!foundProduct) {

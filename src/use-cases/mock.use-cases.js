@@ -1,6 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { productsService } from "../services/index.js";
 
+/**
+ * Generates and adds mock products to the database.
+ *
+ * @returns {Promise} A promise that resolves with the result of adding the mock products.
+ */
 export async function mockProducts() {
   const productsToAdd = [];
   for (let index = 0; index < 10; index++) {

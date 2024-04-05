@@ -24,6 +24,14 @@ if (type && text) {
 const resetPasswordForm = document.getElementById("reset_password_form");
 const emailInput = document.getElementById("email_input");
 
+/**
+ * This function is an event listener for the submit event of the resetPasswordForm element.
+ * It prevents the default form submission behavior, retrieves form data, sends a POST request to the "/api/sessions/reset-password-request" endpoint,
+ * and handles the response accordingly.
+ *
+ * @param {Event} event - The submit event object.
+ * @returns {Promise<void>} - A promise that resolves once the function execution is complete.
+ */
 if (emailInput && resetPasswordForm) {
   resetPasswordForm.addEventListener("submit", async (event) => {
     event.preventDefault();

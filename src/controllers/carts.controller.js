@@ -78,7 +78,7 @@ class CartsController {
     }
   };
 
-  deleteAllProducts = async (req, res, next) => {
+  deleteAllProductsOfCart = async (req, res, next) => {
     const { cid } = req.params;
     try {
       const cart = await deleteProductsOfCart(cid);

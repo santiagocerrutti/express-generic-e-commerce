@@ -2,6 +2,11 @@ import { getUserById } from "../../use-cases/user.use-cases.js";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 import { ROLES } from "../auth/index.js";
 
+// TODO: Documentar mejor
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export async function validateLoggedUserPermissions(req, res, next) {
   const { uid } = req.params;
 

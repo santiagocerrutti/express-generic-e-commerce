@@ -27,7 +27,7 @@ describe("ecommerce", function () {
       _id: product._id.toString(),
     };
 
-    // This user should be created with role user
+    //* This user should be created with role user
     const loginResult = await requester.post("/api/sessions/login").send({
       email: "usuario@de-prueba.com",
       password: "P4S5W0RD",

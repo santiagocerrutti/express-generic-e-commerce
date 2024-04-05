@@ -24,6 +24,17 @@ if (type && text) {
 const loginForm = document.getElementById("login_form");
 
 if (loginForm) {
+  /**
+   * This function is an event listener for the submit event on the login form.
+   * It prevents the default form submission behavior, retrieves the form data,
+   * converts it into an object, and sends a POST request to the "/api/sessions/login" endpoint.
+   * If the request is successful (status code 200), it redirects the user to the "/products" page.
+   * Otherwise, it redirects the user to the "/login-fail" page.
+   * If an error occurs during the request, it logs the error to the console and redirects the user to the "/login-fail" page.
+   *
+   * @param {Event} event - The submit event object.
+   * @returns {void}
+   */
   loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 

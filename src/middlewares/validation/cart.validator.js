@@ -2,6 +2,10 @@ import Ajv from "ajv";
 import MUUID from "uuid-mongodb";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validateCartId(req, res, next) {
   const { cid } = req.params;
   try {
@@ -18,6 +22,10 @@ export function validateCartId(req, res, next) {
   }
 }
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validateProductsOfCart(req, res, next) {
   const schema = {
     type: "object",
@@ -62,6 +70,10 @@ export function validateProductsOfCart(req, res, next) {
   next(error);
 }
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export function validateProductQuantity(req, res, next) {
   const schema = {
     type: "object",

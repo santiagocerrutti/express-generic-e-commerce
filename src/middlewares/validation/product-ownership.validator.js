@@ -2,6 +2,10 @@ import { productsService, usersService } from "../../services/index.js";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 import { ROLES } from "../auth/index.js";
 
+/**
+ * Middleware
+ * Calls next(CustomError) in case validation fails
+ */
 export async function validateProductOwnership(req, res, next) {
   const user = await usersService.getById(req.user.user._id);
 
@@ -22,7 +26,7 @@ export async function validateProductOwnership(req, res, next) {
 
   const error = new CustomError(
     `User ${user._id} not authorized to modify product: ${pid}`,
-    ERROR_CODE.NOT_AUTHENITCATED
+    ERROR_CODE.NOT_AUTHENTICATED
   );
 
   next(error);
