@@ -1,8 +1,8 @@
 {
-  "name": "ch-back-end-final-proyect",
+  "name": "express-generic-e-commerce",
   "type": "module",
-  "version": "1.0.0",
-  "description": "application for managing products and orders of ecommerce",
+  "version": "0.3.6",
+  "description": "application for managing products and orders of e-commerce",
   "main": "src/index.js",
   "scripts": {
     "start:local": "nodemon src/app.js --mode local",
