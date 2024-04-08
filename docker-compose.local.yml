@@ -1,0 +1,37 @@
+services:
+  web-service:
+    container_name: express-generic-e-commerce-service
+    build:
+      context: .
+      dockerfile: dockerfile.local
+    ports:
+      - 8080:8080
+    env_file:
+      - .env.dev
+    depends_on:
+      - mongo-db
+    # volumes specified for hot reloading
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
+  mongo-db:
+    container_name: express-generic-e-commerce-db
+    image: mongo:7.0.8
+    restart: always
+    env_file:
+      - .env.dev
+    # ports exposed for testing purposes
+    ports:
+      - 27017:27017
+    volumes:
+      - db-data:/data/db
+      - db-config:/data/confingdb
+
+volumes:
+  db-data:
+  db-config:
+
+
+networks:
+  default:
+    name: express-generic-e-commerce-network

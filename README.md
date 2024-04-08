@@ -37,15 +37,21 @@ This applications is the result of a Backend Course about backend techniques and
 
 ## Install and Run the Project
 
-This project can be run locally using docker-compose. To run the project, follow this instructions:
+This application can be ran in every deployment platform that supports node 18.20.0 or higher.
 
-1. Clone the repo
+You can try and test the application running in locally using docker-compose. In order to do that [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/) are required. To run the project this way, follow this instructions:
 
-2. Crear un archivo .env con el nombre de .env.local
+1. Clone this repository in your local machine. Check how to do it [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 
-3. Crear los contenedores con Docker Compose
+2. Create a `.env` file to declare environment variables. You can use [this example](https://github.com/santiagocerrutti/express-generic-e-commerce/blob/main/.env.example). For the local execution file must be named as `.env.dev`. 
 
-4. Para consultar los endpoints disponibles acceder a {}/(poner acá la URL del swagger y adjuntar una captura de pantalla)
+3. Run the command:
+
+```
+docker-compose -f docker-compose.local.yml up
+```
+
+This will start the application on `http://localhost:8080`. Once running, you can check the available endpoints on `http://localhost:8080/apidocs`
 
 ## How to Use the Project
 

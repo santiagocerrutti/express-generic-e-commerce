@@ -77,7 +77,6 @@ export function createTokenFromUser(user) {
 }
 
 export const ENV_OPTION = {
-  LOCAL: "local",
   DEV: "development",
   STAGE: "stage",
   PROD: "production",
@@ -86,7 +85,6 @@ export const ENV_OPTION = {
 export const program = new Command()
   .addOption(
     new Option("--mode <mode>", "Environment").choices([
-      ENV_OPTION.LOCAL,
       ENV_OPTION.DEV,
       ENV_OPTION.STAGE,
       ENV_OPTION.PROD,

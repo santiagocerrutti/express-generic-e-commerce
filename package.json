@@ -5,7 +5,6 @@
   "description": "application for managing products and orders of e-commerce",
   "main": "src/index.js",
   "scripts": {
-    "start:local": "nodemon src/app.js --mode local",
     "start": "node src/app.js --mode production",
     "start:dev": "nodemon src/app.js --mode development",
     "test": "env-cmd -e test mocha"

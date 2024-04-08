@@ -10,9 +10,9 @@ export class MongoConnection {
   }
 
   async connect() {
-    logger.info("conneting to mongo...");
+    logger.info("connecting to mongo...");
     await mongoose.connect(env.MONGO_URL);
-    logger.info("conneted to mongo!");
+    logger.info("connected to mongo!");
   }
 
   static getInstance() {

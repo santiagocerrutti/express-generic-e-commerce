@@ -7,7 +7,6 @@ import { ENV_OPTION, program } from "../utils.js";
 const { mode } = program.opts();
 
 const envPaths = {
-  [ENV_OPTION.LOCAL]: process.cwd() + "/.env.local",
   [ENV_OPTION.DEV]: process.cwd() + "/.env.dev",
   [ENV_OPTION.STAGE]: process.cwd() + "/.env.stage",
   [ENV_OPTION.PROD]: process.cwd() + "/.env.prod",
