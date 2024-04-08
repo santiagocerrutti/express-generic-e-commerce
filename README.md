@@ -10,34 +10,34 @@ This applications is the result of a Backend Course about backend techniques and
 
 ### Features by Role
 
-| Feature                   | Roles               | Description                                                                                                         |
-|:------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `getProducts`             | `ALL`               | Gets all products. It accepts query params for pagination and filtering.                                            |
-| `getProductByID`          | `ALL`               | Gets product by id.                                                                                                 |
-| `createProduct`           | `ADMIN, PREMIUM`    | Creates new product. Products will be associated to the creator user.                                               |
-| `updateProduct`           | `ADMIN, PREMIUM`    | Update product data.                                                                                                |
-| `deleteProduct`           | `ADMIN, PREMIUM`    | Delete product from database.                                                                                       |
-| `getCarts`                | `ADMIN`             | Get all shopping carts.                                                                                             |
-| `getCartById`             | `ADMIN, CART_OWNER` | Get cart by id.                                                                                                     |
-| `createCart`              | `ALL`               | Creates a new empty cart. The created cart will be associated to the user.                                          |
-| `addProductToCart`        | `ADMIN, CART_OWNER` | Adds an available product to users cart with the quantity of 1.                                                     |
-| `updateProductsOfCart`    | `ADMIN, CART_OWNER` | Replace the current list of products of a cart for a new one.                                                       |
-| `updateProductOfCart`     | `ADMIN, CART_OWNER` | Updates the product quantity of an existing product in a users cart.                                                |
-| `deleteAllProductsOfCart` | `ADMIN, CART_OWNER` | Empties the the current list of products of a cart.                                                                 |
-| `deleteProductOfCart`     | `ADMIN, CART_OWNER` | Deletes a product of a cart.                                                                                        |
-| `purchaseCart`            | `ADMIN, CART_OWNER` | Purchases the cart. It updates the product stock and creates a new ticket with the purchase information.            |
-| `register`                | `PUBLIC`            | Register as new user of the application.                                                                            |
-| `login`                   | `ALL`               | Logs in in the application using user credentials. Returns a valid JWT.                                             |
-| `getCurrent`              | `ALL`               | Gets logged user information.                                                                                       |
-| `logout`                  | `ALL`               | Logs out. Clears JWT client cookies.                                                                                |
-| `requestNewPassword`      | `PUBLIC`            | Sends a email to an existing user with a link where it can reset its password. The link contains a recoveryToken.   |
-| `updatePassword`          | `PUBLIC`            | Update the password of a user with a valid recoveryToken.                                                           |
-| `switchUserToPremium`     | `ADMIN`             | Changes the role of a user. User role can be updated to premium only if the user has upload the required documents. |
-| `uploadUserDocument`      | `ALL`               | Uploads a document required to the user to use premium features.                                                    |
+| Feature                   | Roles               | Description                                                                                                        |
+|:------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `getProducts`             | `ALL`               | Get all products. It accepts query params for pagination and filtering.                                            |
+| `getProductByID`          | `ALL`               | Get product by id.                                                                                                 |
+| `createProduct`           | `ADMIN, PREMIUM`    | Create new product. Products will be associated to the creator user.                                               |
+| `updateProduct`           | `ADMIN, PREMIUM`    | Update product data.                                                                                               |
+| `deleteProduct`           | `ADMIN, PREMIUM`    | Delete product from database.                                                                                      |
+| `getCarts`                | `ADMIN`             | Get all shopping carts.                                                                                            |
+| `getCartById`             | `ADMIN, CART_OWNER` | Get cart by id.                                                                                                    |
+| `createCart`              | `ALL`               | Create a new empty cart. The created cart will be associated to the user.                                          |
+| `addProductToCart`        | `ADMIN, CART_OWNER` | Adds an available product to users cart with the quantity of 1.                                                    |
+| `updateProductsOfCart`    | `ADMIN, CART_OWNER` | Replace the current list of products of a cart for a new one.                                                      |
+| `updateProductOfCart`     | `ADMIN, CART_OWNER` | Update the product quantity of an existing product in a users cart.                                                |
+| `deleteAllProductsOfCart` | `ADMIN, CART_OWNER` | Empty the the current list of products of a cart.                                                                  |
+| `deleteProductOfCart`     | `ADMIN, CART_OWNER` | Deletes a product of a cart.                                                                                       |
+| `purchaseCart`            | `ADMIN, CART_OWNER` | Purchase the cart. It updates the product stock and creates a new ticket with the purchase information.            |
+| `register`                | `PUBLIC`            | Register as new user of the application.                                                                           |
+| `login`                   | `ALL`               | Log in in the application using user credentials. Returns a valid JWT.                                             |
+| `getCurrent`              | `ALL`               | Get logged user information.                                                                                       |
+| `logout`                  | `ALL`               | Log out. Clears JWT client cookies.                                                                                |
+| `requestNewPassword`      | `PUBLIC`            | Send a email to an existing user with a link where it can reset its password. The link contains a recoveryToken.   |
+| `updatePassword`          | `PUBLIC`            | Update the password of a user with a valid recoveryToken.                                                          |
+| `switchUserToPremium`     | `ADMIN`             | Change the role of a user. User role can be updated to premium only if the user has upload the required documents. |
+| `uploadUserDocument`      | `ALL`               | Upload a document required to the user to use premium features.                                                    |
 
 ## Install and Run the Project
 
-This application can be ran in every deployment platform that supports node 18.20.0 or higher.
+This application can be ran in every deployment platform that supports node 18.20.0 or higher. **Agregar acá todas las consideraciones necesarias para correr el precto en PROD.**
 
 You can try and test the application running in locally using docker-compose. In order to do that [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/) are required. To run the project this way, follow this instructions:
 
