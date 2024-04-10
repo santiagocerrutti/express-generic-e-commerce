@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import Ajv from "ajv";
+import { Types } from "mongoose";
 import fs from "node:fs";
-import { v4 as uuidv4 } from "uuid";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
 const PATH = "./data/products.json";
@@ -98,7 +98,7 @@ export class ProductDaoFile {
     ) {
       const newProduct = {
         ...product,
-        id: uuidv4(),
+        id: new Types.ObjectId(),
       };
       this.products.push(newProduct);
       await this._saveProducts(this.products);

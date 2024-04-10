@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
+import { Types } from "mongoose";
 import fs from "node:fs";
-import { v4 as uuidv4 } from "uuid";
-import { ProductDaoFile } from "./product.dao.file.js";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
 const PATH = "./data/carts.json";
@@ -51,7 +50,7 @@ export class CartDaoFile {
   async addOne(cart) {
     this.carts = await this._retreiveCarts();
     const newCart = {
-      id: uuidv4(),
+      id: new Types.ObjectId(),
       ...cart,
     };
     this.carts.push(newCart);

@@ -1,4 +1,4 @@
-import { v4 as uuid } from "uuid";
+import { randomUUID } from "node:crypto";
 import {
   cartsService,
   productsService,
@@ -301,7 +301,7 @@ export async function purchaseCart(cartId, user) {
     products: [],
   };
   const ticket = {
-    code: uuid(),
+    code: randomUUID(),
     amount: 0,
     products: [],
     purchaser: email,

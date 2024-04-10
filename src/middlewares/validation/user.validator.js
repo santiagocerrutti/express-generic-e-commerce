@@ -1,5 +1,6 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
+import { Types } from "mongoose";
 import { inspect } from "util";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
@@ -151,15 +152,20 @@ export function validatePassword(req, res, next) {
 export function validateUserId(req, res, next) {
   const { uid } = req.params;
   try {
-    // TODO: validar el object ID
-    if (uid) {
+    if (Types.ObjectId.isValid(uid)) {
       next();
 
       return;
     }
+
+    const err = new CustomError(
+      `Invalid ObjectId: ${uid}`,
+      ERROR_CODE.INVALID_BODY
+    );
+    next(err);
   } catch (error) {
     const err = new CustomError(
-      `Invalid UUID: ${uid}`,
+      `Invalid ObjectId: ${uid}`,
       ERROR_CODE.INVALID_BODY
     );
     next(err);

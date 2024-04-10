@@ -17,13 +17,13 @@ export function validateProductId(req, res, next) {
     }
 
     const err = new CustomError(
-      `Invalid UUID: ${pid}`,
+      `Invalid ObjectId: ${pid}`,
       ERROR_CODE.INVALID_BODY
     );
     next(err);
   } catch (error) {
     const err = new CustomError(
-      `Invalid UUID: ${pid}`,
+      `Invalid ObjectId: ${pid}`,
       ERROR_CODE.INVALID_BODY
     );
     next(err);
