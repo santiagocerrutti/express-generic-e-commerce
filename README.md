@@ -4,7 +4,7 @@
 
 Server Application to manage and purchase products. It provides a full platform to create, update and delete products and to create a shopping cart selecting products and purchase them.
 
-The application is secured by JWT mechanism and has features for admin, premium and common users. It contains a view developed in plain javascript using Handlebars, where users can register, log in using email and password and social login with Github account. The common user can use the view to consult the Products and (create a cart?); the purchase feature is not supported on the view.
+The application is secured by JWT mechanism and has features for admin, premium and common users. It contains a view developed in plain javascript using Handlebars, where users can register, log in using email and password and social login with Github account. The common user can use the view to consult the Products **and (create a cart?)**; the purchase feature is not supported on the view.
 
 This applications is the result of a Backend Course about backend techniques and server configurations using Javascript as programming language, Node.js as runtime environment, and Express.js as web server.
 

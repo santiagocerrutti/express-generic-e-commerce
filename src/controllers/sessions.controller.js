@@ -53,7 +53,6 @@ class SessionsController {
       /**
        * Esto limpia la Cookie en el Cliente (es lo único que se puede hacer cuando se usa JWT).
        * @see https://stackoverflow.com/questions/37959945/how-to-destroy-jwt-tokens-on-logout
-       * TODO: Se podría probar de copiar el JWT y crear una cookie nueva para hacer una nueva petición luego de hacer el Logout
        */
       res.clearCookie(env.JWT_COOKIE_NAME);
       res.sendSuccess("Logout successfull.");

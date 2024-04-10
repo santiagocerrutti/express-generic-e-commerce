@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import MUUID from "uuid-mongodb";
 import { UserModel } from "./models/user.model.js";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
@@ -15,7 +14,7 @@ export class UserDaoMongo {
   }
 
   async getById(userId) {
-    const foundUser = await UserModel.findById(MUUID.from(userId)).lean();
+    const foundUser = await UserModel.findById(userId).lean();
 
     return foundUser;
   }
@@ -27,7 +26,11 @@ export class UserDaoMongo {
   }
 
   async addOne(user) {
-    await UserModel.create(user);
+    return await UserModel.create(user);
+  }
+
+  async addMany(users) {
+    return await UserModel.insertMany(users);
   }
 
   async updateOne(userId, fieldsToUpdate) {
@@ -35,7 +38,7 @@ export class UserDaoMongo {
     try {
       result = await UserModel.findOneAndUpdate(
         {
-          _id: MUUID.from(userId),
+          _id: userId,
         },
         { ...fieldsToUpdate }
       );
@@ -47,7 +50,7 @@ export class UserDaoMongo {
     }
 
     if (result) {
-      const updatedUser = await UserModel.findById(MUUID.from(userId));
+      const updatedUser = await UserModel.findById(userId);
 
       return updatedUser;
     }
@@ -57,7 +60,7 @@ export class UserDaoMongo {
 
   async deleteOne(userId) {
     return UserModel.findOneAndDelete({
-      _id: MUUID.from(userId),
+      _id: userId,
     });
   }
 }

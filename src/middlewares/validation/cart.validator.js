@@ -1,6 +1,6 @@
 import Ajv from "ajv";
-import MUUID from "uuid-mongodb";
 import { CustomError, ERROR_CODE } from "../../utils.js";
+import { Types } from "mongoose";
 
 /**
  * Middleware
@@ -9,13 +9,20 @@ import { CustomError, ERROR_CODE } from "../../utils.js";
 export function validateCartId(req, res, next) {
   const { cid } = req.params;
   try {
-    MUUID.from(cid);
-    next();
+    if (Types.ObjectId.isValid(cid)) {
+      next();
 
-    return;
+      return;
+    }
+
+    const err = new CustomError(
+      `Invalid ObjectId: ${cid}`,
+      ERROR_CODE.INVALID_BODY
+    );
+    next(err);
   } catch (error) {
     const err = new CustomError(
-      `Invalid UUID: ${cid}`,
+      `Invalid ObjectId: ${cid}`,
       ERROR_CODE.INVALID_BODY
     );
     next(err);

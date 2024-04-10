@@ -1,19 +1,12 @@
-/** @see https://www.npmjs.com/package/uuid-mongodb */
-import MUUID from "uuid-mongodb";
-import { Schema, model } from "mongoose";
-
-MUUID.mode("relaxed");
-
-// // import { cartCollection } from "./cart.model.js";
+import { Schema, model, Types } from "mongoose";
 
 export const userCollection = "users";
 
 export const userSchema = new Schema(
   {
     _id: {
-      type: "object",
-      value: { type: "Buffer" },
-      default: () => MUUID.v4(),
+      type: Types.ObjectId,
+      default: () => new Types.ObjectId(),
     },
     first_name: { type: String, required: true },
     last_name: { type: String },
@@ -21,9 +14,7 @@ export const userSchema = new Schema(
     date_of_birth: { type: Date },
     password: { type: String },
     cart: {
-      type: "object",
-      value: { type: "Buffer" },
-      // // ref: cartCollection,
+      type: Types.ObjectId,
       ref: "carts",
       required: false,
     },

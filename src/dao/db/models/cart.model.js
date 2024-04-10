@@ -1,14 +1,13 @@
-import { Schema, model } from "mongoose";
-/** @see https://www.npmjs.com/package/uuid-mongodb */
-import MUUID from "uuid-mongodb";
+import { Schema, model, Types } from "mongoose";
 import { productCollection } from "./product.model.js";
-
-MUUID.mode("relaxed");
 
 export const cartCollection = "carts";
 
 export const cartSchema = new Schema({
-  _id: { type: "object", value: { type: "Buffer" }, default: () => MUUID.v4() },
+  _id: {
+    type: Types.ObjectId,
+    default: () => new Types.ObjectId(),
+  },
   products: [
     {
       _id: false,
@@ -19,8 +18,7 @@ export const cartSchema = new Schema({
         set: (v) => Math.round(v),
       },
       product: {
-        type: "object",
-        value: { type: "Buffer" },
+        type: Types.ObjectId,
         ref: productCollection,
         required: true,
       },

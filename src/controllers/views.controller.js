@@ -6,6 +6,8 @@ import {
 } from "../use-cases/index.js";
 import { cookieConfig, createTokenFromUser } from "../utils.js";
 
+// TODO: verificar qué ocurre con las vistas. Si la Cookie no está se puede renderizar lo mismo
+// TODO: todas las vistas deberían validar la cookie antes de mostrarse, (usar un Middleware).
 export class ViewsController {
   constructor() {}
 

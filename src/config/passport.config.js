@@ -43,13 +43,11 @@ export function initializePassport() {
       //* The verify() function encapsulates business logic associated to the authentication process
       async (req, username, password, done) => {
         try {
-          const role = username === env.ADMIN_EMAIL ? "admin" : "user";
-
           const result = await createUser({
             ...req.body,
             email: username,
             password,
-            role,
+            role: "user",
           });
 
           await addCart(result);
@@ -142,8 +140,6 @@ export function initializePassport() {
 
           if (!user) {
             const cart = await addCart();
-            const role =
-              profile._json.email === env.ADMIN_EMAIL ? "admin" : "user";
 
             const result = await createUser({
               first_name: profile._json.name,
@@ -151,7 +147,7 @@ export function initializePassport() {
               email: profile._json.email,
               date_of_birth: null,
               password: null,
-              role,
+              role: "user",
               cart: cart._id,
             });
 

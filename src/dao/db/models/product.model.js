@@ -1,15 +1,14 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-/** @see https://www.npmjs.com/package/uuid-mongodb */
-import MUUID from "uuid-mongodb";
 import { userCollection } from "./user.model.js";
-
-MUUID.mode("relaxed");
 
 export const productCollection = "products";
 
 export const productSchema = new Schema({
-  _id: { type: "object", value: { type: "Buffer" }, default: () => MUUID.v4() },
+  _id: {
+    type: Types.ObjectId,
+    default: () => new Types.ObjectId(),
+  },
   title: { type: String, required: true },
   description: { type: String, required: true },
   code: { type: String, required: true, unique: true },
@@ -24,8 +23,7 @@ export const productSchema = new Schema({
   category: { type: String, required: true },
   thumbnails: { type: [String] },
   owner: {
-    type: "object",
-    value: { type: "Buffer" },
+    type: Types.ObjectId,
     ref: userCollection,
     required: true,
   },

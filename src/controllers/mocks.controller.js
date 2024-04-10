@@ -1,11 +1,11 @@
-import { mockProducts } from "../use-cases/mock.use-cases.js";
+import { mockInit } from "../use-cases/mock.use-cases.js";
 
 class MocksController {
   constructor() {}
 
-  mockProducts = async (req, res, next) => {
+  mockInit = async (req, res, next) => {
     try {
-      const result = await mockProducts(req.body);
+      const result = await mockInit(req.body);
 
       res.sendCreated(result);
     } catch (error) {

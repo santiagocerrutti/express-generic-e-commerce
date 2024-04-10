@@ -3,7 +3,6 @@ import chai from "chai";
 import { after, before, describe, it } from "mocha";
 import mongoose from "mongoose";
 import supertest from "supertest";
-import MUUID from "uuid-mongodb";
 
 const expect = chai.expect;
 const requester = supertest("http://localhost:8080");
@@ -48,7 +47,7 @@ describe("ecommerce", function () {
     const cartsCollection = connection.collection("carts");
 
     await cartsCollection.findOneAndDelete({
-      _id: MUUID.from(newCart._id),
+      _id: newCart._id,
     });
 
     return Promise.resolve("done");

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import MUUID from "uuid-mongodb";
 import { MessageModel } from "./models/message.model.js";
 import { CustomError, ERROR_CODE } from "../../utils.js";
+import { Types } from "mongoose";
 
 export class MessageDaoMongo {
   constructor() {}
@@ -25,11 +25,15 @@ export class MessageDaoMongo {
   async addOne(message) {
     const newMessage = await MessageModel.create({
       /** This is a fix for duplicate id ¿? */
-      _id: MUUID.v4(),
+      _id: new Types.ObjectId(),
       ...message,
     });
 
     return newMessage;
+  }
+
+  async addMany(arrayOfObjects) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async updateOne(objectId, fieldsToUpdate) {

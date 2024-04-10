@@ -20,9 +20,14 @@ export const env = {
   NODE_ENV: process.env.NODE_ENV || "development",
   ENV_MODE: mode,
   PERSISTENCE: process.env.PERSISTENCE || "MONGO",
-  MONGO_URL:
-    process.env.MONGO_URL ||
-    "mongodb+srv://user:password@coderhousecluster.q3o8n6f.mongodb.net/db_name?retryWrites=true&w=majority",
+  MONGO_PROTOCOL: process.env.MONGO_PROTOCOL || "mongodb+srv",
+  MONGO_USER: process.env.MONGO_USER || "user",
+  MONGO_PASSWORD: process.env.MONGO_PASSWORD || "password",
+  MONGO_HOST: process.env.MONGO_HOST || "somecluster.mongodb.net",
+  MONGO_DATABASE: process.env.MONGO_DATABASE || "db_name",
+  MONGO_PARAMETERS:
+    process.env.MONGO_PARAMETERS || "retryWrites=true&w=majority",
+
   PORT: parseInt(process.env.PORT) || 8080,
   ADMIN_EMAIL: process.env.ADMIN_EMAIL || "adminCoder@coder.com",
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || "adminCod3r123",

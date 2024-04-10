@@ -1,7 +1,6 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { inspect } from "util";
-import MUUID from "uuid-mongodb";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
 // TODO: Documentar mejor
@@ -152,10 +151,12 @@ export function validatePassword(req, res, next) {
 export function validateUserId(req, res, next) {
   const { uid } = req.params;
   try {
-    MUUID.from(uid);
-    next();
+    // TODO: validar el object ID
+    if (uid) {
+      next();
 
-    return;
+      return;
+    }
   } catch (error) {
     const err = new CustomError(
       `Invalid UUID: ${uid}`,

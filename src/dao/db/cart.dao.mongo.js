@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import MUUID from "uuid-mongodb";
 import { CartModel } from "./models/cart.model.js";
 import { ProductModel } from "./models/product.model.js";
 import { CustomError, ERROR_CODE } from "../../utils.js";
@@ -12,9 +11,7 @@ export class CartDaoMongo {
   }
 
   async getById(cartId) {
-    return CartModel.findById(MUUID.from(cartId))
-      .populate("products.product")
-      .lean();
+    return CartModel.findById(cartId).populate("products.product").lean();
   }
 
   async getOneByFilter(filterQuery) {
@@ -25,6 +22,10 @@ export class CartDaoMongo {
     const newCart = await CartModel.create({ ...cart });
 
     return newCart;
+  }
+
+  async addMany(arrayOfObjects) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async updateOne(cartId, fieldsToUpdate) {
@@ -40,7 +41,7 @@ export class CartDaoMongo {
     try {
       result = await CartModel.findOneAndUpdate(
         {
-          _id: MUUID.from(cartId),
+          _id: cartId,
         },
         { ...formattedFieldsToUpdate }
       );
@@ -53,7 +54,7 @@ export class CartDaoMongo {
     }
 
     if (result) {
-      const updatedCart = await CartModel.findById(MUUID.from(cartId));
+      const updatedCart = await CartModel.findById(cartId);
 
       return updatedCart;
     }
@@ -63,7 +64,7 @@ export class CartDaoMongo {
 
   async _validateAndFormatProducts(products) {
     const formattedProducts = products.map((p) => {
-      return { ...p, product: MUUID.from(p.product) };
+      return { ...p, product: p.product };
     });
     for (const p of formattedProducts) {
       // TODO: Habrá alguna forma mas eficiente de verificar si los ids existen en BD?

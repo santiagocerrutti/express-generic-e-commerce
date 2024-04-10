@@ -15,13 +15,12 @@ const router = Router();
 router.use("/", viewsRouter);
 router.use("/static", express.static(`${__dirname}/public`));
 /*** API routes */
-// TODO: crear un endpoint de healthcheck
 router.use("/api/products", productsRouter);
 router.use("/api/carts", cartsRouter);
 router.use("/api/sessions", sessionsRouter);
 router.use("/api/users", usersRouter);
 /*** TESTING routes */
-router.use("/api/mocking", mocksRouter);
+router.use("/mocks", mocksRouter);
 router.use("/test", testRouter);
 
 export default router;

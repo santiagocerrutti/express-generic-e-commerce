@@ -1,7 +1,7 @@
 import Ajv from "ajv";
 import { inspect } from "util";
-import MUUID from "uuid-mongodb";
 import { CustomError, ERROR_CODE } from "../../utils.js";
+import { Types } from "mongoose";
 
 /**
  * Middleware
@@ -10,10 +10,17 @@ import { CustomError, ERROR_CODE } from "../../utils.js";
 export function validateProductId(req, res, next) {
   const { pid } = req.params;
   try {
-    MUUID.from(pid);
-    next();
+    if (Types.ObjectId.isValid(pid)) {
+      next();
 
-    return;
+      return;
+    }
+
+    const err = new CustomError(
+      `Invalid UUID: ${pid}`,
+      ERROR_CODE.INVALID_BODY
+    );
+    next(err);
   } catch (error) {
     const err = new CustomError(
       `Invalid UUID: ${pid}`,

@@ -1,17 +1,12 @@
-/** @see https://www.npmjs.com/package/uuid-mongodb */
-import MUUID from "uuid-mongodb";
-import { Schema, model } from "mongoose";
-
-MUUID.mode("relaxed");
+import { Schema, model, Types } from "mongoose";
 
 export const messageCollection = "messages";
 
 export const messageSchema = new Schema(
   {
     _id: {
-      type: "object",
-      value: { type: "Buffer" },
-      default: () => MUUID.v4(),
+      type: Types.ObjectId,
+      default: () => new Types.ObjectId(),
     },
     user: { type: String, required: true },
     message: { type: String, required: true },

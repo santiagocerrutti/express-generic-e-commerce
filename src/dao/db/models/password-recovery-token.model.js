@@ -1,17 +1,15 @@
-import { Schema, model } from "mongoose";
-/** @see https://www.npmjs.com/package/uuid-mongodb */
-import MUUID from "uuid-mongodb";
+import { Schema, model, Types } from "mongoose";
 import { userCollection } from "./user.model.js";
-
-MUUID.mode("relaxed");
 
 export const passwordRecoveryTokenCollection = "password_recovery_tokens";
 
 export const passwordRecoveryTokenSchema = new Schema({
-  _id: { type: "object", value: { type: "Buffer" }, default: () => MUUID.v4() },
+  _id: {
+    type: Types.ObjectId,
+    default: () => new Types.ObjectId(),
+  },
   user: {
-    type: "object",
-    value: { type: "Buffer" },
+    type: Types.ObjectId,
     ref: userCollection,
     required: false,
   },

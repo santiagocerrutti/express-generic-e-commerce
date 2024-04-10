@@ -19,6 +19,7 @@ services:
     volumes:
       - db-data:/data/db
       - db-config:/data/confingdb
+      - ./mongo-config:/docker-entrypoint-initdb.d/:ro
 
 volumes:
   db-data:

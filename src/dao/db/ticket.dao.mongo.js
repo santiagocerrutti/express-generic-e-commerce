@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import MUUID from "uuid-mongodb";
 import { TicketModel } from "./models/ticket.model.js";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
@@ -14,7 +13,7 @@ export class TicketDaoMongo {
   }
 
   async getById(ticketId) {
-    const foundTicket = await TicketModel.findById(MUUID.from(ticketId)).lean();
+    const foundTicket = await TicketModel.findById(ticketId).lean();
 
     return foundTicket;
   }
@@ -25,6 +24,10 @@ export class TicketDaoMongo {
 
   async addOne(ticket) {
     return TicketModel.create(ticket);
+  }
+
+  async addMany(arrayOfObjects) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async updateOne(objectId, fieldsToUpdate) {

@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import MUUID from "uuid-mongodb";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 import { PasswordRecoveryTokenModel } from "./models/password-recovery-token.model.js";
 
@@ -14,9 +13,7 @@ export class PasswordRecoveryTokenDaoMongo {
   }
 
   async getById(tokenId) {
-    const foundToken = await PasswordRecoveryTokenModel.findById(
-      MUUID.from(tokenId)
-    )
+    const foundToken = await PasswordRecoveryTokenModel.findById(tokenId)
       .populate("user")
       .lean();
 
@@ -31,13 +28,17 @@ export class PasswordRecoveryTokenDaoMongo {
     return PasswordRecoveryTokenModel.create(token);
   }
 
+  async addMany(arrayOfObjects) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
+  }
+
   async updateOne(objectId, fieldsToUpdate) {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
   async deleteOne(tokenId) {
     return PasswordRecoveryTokenModel.findOneAndDelete({
-      _id: MUUID.from(tokenId),
+      _id: tokenId,
     });
   }
 }

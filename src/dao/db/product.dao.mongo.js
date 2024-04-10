@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import MUUID from "uuid-mongodb";
 import { ProductModel } from "./models/product.model.js";
 import {
   CustomError,
@@ -61,7 +60,7 @@ export class ProductDaoMongo {
   }
 
   async getById(productId) {
-    return ProductModel.findById(MUUID.from(productId)).lean();
+    return ProductModel.findById(productId).lean();
   }
 
   async getOneByFilter(filterQuery) {
@@ -81,7 +80,7 @@ export class ProductDaoMongo {
     try {
       result = await ProductModel.findOneAndUpdate(
         {
-          _id: MUUID.from(productId),
+          _id: productId,
         },
         { ...fieldsToUpdate }
       );
@@ -97,7 +96,7 @@ export class ProductDaoMongo {
     }
 
     if (result) {
-      const updatedProduct = await ProductModel.findById(MUUID.from(productId));
+      const updatedProduct = await ProductModel.findById(productId);
 
       return updatedProduct;
     }
@@ -107,7 +106,7 @@ export class ProductDaoMongo {
 
   async deleteOne(productId) {
     return ProductModel.findOneAndDelete({
-      _id: MUUID.from(productId),
+      _id: productId,
     });
   }
 }
