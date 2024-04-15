@@ -1,4 +1,6 @@
-import { productsService } from "../services/index.js";
+import { productDeletedHtmlTemplate } from "../mail/email-templates.js";
+import { sendEmail } from "../mail/mail-service.js";
+import { productsService, usersService } from "../services/index.js";
 import { CustomError, ERROR_CODE } from "../utils.js";
 
 /**
@@ -99,6 +101,20 @@ export async function updateProduct(productId, fieldsToUpdate) {
   );
 }
 
+async function _notifyDeletedProductToUser(product) {
+  const user = await usersService.getById(product.owner);
+
+  await sendEmail(
+    user.email,
+    "Account Deleted",
+    productDeletedHtmlTemplate({
+      name: user.name,
+      productId: product._id,
+      productTitle: product.title,
+    })
+  );
+}
+
 /**
  * Deletes a product with the given productId.
  *
@@ -107,10 +123,14 @@ export async function updateProduct(productId, fieldsToUpdate) {
  * @throws {CustomError} - If the product with the given productId is not found.
  */
 export async function deleteProduct(productId) {
-  const result = await productsService.deleteOne(productId);
+  const product = await productsService.updateOne(productId, { deleted: true });
 
-  if (result) {
-    return result;
+  if (product) {
+    if (product.owner) {
+      await _notifyDeletedProductToUser(product);
+    }
+
+    return product;
   }
 
   throw new CustomError(

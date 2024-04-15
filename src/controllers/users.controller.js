@@ -1,11 +1,23 @@
 /* eslint-disable no-unused-vars */
 import {
+  deleteInactiveUsers,
+  getUsers,
   switchUserToPremium,
   uploadDocument,
 } from "../use-cases/user.use-cases.js";
 
 class UsersController {
   constructor() {}
+
+  getUsers = async (req, res, next) => {
+    try {
+      const result = await getUsers();
+
+      res.sendSuccess(result);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   switchUserToPremium = async (req, res, next) => {
     const { uid } = req.params;
@@ -30,6 +42,16 @@ class UsersController {
       });
 
       res.sendSuccess("Document uploaded successfully");
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  deleteInactiveUsers = async (req, res, next) => {
+    try {
+      const result = await deleteInactiveUsers();
+
+      res.sendSuccess(result);
     } catch (error) {
       next(error);
     }

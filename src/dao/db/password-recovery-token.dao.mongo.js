@@ -12,6 +12,10 @@ export class PasswordRecoveryTokenDaoMongo {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
+  async getAllByFilter(filterQuery) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
+  }
+
   async getById(tokenId) {
     const foundToken = await PasswordRecoveryTokenModel.findById(tokenId)
       .populate("user")

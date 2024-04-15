@@ -10,6 +10,10 @@ export class CartDaoMongo {
     return CartModel.find().populate("products.product").limit(limit).lean();
   }
 
+  async getAllByFilter(filterQuery) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
+  }
+
   async getById(cartId) {
     return CartModel.findById(cartId).populate("products.product").lean();
   }

@@ -1,6 +1,10 @@
 import dayjs from "dayjs";
 import { logger } from "../config/logger.js";
-import { newPasswordHtmlTemplate } from "../mail/email-templates.js";
+import { UserDto } from "../dto/user.dto.js";
+import {
+  accountDeletedHtmlTemplate,
+  newPasswordHtmlTemplate,
+} from "../mail/email-templates.js";
 import { sendEmail } from "../mail/mail-service.js";
 import { ROLES } from "../middlewares/auth/isAuthorized.js";
 import {
@@ -41,6 +45,19 @@ export async function createUser(user) {
       ERROR_CODE.DUPLICATED_KEY
     );
   }
+}
+
+/**
+ * Retrieves a list of users.
+ *
+ * @param {number} [limit=null] - The maximum number of users to retrieve.
+ * @returns {Promise<Object[]>} - A promise that resolves to an array of user objects.
+ * @throws {CustomError} - If there is an error retrieving the users.
+ */
+export async function getUsers(limit = null) {
+  const result = await usersService.getAll(limit);
+
+  return result.map((user) => new UserDto(user));
 }
 
 /**
@@ -123,6 +140,7 @@ export async function sendResetPasswordEmail(emailAddress) {
         expired_at: dayjs().add(1, "hour"),
       });
 
+      // TODO: Corregir esto
       //! Non awaited Promises should execute code inside try-catch block.
       sendEmail(
         emailAddress,
@@ -153,7 +171,7 @@ export async function sendResetPasswordEmail(emailAddress) {
  * @throws {CustomError} If the user has not uploaded the required documents.
  * @returns {void}
  */
-function validateUploadedDocuments(user) {
+function _validateUploadedDocuments(user) {
   if (user.documents && user.documents.length) {
     const documentsTypes = user.documents.map((doc) => doc.document_type);
 
@@ -193,7 +211,7 @@ export async function switchUserToPremium(uid) {
   }
 
   if (user?.role === ROLES.USER) {
-    validateUploadedDocuments(user);
+    _validateUploadedDocuments(user);
     const result = await usersService.updateOne(uid, {
       role: ROLES.PREMIUM,
     });
@@ -257,4 +275,31 @@ export async function uploadDocument(userId, newDocument) {
   });
 
   return result;
+}
+
+export async function deleteInactiveUsers() {
+  const users = await usersService.getAllByFilter({
+    last_connection: {
+      $lte: dayjs().subtract(2, "days").toISOString(),
+    },
+    role: { $ne: "admin" },
+  });
+
+  await Promise.all(
+    users.map((user) =>
+      sendEmail(
+        user.email,
+        "Account Deleted",
+        accountDeletedHtmlTemplate({
+          name: user.name,
+        })
+      )
+    )
+  );
+
+  await Promise.all(
+    users.map((user) => usersService.updateOne(user._id, { deleted: true }))
+  );
+
+  return users;
 }

@@ -59,6 +59,10 @@ export class ProductDaoMongo {
     return findQuery;
   }
 
+  async getAllByFilter(filterQuery) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
+  }
+
   async getById(productId) {
     return ProductModel.findById(productId).lean();
   }

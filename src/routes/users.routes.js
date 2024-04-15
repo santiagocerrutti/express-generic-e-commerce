@@ -13,10 +13,17 @@ import { userDocumentUploader } from "../utils/file-uploader.js";
 
 import { Router } from "./Router.js";
 
-const { switchUserToPremium, uploadUserDocument } = usersController;
+const {
+  deleteInactiveUsers,
+  getUsers,
+  switchUserToPremium,
+  uploadUserDocument,
+} = usersController;
 
 class UsersRouter extends Router {
   init() {
+    this.get("/", isAuthenticated, isAuthorized(ROLES.ADMIN), getUsers);
+
     this.post(
       "/premium/:uid",
       isAuthenticated,
@@ -37,6 +44,13 @@ class UsersRouter extends Router {
       userDocumentUploader.single("document"),
       validateUserDocumentFile,
       uploadUserDocument
+    );
+
+    this.delete(
+      "/",
+      isAuthenticated,
+      isAuthorized(ROLES.ADMIN),
+      deleteInactiveUsers
     );
   }
 }

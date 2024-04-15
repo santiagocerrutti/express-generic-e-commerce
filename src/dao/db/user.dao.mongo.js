@@ -6,11 +6,15 @@ export class UserDaoMongo {
   constructor() {}
 
   async getAll(limit = 0) {
-    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
+    return UserModel.find().limit(limit).lean();
   }
 
   async getAllPaginate(limit = 10, page = 1, query = {}, sort = undefined) {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
+  }
+
+  async getAllByFilter(filterQuery) {
+    return UserModel.find(filterQuery).lean();
   }
 
   async getById(userId) {

@@ -21,6 +21,7 @@ export const userSchema = new Schema(
     role: { type: String, required: true },
     documents: { type: Array },
     last_connection: { type: Date },
+    deleted: { type: Boolean },
   },
   {
     timestamps: true,

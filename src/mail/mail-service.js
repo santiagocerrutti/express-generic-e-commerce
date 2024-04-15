@@ -6,6 +6,7 @@ const transport = createTransport({
   port: env.EMAIL_PORT,
   auth: {
     user: env.EMAIL_ADDRESS,
+    /** For Gmail configuration @see https://support.google.com/accounts/answer/185833 */
     pass: env.EMAIL_PASSWORD,
   },
 });

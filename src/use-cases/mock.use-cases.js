@@ -23,6 +23,8 @@ async function createAdminUser() {
     date_of_birth: faker.date.birthdate(),
     role: "admin",
     password: await createHash(env.ADMIN_PASSWORD),
+    last_connection: faker.date.past(),
+    deleted: false,
   };
 
   const result = await usersService.addOne(admin);
@@ -32,11 +34,13 @@ async function createAdminUser() {
 
 async function createPremiumUser() {
   const password = faker.internet.password();
+  const first_name = faker.person.firstName();
+  const last_name = faker.person.lastName();
   const admin = {
     _id: faker.database.mongodbObjectId(),
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
+    first_name,
+    last_name,
+    email: `${first_name[0]}.${last_name}@gmail.com`.toLocaleLowerCase(),
     date_of_birth: faker.date.birthdate(),
     role: "premium",
     password: await createHash(password),
@@ -57,6 +61,8 @@ async function createPremiumUser() {
         reference: faker.internet.url(),
       },
     ],
+    last_connection: faker.date.past(),
+    deleted: false,
   };
 
   const result = await usersService.addOne(admin);
@@ -66,14 +72,18 @@ async function createPremiumUser() {
 
 async function createCommonUser() {
   const password = faker.internet.password();
+  const first_name = faker.person.firstName();
+  const last_name = faker.person.lastName();
   const admin = {
     _id: faker.database.mongodbObjectId(),
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
+    first_name,
+    last_name,
+    email: `${first_name[0]}.${last_name}@gmail.com`.toLocaleLowerCase(),
     date_of_birth: faker.date.birthdate(),
     role: "user",
     password: await createHash(password),
+    last_connection: faker.date.past(),
+    deleted: false,
   };
 
   const result = await usersService.addOne(admin);
@@ -89,7 +99,7 @@ async function createProducts(ownerUserId) {
       _id: faker.database.mongodbObjectId(),
       title: faker.commerce.productName(),
       description: faker.commerce.productDescription(),
-      code: faker.database.mongodbObjectId(),
+      code: faker.string.uuid(),
       price: faker.commerce.price(),
       status: true,
       stock: faker.number.int({
@@ -103,6 +113,7 @@ async function createProducts(ownerUserId) {
         }),
       ],
       owner: ownerUserId,
+      deleted: false,
     });
   }
 

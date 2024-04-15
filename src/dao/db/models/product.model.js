@@ -27,6 +27,7 @@ export const productSchema = new Schema({
     ref: userCollection,
     required: true,
   },
+  deleted: { type: Boolean },
 });
 productSchema.plugin(mongoosePaginate);
 

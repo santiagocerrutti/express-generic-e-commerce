@@ -12,6 +12,10 @@ export class TicketDaoMongo {
     throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
   }
 
+  async getAllByFilter(filterQuery) {
+    throw new CustomError("Not implemented yet.", ERROR_CODE.NOT_IMPLEMENTED);
+  }
+
   async getById(ticketId) {
     const foundTicket = await TicketModel.findById(ticketId).lean();
 

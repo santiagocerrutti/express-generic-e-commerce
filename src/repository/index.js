@@ -17,6 +17,10 @@ export class Repository {
     return this.dao.getAllPaginate(limit, page, query, sort);
   }
 
+  async getAllByFilter(filterQuery) {
+    return this.dao.getAllByFilter(filterQuery);
+  }
+
   async getById(objectId) {
     return this.dao.getById(objectId);
   }
