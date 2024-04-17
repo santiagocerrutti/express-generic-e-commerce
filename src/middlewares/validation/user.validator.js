@@ -4,10 +4,15 @@ import { Types } from "mongoose";
 import { inspect } from "util";
 import { CustomError, ERROR_CODE } from "../../utils.js";
 
-// TODO: Documentar mejor
 /**
- * Middleware
- * Calls next(CustomError) in case validation fails
+ * Validates the registration request.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {void}
+ *
+ * @throws {CustomError} If the request body is invalid.
  */
 export function validateRegister(req, res, next) {
   const schema = {
@@ -46,10 +51,15 @@ export function validateRegister(req, res, next) {
   next(error);
 }
 
-// TODO: Documentar mejor
 /**
- * Middleware
- * Calls next(CustomError) in case validation fails
+ * Validates the login payload.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {void}
+ *
+ * @throws {CustomError} If the login payload is invalid.
  */
 export function validateLogin(req, res, next) {
   const schema = {
@@ -170,32 +180,6 @@ export function validateUserId(req, res, next) {
     );
     next(err);
   }
-}
-
-/** This is not a middleware */
-export function validateUserDocumentPayload(req) {
-  const schema = {
-    type: "object",
-    properties: {
-      name: { type: "string" },
-      document_type: {
-        enum: ["identification", "account_statement", "proof_of_address"],
-      },
-    },
-    required: ["document_type"],
-  };
-  const ajv = new Ajv();
-  const validate = ajv.compile(schema);
-
-  if (validate(req.body)) {
-    return;
-  }
-
-  throw new CustomError(
-    `Invalid document payload: ${inspect(req.body)}.`,
-    ERROR_CODE.INVALID_BODY,
-    validate.errors
-  );
 }
 
 export function validateUserDocumentFile(req, res, next) {

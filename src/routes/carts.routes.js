@@ -32,16 +32,18 @@ class CartsRouter extends Router {
     this.get(
       "/:cid",
       isAuthenticated,
+      isAuthorized(ROLES.ALL),
       validateCartId,
       validateCartOwnership,
       getCartById
     );
 
-    this.post("/", isAuthenticated, createCart);
+    this.post("/", isAuthenticated, isAuthorized(ROLES.ALL), createCart);
 
     this.post(
       "/:cid/products/:pid",
       isAuthenticated,
+      isAuthorized(ROLES.ALL),
       validateCartId,
       validateProductId,
       validateCartOwnership,
@@ -51,6 +53,7 @@ class CartsRouter extends Router {
     this.put(
       "/:cid",
       isAuthenticated,
+      isAuthorized(ROLES.ALL),
       validateCartId,
       validateProductsOfCart,
       validateCartOwnership,
@@ -60,6 +63,7 @@ class CartsRouter extends Router {
     this.put(
       "/:cid/products/:pid",
       isAuthenticated,
+      isAuthorized(ROLES.ALL),
       validateCartId,
       validateProductId,
       validateProductQuantity,
@@ -70,6 +74,7 @@ class CartsRouter extends Router {
     this.delete(
       "/:cid",
       isAuthenticated,
+      isAuthorized(ROLES.ALL),
       validateCartId,
       validateCartOwnership,
       deleteAllProductsOfCart
@@ -78,6 +83,7 @@ class CartsRouter extends Router {
     this.delete(
       "/:cid/products/:pid",
       isAuthenticated,
+      isAuthorized(ROLES.ALL),
       validateCartId,
       validateProductId,
       validateCartOwnership,
@@ -87,6 +93,7 @@ class CartsRouter extends Router {
     this.post(
       "/:cid/purchase",
       isAuthenticated,
+      isAuthorized(ROLES.ALL),
       validateCartId,
       validateCartOwnership,
       purchaseCart

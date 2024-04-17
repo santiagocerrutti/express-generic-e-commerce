@@ -1,6 +1,10 @@
 import { passportAuthenticate } from "../config/passportAuthenticate.js";
 import { sessionsController } from "../controllers/sessions.controller.js";
-import { isAuthenticated } from "../middlewares/auth/index.js";
+import {
+  ROLES,
+  isAuthenticated,
+  isAuthorized,
+} from "../middlewares/auth/index.js";
 import {
   validateEmail,
   validateLogin,
@@ -23,6 +27,7 @@ class SessionsRouter extends Router {
       "/register",
       validateRegister,
       passportAuthenticate("register", { session: false }),
+      isAuthorized(ROLES.PUBLIC),
       register
     );
 
@@ -30,16 +35,27 @@ class SessionsRouter extends Router {
       "/login",
       validateLogin,
       passportAuthenticate("login", { session: false }),
+      isAuthorized(ROLES.PUBLIC),
       login
     );
 
-    this.get("/current", isAuthenticated, getCurrent);
+    this.get("/current", isAuthenticated, isAuthorized(ROLES.ALL), getCurrent);
 
-    this.post("/logout", isAuthenticated, logout);
+    this.post("/logout", isAuthenticated, isAuthorized(ROLES.ALL), logout);
 
-    this.post("/reset-password-request", validateEmail, requestNewPassword);
+    this.post(
+      "/reset-password-request",
+      validateEmail,
+      isAuthorized(ROLES.PUBLIC),
+      requestNewPassword
+    );
 
-    this.post("/new-password/:token", validatePassword, updatePassword);
+    this.post(
+      "/new-password/:token",
+      validatePassword,
+      isAuthorized(ROLES.PUBLIC),
+      updatePassword
+    );
   }
 }
 

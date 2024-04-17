@@ -4,7 +4,6 @@ import { cartsRouter } from "./carts.routes.js";
 import { mocksRouter } from "./mocks.routes.js";
 import { productsRouter } from "./products.routes.js";
 import { sessionsRouter } from "./sessions.routes.js";
-import { testRouter } from "./test.routes.js";
 import { usersRouter } from "./users.routes.js";
 import { viewsRouter } from "./views.routes.js";
 
@@ -21,6 +20,5 @@ router.use("/api/sessions", sessionsRouter);
 router.use("/api/users", usersRouter);
 /*** TESTING routes */
 router.use("/mocks", mocksRouter);
-router.use("/test", testRouter);
 
 export default router;

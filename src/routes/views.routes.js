@@ -24,6 +24,9 @@ const {
   getNewPasswordView,
   getNewPasswordSuccessView,
 } = viewsController;
+
+// TODO: Revisar: al hacer Atras y Adelante en el navegador el usuario puede ver las vistas luego de hacer logout.
+// TODO: Cuando no hay token, debería redirigir al Log In en lugar de mostrar un JSON.
 class ViewsRouter extends Router {
   init() {
     this.get("/", getLoginView);

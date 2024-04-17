@@ -21,7 +21,7 @@ export function passportAuthenticate(strategy, options) {
         }
 
         if (user) {
-          //? ¿Esto es necesario?
+          //? ¿Esto es necesario? Quizas lo sea para unificar cómo se setea el usuario
           //* https://www.passportjs.org/concepts/authentication/middleware/#:~:text=By%20default%2C%20when%20authentication%20succeeds%2C%20the%20req.user%20property%20is%20set%20to%20the%20authenticated%20user%2C%20a%20login%20session%20is%20established%2C%20and%20the%20next%20function%20in%20the%20stack%20is%20called
           req.user = user;
           next();

@@ -1,4 +1,6 @@
+import Ajv from "ajv";
 import dayjs from "dayjs";
+import { inspect } from "util";
 import { logger } from "../config/logger.js";
 import { UserDto } from "../dto/user.dto.js";
 import {
@@ -85,6 +87,40 @@ export async function findUserById(userId) {
 }
 
 /**
+ * Validates the payload of a user document.
+ *
+ * @param {Object} req - The request object containing the payload to validate.
+ * @throws {CustomError} If the payload is invalid.
+ * @returns {void}
+ */
+export function validateUserDocumentPayload(req) {
+  const schema = {
+    type: "object",
+    properties: {
+      name: { type: "string" },
+      document_type: {
+        enum: ["identification", "account_statement", "proof_of_address"],
+      },
+    },
+    required: ["document_type"],
+  };
+  const ajv = new Ajv();
+  const validate = ajv.compile(schema);
+
+  console.log(req.body);
+
+  if (validate(req.body)) {
+    return;
+  }
+
+  throw new CustomError(
+    `Invalid document payload: ${inspect(req.body)}.`,
+    ERROR_CODE.INVALID_BODY,
+    validate.errors
+  );
+}
+
+/**
  * Updates the password of a user based on a password recovery token.
  *
  * @param {string} tokenId - The ID of the password recovery token.
@@ -140,8 +176,6 @@ export async function sendResetPasswordEmail(emailAddress) {
         expired_at: dayjs().add(1, "hour"),
       });
 
-      // TODO: Corregir esto
-      //! Non awaited Promises should execute code inside try-catch block.
       sendEmail(
         emailAddress,
         "Reset password request",
@@ -149,7 +183,9 @@ export async function sendResetPasswordEmail(emailAddress) {
           name: user.first_name,
           token: recoveryToken._id,
         })
-      );
+      ).catch((error) => {
+        logger.error(error);
+      });
 
       return {
         recoveryToken: recoveryToken._id,
@@ -174,8 +210,6 @@ export async function sendResetPasswordEmail(emailAddress) {
 function _validateUploadedDocuments(user) {
   if (user.documents && user.documents.length) {
     const documentsTypes = user.documents.map((doc) => doc.document_type);
-
-    console.log(documentsTypes);
 
     if (
       documentsTypes.includes("identification") &&
@@ -254,7 +288,7 @@ export async function updateLastConnection(userId) {
 
     return result;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
 
@@ -267,6 +301,8 @@ export async function updateLastConnection(userId) {
  */
 export async function uploadDocument(userId, newDocument) {
   const user = await usersService.getById(userId);
+
+  console.log(newDocument);
 
   const result = await usersService.updateOne(userId, {
     documents: user.documents

@@ -23,9 +23,21 @@ const {
 
 class ProductsRouter extends Router {
   init() {
-    this.get("/", isAuthenticated, validateGetProductsQuery, getProducts);
+    this.get(
+      "/",
+      isAuthenticated,
+      isAuthorized(ROLES.ALL),
+      validateGetProductsQuery,
+      getProducts
+    );
 
-    this.get("/:pid", isAuthenticated, validateProductId, getProductById);
+    this.get(
+      "/:pid",
+      isAuthenticated,
+      isAuthorized(ROLES.ALL),
+      validateProductId,
+      getProductById
+    );
 
     this.post(
       "/",

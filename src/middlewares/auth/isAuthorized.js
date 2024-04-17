@@ -11,19 +11,20 @@ export function isAuthorized(...roles) {
   //* O devolver funciones que respeten dicha firma (en caso de que reciban parametros)
   return async function (req, res, next) {
     try {
-      // TODO: Revisar por qué se implementó el Role Public ¿Es necesario? ¿Es una buena práctica?
-      // // if (roles.includes(ROLES.PUBLIC)) {
-      // //   next();
-
-      // //   return;
-      // // }
-
-      const { user } = req.user;
-
-      if (user && roles.includes(user.role)) {
+      if (roles.includes(ROLES.PUBLIC)) {
         next();
 
         return;
+      }
+
+      if (req.user) {
+        const { user } = req.user;
+
+        if (user && (roles.includes(user.role) || roles.includes(ROLES.ALL))) {
+          next();
+
+          return;
+        }
       }
 
       throw new CustomError("No permissions", ERROR_CODE.NOT_AUTHORIZED);
@@ -34,7 +35,8 @@ export function isAuthorized(...roles) {
 }
 
 export const ROLES = {
-  // // PUBLIC: "public",
+  ALL: "all",
+  PUBLIC: "public",
   PREMIUM: "premium",
   ADMIN: "admin",
   USER: "user",

@@ -10,32 +10,25 @@ import { ERROR_CODE } from "../../utils.js";
 export async function errorHandler(err, req, res, next) {
   req.logger.error(err.message || err);
 
-  // TODO: cambiar esto a switch-case
-  if (err.code === ERROR_CODE.INVALID_BODY) {
-    res.sendBadRequest(err.message, err.errors);
-
-    return;
-  } else if (err.code === ERROR_CODE.NOT_FOUND) {
-    res.sendNotFound(err.message);
-
-    return;
-  } else if (err.code === ERROR_CODE.BUSINESS_LOGIC_ERROR) {
-    res.sendConflict(err.message);
-
-    return;
-  } else if (err.code === ERROR_CODE.DUPLICATED_KEY) {
-    res.sendConflict(err.message);
-
-    return;
-  } else if (err.code === ERROR_CODE.NOT_AUTHENTICATED) {
-    res.sendNotAuthenticated(err.message);
-
-    return;
-  } else if (err.code === ERROR_CODE.NOT_AUTHORIZED) {
-    res.sendNotAuthorized(err.message);
-
-    return;
+  switch (err.code) {
+    case ERROR_CODE.INVALID_BODY:
+      res.sendBadRequest(err.message, err.errors);
+      break;
+    case ERROR_CODE.NOT_FOUND:
+      res.sendNotFound(err.message);
+      break;
+    case ERROR_CODE.BUSINESS_LOGIC_ERROR:
+    case ERROR_CODE.DUPLICATED_KEY:
+      res.sendConflict(err.message);
+      break;
+    case ERROR_CODE.NOT_AUTHENTICATED:
+      res.sendNotAuthenticated(err.message);
+      break;
+    case ERROR_CODE.NOT_AUTHORIZED:
+      res.sendNotAuthorized(err.message);
+      break;
+    default:
+      res.sendInternalServerError();
+      break;
   }
-
-  res.sendInternalServerError();
 }

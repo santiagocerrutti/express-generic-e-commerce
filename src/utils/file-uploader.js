@@ -1,8 +1,6 @@
 import multer from "multer";
-
+import { validateUserDocumentPayload } from "../use-cases/user.use-cases.js";
 import { __dirname } from "../utils.js";
-// TODO: Esta validación, si no es un middleware, debería moverse a use-cases
-import { validateUserDocumentPayload } from "../middlewares/validation/user.validator.js";
 
 async function fileFilter(req, file, cb) {
   try {
@@ -41,4 +39,4 @@ export const userDocumentUploader = multer({
   onError: function (err, next) {
     next(err);
   },
-});
+}).single("document");

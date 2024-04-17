@@ -7,8 +7,7 @@ import { ROLES } from "../auth/index.js";
  * Throws CustomError in case validation fails
  */
 export async function validateCartOwnership(req, res, next) {
-  console.log(req.user);
-  // TODO: Sería bueno guardar el ID del cart en la data del user para no buscarla en DB.
+  // TODO: Sería bueno guardar el ID del cart en la data del user al momento del login para no buscarla en DB.
   const user = await usersService.getById(req.user.user._id);
   const { cid } = req.params;
 
