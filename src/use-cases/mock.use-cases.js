@@ -173,6 +173,23 @@ async function createPurchasedCart(ownerUser, products) {
 }
 
 /**
+ * Initializes the mock admin user.
+ *
+ * This function creates an admin user if one does not already exist in the database.
+ * The admin user is created with randomly generated data using the faker library.
+ *
+ * @returns {Object} An object containing the admin user.
+ * @throws {Error} If there is an error creating the admin user.
+ */
+export async function mockInitAdmin() {
+  const admin = await createAdminUser();
+
+  return {
+    users: [admin],
+  };
+}
+
+/**
  * Initializes the mock data for testing purposes.
  *
  * This function creates an admin user, a premium user, and a common user.
@@ -180,15 +197,14 @@ async function createPurchasedCart(ownerUser, products) {
  * Additionally, it creates a purchased cart and a regular cart for the common user.
  *
  * @returns {Object} - An object containing the generated mock data.
- *   - users: An array of user objects, including the admin, premium, and common users.
+ *   - users: An array of user objects, including the premium, and common users.
  *   - products: An array of product objects associated with the premium user.
  *   - carts: An array of cart objects, including the purchased cart and the regular cart.
  *   - tickets: An array of ticket objects associated with the purchased cart.
  *
  * @throws {Error} - If an error occurs during the mock data generation process.
  */
-export async function mockInit() {
-  const admin = await createAdminUser();
+export async function mockInitFake() {
   const premium = await createPremiumUser();
   const common = await createCommonUser();
 
@@ -201,7 +217,7 @@ export async function mockInit() {
   const cart = await createCart(common, products);
 
   return {
-    users: [admin, premium, common],
+    users: [premium, common],
     products,
     carts: [purchasedCart, cart],
     tickets: [ticket],

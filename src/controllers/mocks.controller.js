@@ -1,11 +1,21 @@
-import { mockInit } from "../use-cases/mock.use-cases.js";
+import { mockInitFake, mockInitAdmin } from "../use-cases/mock.use-cases.js";
 
 class MocksController {
   constructor() {}
 
-  mockInit = async (req, res, next) => {
+  mockInitAdmin = async (req, res, next) => {
     try {
-      const result = await mockInit(req.body);
+      const result = await mockInitAdmin();
+
+      res.sendCreated(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  mockInitFake = async (req, res, next) => {
+    try {
+      const result = await mockInitFake();
 
       res.sendCreated(result);
     } catch (error) {
